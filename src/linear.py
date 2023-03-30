@@ -1,20 +1,53 @@
-from base_class import Loss, Module, np
+from module import Loss, Module, np
 
 
 class MSELoss(Loss):
-
     def __init__(self) -> None:
         super().__init__()
 
     def forward(self, y, yhat):
-        return (yhat - y)**2
+        """Calcule l'erreur moyenne quadratique.
+
+        .. math:: MSE = ||y - \hat{y}||^2
+        
+        Parameters
+        ----------
+        y : ndarray (batch, d,)
+            Supervision.
+        yhat : ndarray (batch, d,)
+            Prédiction.
+
+        Returns
+        -------
+        ndarray (batch,)
+            Loss.
+        """
+        assert y.shape == yhat.shape, ValueError("dimension mismatch, y and yhat must of same dimension.")
+        return np.linalg.norm(y - yhat) ** 2
 
     def backward(self, y, yhat):
-        return 2*(yhat - y)
+        """Calcule le gradient de l'erreur moyenne quadratique.
+        
+        .. math:: \nabla_{MSE} = 2(y - \hat{y})
+
+        Parameters
+        ----------
+        y : ndarray (batch, d,)
+            Supervision.
+        yhat : ndarray (batch, d,)
+            Prédiction.
+
+        Returns
+        -------
+        ndarray
+            Gradient.
+        """
+        assert y.shape == yhat.shape, ValueError("dimension mismatch, y and yhat must be of same dimension.")
+        return 2 * (y - yhat)
 
 
 class Linear(Module):
-    def __init__(self, input:int, output:int) -> None:
+    def __init__(self, input: int, output: int) -> None:
         """Couche linéaire
         Son gradient $  $
 
@@ -26,21 +59,30 @@ class Linear(Module):
         self.input = input
         self.output = output
 
-    def zero_grad(self):
-        # Annule gradient
-        self._gradient = None
-
     def forward(self, X):
         # Calcule la passe forward
         assert X.shape[1] == self.input, ValueError(
             "X must be of shape (batch_size, input_size)")
         return X @ self._parameters
-
+    
     def backward_update_gradient(self, input, delta):
-        # Met a jour la valeur du gradient
-        self._gradient += self.backward_delta # ?
-
+        self._gradient += delta * input
+    
     def backward_delta(self, input, delta):
-        # Calcul la derivee de l'erreur
-        # La dérivé du module * delta^h fourni par l'aval du réseau ? 
-        return input * delta # ??
+        """_summary_
+
+        Parameters
+        ----------
+        input : ndarray (batch, d)
+            _description_
+        delta : ndarray (input, output)
+            _description_
+
+        Returns
+        -------
+        _type_
+            _description_
+        """
+        # c'est la dérivé du module par rapport aux entrée !!!
+        # delta * self._parameters
+        return (delta * input).sum(axis=1) # (1 ,d)
