@@ -20,7 +20,7 @@ class Module(object):
 
     def forward(self, X):
         # Calcule la passe forward
-        pass
+        raise NotImplementedError()
 
     def update_parameters(self, gradient_step=1e-3):
         # Calcule la mise a jour des paramètres selon le gradient calcule et le pas de gradient_step
@@ -30,10 +30,10 @@ class Module(object):
         # Met a jour la valeur du gradient
         # C'est la somme dans le sujet
         # EQUATION 1
-        pass 
+        raise NotImplementedError() 
 
     def backward_delta(self, input, delta):
         # Calcul la dérivée de l'erreur
         # calcul le prochain delta
         # EQUATION 2
-        pass
+        raise NotImplementedError()
