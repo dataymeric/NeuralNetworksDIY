@@ -64,6 +64,8 @@ class Linear(Module):
         # self._parameters = np.ones(shape=(input_size, output_size))
         self._parameters = np.random.randn(input_size, output_size)
         
+        # Initialisation du gradient
+        self._gradient = np.zeros((input_size, output_size))
 
     def forward(self, X):
         """X@w 
