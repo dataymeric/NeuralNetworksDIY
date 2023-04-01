@@ -73,7 +73,7 @@ $$
 Prenons $batch=1$, ainsi $M_W (z^{k-1}) : \mathbb{R}^{input} \longmapsto \mathbb{R}^{output}$ et une écriture de $W$ tel que $W=(w_{*,1}, w_{*,2}, \cdots, w_{*,output})$ et $w_{*,i} \in \mathbb{R}^{input}$
 $$
 \begin{align*}
-    J_{M_W}^{z^{k-1}} &= {\begin{pmatrix}
+    J_{M_W}^{W}(z^{k-1}) &= {\begin{pmatrix}
         {\dfrac {\partial f_{1, w_{*, 1}}}{\partial w_{*, 1}}} & \cdots & {\dfrac {\partial f_{1, w_{*, 1}}}{\partial w_{*, output}}} \\
         \vdots &\ddots &\vdots \\
         {\dfrac {\partial f_{output, w_{*, output}}}{\partial w_{*, 1}}} & \cdots & {\dfrac {\partial f_{output, w_{*, output}}}{\partial w_{*, output}}}
@@ -83,7 +83,7 @@ $$
 Mais ça c'est pour l'écriture réduite du $W$, il faut rester en écriture matriciel sinon c'est pas visualisable. 
 $$
 \begin{align*}
-    J_{M_W}^{z^{k-1}}   &= 
+    J_{M_W}^{z^{k-1}}(z^{k-1})   &= 
         {\begin{pmatrix}
             {\dfrac {\partial (z^{k-1} * w_{*, 1})}{\partial w_{*, 1}}} & \cdots & {\dfrac {\partial (z^{k-1} * w_{*, 1})}{\partial w_{*, output}}} \\
             \vdots &\ddots &\vdots \\
@@ -118,7 +118,7 @@ $$
                         \vdots  & \vdots  & \ddots & \vdots  \\
                         w_{1,output} & w_{2,output} & \cdots & w_{input,output} \\
                     \end{pmatrix} \\ 
-                    &= W
+                    &= W^T
 \end{align*}
 $$
 Ca c'était pour un $batch=1$, pour un plus grands $batch$ j'imagine qu'il y a une 3ème dimension à la Jacobienne représentant le batch. Dans ce cas elle est la réplication de W. 
