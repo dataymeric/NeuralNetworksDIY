@@ -47,35 +47,69 @@ class MSELoss(Loss):
 
 
 class Linear(Module):
-    def __init__(self, input: int, output: int) -> None:
+    def __init__(self, input_size: int, output_size: int) -> None:
         """Couche linéaire
-        Son gradient $  $
+        self._parameters : (input, output)
 
         Args:
             input (int): Taille de l'entrée de la couche linéair
             output (int): Taille de la sortie de la couche linéaire
         """
         super().__init__()
-        self.input = input
-        self.output = output
+        self.input_size = input_size
+        self.output_size = output_size
+        
+        # Initialisation des paramètres
+        # self._parameters = np.random.random(size=(input_size, output))
+        # self._parameters = np.ones(shape=(input_size, output_size))
+        self._parameters = np.random.randn(input_size, output_size)
+        
 
     def forward(self, X):
-        # Calcule la passe forward
-        assert X.shape[1] == self.input, ValueError(
+        """X@w 
+        (batch, input_size) @ (input_size, output_size) = (batch, output_size)
+
+        Parameters
+        ----------
+        X : ndarray (batch, input_size)
+            _description_
+
+        Returns
+        -------
+        _type_
+            _description_
+        """
+        assert X.shape[1] == self.input_size, ValueError(
             "X must be of shape (batch_size, input_size)")
         return X @ self._parameters
     
     def backward_update_gradient(self, input, delta):
-        self._gradient += delta * input
+        """_summary_
+
+        Parameters
+        ----------
+        input : ndarray (batch, input_size)
+            _description_
+        delta : ndarray 
+            _description_
+
+        """
+        # Si delta : ndarray (output_size, input_size) 
+        self._gradient += delta @ input.T # (output_size, batch )
+        # Plutot logique avec l'idée que le la Loss : R^? ==> R donne un gradient de cette forme
+        
+        # Si delta : ndarray (batch, output_size, input_size)
+        # self._gradient += delta @ input.T # (batch, output_size, batch)
+        # Un peu étrange quoi 
     
     def backward_delta(self, input, delta):
         """_summary_
 
         Parameters
         ----------
-        input : ndarray (batch, d)
+        input : ndarray (batch, input)
             _description_
-        delta : ndarray (input, output)
+        delta : ndarray 
             _description_
 
         Returns
@@ -85,4 +119,9 @@ class Linear(Module):
         """
         # c'est la dérivé du module par rapport aux entrée !!!
         # delta * self._parameters
-        return (delta * input).sum(axis=1) # (1 ,d)
+        
+        # Si delta : ndarray (output, input_size) 
+        return (delta @ self._parameters.T) 
+    
+        # Si delta : ndarray (batch, output_size, input_size) 🤔
+        # return np.repeat ..... (delta @ self._parameters.T)
