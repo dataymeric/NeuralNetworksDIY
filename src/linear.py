@@ -107,9 +107,9 @@ class Linear(Module):
 
         Parameters
         ----------
-        input : ndarray (batch, input)
+        input : ndarray (batch, input_size)
             _description_
-        delta : ndarray 
+        delta : ndarray (output_size, input_size) 
             _description_
 
         Returns

@@ -35,5 +35,6 @@ class Module(object):
     def backward_delta(self, input, delta):
         # Calcul la dérivée de l'erreur
         # calcul le prochain delta
+        # dérivé du module par rapport aux entrée
         # EQUATION 2
         raise NotImplementedError()
