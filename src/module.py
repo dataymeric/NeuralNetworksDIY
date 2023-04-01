@@ -1,3 +1,4 @@
+from typing import Any
 import numpy as np
 
 
@@ -14,6 +15,9 @@ class Module(object):
         self._parameters = None
         self._gradient = None
 
+    def __call__(self, *args: Any, **kwds: Any) -> Any:
+        self.forward(*args, **kwds)
+        
     def zero_grad(self):
         """Réinitialise à 0 le gradient."""
         self._gradient = 0
