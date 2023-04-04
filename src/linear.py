@@ -1,4 +1,5 @@
-from module import Loss, Module, np
+import numpy as np
+from src.module import Loss, Module
 
 
 class MSELoss(Loss):

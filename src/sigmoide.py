@@ -1,5 +1,5 @@
-from module import Module, np
 import numpy as np
+from src.module import Module
 
 class TanH(Module):
     def __init__(self) -> None:
