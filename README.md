@@ -1,9 +1,9 @@
 # Neural Networks from scratch
-On rappel la définition d'un matric jacobienne d'une fonction 
+On rappelle la définition d'une matrice jacobienne d'une fonction :
 $$
 \begin{align*}
     F   &: \mathbb{R}^n \longmapsto \mathbb{R}^m \\ 
-        &:{\begin{pmatrix}x_{1}\\ \vdots \\ x_{n} \end{pmatrix}} \longmapsto {\begin{pmatrix} f_{1}(x_{1},\dots ,x_{n}) \\ \vdots \\ f_{m}(x_{1},\dots ,x_{n}) \end{pmatrix}}
+    F    &:{\begin{pmatrix}x_{1}\\ \vdots \\ x_{n} \end{pmatrix}} \longmapsto {\begin{pmatrix} f_{1}(x_{1},\dots ,x_{n}) \\ \vdots \\ f_{m}(x_{1},\dots ,x_{n}) \end{pmatrix}}
 \end{align*}
 $$
 Les dérivées partielles de ces fonctions en un point $M$, si elles existent, peuvent être rangées dans une matrice à $m$ lignes et $n$ colonnes, appelée matrice jacobienne de $F$ :
@@ -13,16 +13,17 @@ $$
 
 ## Module linéaire
 ### Forward
-Soit $z^{k-1} \in \mathbb{R}^{batch \times input}$, $ W \in \mathbb{R}^{input, ouput} $, $M_W (z^{k-1}) : \mathbb{R}^{batch \times input} \longmapsto \mathbb{R}^{batch \times output}$
+Soit $z^{k-1} \in \mathbb{R}^{batch \times input}$, $W \in \mathbb{R}^{input, ouput}$, $M_W (z^{k-1}) : \mathbb{R}^{batch \times input} \longmapsto \mathbb{R}^{batch \times output}$.
+
 $$
 \begin{align*}
-    M_W(z^{k-1})   &= z^{k-1} * W \\ 
+    M_W(z^{k-1})   &= z^{k-1} \times W \\ 
                     &= \begin{pmatrix}
                         z^{k-1}_{1,1} & z^{k-1}_{1,2} & \cdots & z^{k-1}_{1, input} \\
                         z^{k-1}_{2,1} & z^{k-1}_{2,2} & \cdots & z^{k-1}_{2, input} \\
                         \vdots  & \vdots  & \ddots & \vdots  \\
                         z^{k-1}_{batch,1} & z^{k-1}_{batch,2} & \cdots & z^{k-1}_{batch, input} 
-                    \end{pmatrix} * \begin{pmatrix}
+                    \end{pmatrix} \times \begin{pmatrix}
                         w_{1,1} & w_{1,2} & \cdots & w_{1, output} \\
                         w_{2,1} & w_{2,2} & \cdots & w_{2, output} \\
                         \vdots  & \vdots  & \ddots & \vdots  \\
@@ -43,13 +44,15 @@ $$
                     &= z^{k} \in \mathbb{R}^{batch \times output} \\
 \end{align*}
 $$
-Pour $batch=1$, on a 
+
+Pour $batch=1$, on a :
+
 $$
 \begin{align*}
-    M_W(z^{k-1})   &= z^{k-1} * W \\ 
+    M_W(z^{k-1})   &= z^{k-1} \times W \\ 
                     &= \begin{pmatrix}
                         z^{k-1}_{1,1} & z^{k-1}_{1,2} & \cdots & z^{k-1}_{1, input}
-                    \end{pmatrix} * \begin{pmatrix}
+                    \end{pmatrix} \times \begin{pmatrix}
                         w_{1,1} & w_{1,2} & \cdots & w_{1, output} \\
                         w_{2,1} & w_{2,2} & \cdots & w_{2, output} \\
                         \vdots  & \vdots  & \ddots & \vdots  \\
@@ -70,24 +73,27 @@ $$
 
 
 ### Dérivé du module par rapport aux paramètres
-Prenons $batch=1$, ainsi $M_W (z^{k-1}) : \mathbb{R}^{input} \longmapsto \mathbb{R}^{output}$ et une écriture de $W$ tel que $W=(w_{*,1}, w_{*,2}, \cdots, w_{*,output})$ et $w_{*,i} \in \mathbb{R}^{input}$
+Prenons $batch=1$, ainsi $M_W (z^{k-1}) : \mathbb{R}^{input} \longmapsto \mathbb{R}^{output}$ et une écriture de $W$ tel que $W=(w_{\bullet,1}, w_{\bullet,2}, \cdots, w_{\bullet,output})$ et $w_{\bullet,i} \in \mathbb{R}^{input}$.
+
 $$
 \begin{align*}
     J_{M_W}^{W}(z^{k-1}) &= {\begin{pmatrix}
-        {\dfrac {\partial f_{1, w_{*, 1}}}{\partial w_{*, 1}}} & \cdots & {\dfrac {\partial f_{1, w_{*, 1}}}{\partial w_{*, output}}} \\
+        {\dfrac {\partial f_{1, w_{\bullet, 1}}}{\partial w_{\bullet, 1}}} & \cdots & {\dfrac {\partial f_{1, w_{\bullet, 1}}}{\partial w_{\bullet, output}}} \\
         \vdots &\ddots &\vdots \\
-        {\dfrac {\partial f_{output, w_{*, output}}}{\partial w_{*, 1}}} & \cdots & {\dfrac {\partial f_{output, w_{*, output}}}{\partial w_{*, output}}}
+        {\dfrac {\partial f_{output, w_{\bullet, output}}}{\partial w_{\bullet, 1}}} & \cdots & {\dfrac {\partial f_{output, w_{\bullet, output}}}{\partial w_{\bullet, output}}}
         \end{pmatrix}}
 \end{align*}
 $$
+
 Mais ça c'est pour l'écriture réduite du $W$, il faut rester en écriture matriciel sinon c'est pas visualisable. 
+
 $$
 \begin{align*}
     J_{M_W}^{z^{k-1}}(z^{k-1})   &= 
         {\begin{pmatrix}
-            {\dfrac {\partial (z^{k-1} * w_{*, 1})}{\partial w_{*, 1}}} & \cdots & {\dfrac {\partial (z^{k-1} * w_{*, 1})}{\partial w_{*, output}}} \\
+            {\dfrac {\partial (z^{k-1} \times w_{\bullet, 1})}{\partial w_{\bullet, 1}}} & \cdots & {\dfrac {\partial (z^{k-1} \times w_{\bullet, 1})}{\partial w_{\bullet, output}}} \\
             \vdots &\ddots &\vdots \\
-            {\dfrac {\partial (z^{k-1} * w_{*, output})}{\partial w_{*, 1}}} & \cdots & {\dfrac {\partial (z^{k-1} * w_{*, output})}{\partial w_{*, output}}}
+            {\dfrac {\partial (z^{k-1} \times w_{\bullet, output})}{\partial w_{\bullet, 1}}} & \cdots & {\dfrac {\partial (z^{k-1} \times w_{\bullet, output})}{\partial w_{\bullet, output}}}
         \end{pmatrix}} \\
                         &= 
         \begin{pmatrix}
@@ -99,12 +105,14 @@ $$
         \end{pmatrix}
 \end{align*}
 $$
-Or ici $f_{1, w_{*,1}}$ ne dépend pas de $w_{*, output}$, on a donc une matrice diagonale avec notre unique $z^{k-1}$ reproduit $output$ fois sur la diagonale .
+
+Or, ici $f_{1, w_{\bullet,1}}$ ne dépend pas de $w_{\bullet, output}$. On a donc une matrice diagonale avec notre unique $z^{k-1}$ reproduit $output$ fois sur la diagonale.
 
 Ca c'était pour un $batch=1$, pour un plus grands $batch$ j'imagine qu'il y a une 3ème dimension à la Jacobienne représentant le batch. 
 
 ### Dérivé du module par rapport aux entrées
-Prenons $batch=1$, ainsi $M_W (z^{k-1}) : \mathbb{R}^{input} \longmapsto \mathbb{R}^{output}$ 
+Prenons $batch=1$, ainsi $M_W (z^{k-1}) : \mathbb{R}^{input} \longmapsto \mathbb{R}^{output}$.
+
 $$
 \begin{align*}
     J_{M_W}^{z^{k-1}} &= {\begin{pmatrix}
@@ -121,9 +129,8 @@ $$
                     &= W^T
 \end{align*}
 $$
+
 Ca c'était pour un $batch=1$, pour un plus grands $batch$ j'imagine qu'il y a une 3ème dimension à la Jacobienne représentant le batch. Dans ce cas elle est la réplication de W. 
-
-
 
 ## Idée : 
 - un ReadTheDoc
