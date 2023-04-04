@@ -15,7 +15,7 @@ class Module(object):
         self._gradient = None
 
     def __call__(self, *args: Any, **kwds: Any) -> Any:
-        self.forward(*args, **kwds)
+        return self.forward(*args, **kwds)
         
     def zero_grad(self):
         """Réinitialise à 0 le gradient."""

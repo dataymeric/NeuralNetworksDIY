@@ -10,7 +10,7 @@ class MSELoss(Loss):
         """Calcule l'erreur moyenne quadratique.
 
         .. math:: MSE = ||y - \hat{y}||^2
-        
+
         Parameters
         ----------
         y : ndarray (batch, d,)
@@ -23,12 +23,13 @@ class MSELoss(Loss):
         ndarray (batch,)
             Loss.
         """
-        assert y.shape == yhat.shape, ValueError("dimension mismatch, y and yhat must of same dimension.")
+        assert y.shape == yhat.shape, ValueError(
+            f"dimension mismatch, y and yhat must of same dimension. Here it is {y.shape} and {yhat.shape}")
         return np.linalg.norm(y - yhat) ** 2
 
     def backward(self, y, yhat):
         """Calcule le gradient de l'erreur moyenne quadratique.
-        
+
         .. math:: \nabla_{MSE} = 2(y - \hat{y})
 
         Parameters
@@ -43,7 +44,8 @@ class MSELoss(Loss):
         ndarray
             Gradient.
         """
-        assert y.shape == yhat.shape, ValueError("dimension mismatch, y and yhat must be of same dimension.")
+        assert y.shape == yhat.shape, ValueError(
+            f"dimensionf mismatch, y and yhat must be of same dimension. Here it is {y.shape} and {yhat.shape}")
         return 2 * (y - yhat)
 
 
@@ -59,12 +61,12 @@ class Linear(Module):
         super().__init__()
         self.input_size = input_size
         self.output_size = output_size
-        
+
         # Initialisation des paramètres
         # self._parameters = np.random.random(size=(input_size, output))
         # self._parameters = np.ones(shape=(input_size, output_size))
         self._parameters = np.random.randn(input_size, output_size)
-        
+
         # Initialisation du gradient
         self._gradient = np.zeros((input_size, output_size))
 
@@ -85,7 +87,7 @@ class Linear(Module):
         assert X.shape[1] == self.input_size, ValueError(
             "X must be of shape (batch_size, input_size)")
         return X @ self._parameters
-    
+
     def backward_update_gradient(self, input, delta):
         """_summary_
 
@@ -97,14 +99,14 @@ class Linear(Module):
             _description_
 
         """
-        # Si delta : ndarray (output_size, input_size) 
-        self._gradient += delta @ input.T # (output_size, batch )
+        # Si delta : ndarray (output_size, input_size)
+        self._gradient += delta @ input.T  # (output_size, batch )
         # Plutot logique avec l'idée que le la Loss : R^? ==> R donne un gradient de cette forme
-        
+
         # Si delta : ndarray (batch, output_size, input_size)
         # self._gradient += delta @ input.T # (batch, output_size, batch)
-        # Un peu étrange quoi 
-    
+        # Un peu étrange quoi
+
     def backward_delta(self, input, delta):
         """_summary_
 
@@ -122,9 +124,9 @@ class Linear(Module):
         """
         # c'est la dérivé du module par rapport aux entrée !!!
         # delta * self._parameters
-        
-        # Si delta : ndarray (output, input_size) 
-        return (delta @ self._parameters.T) 
-    
+
+        # Si delta : ndarray (output, input_size)
+        return (delta @ self._parameters.T)
+
         # Si delta : ndarray (batch, output_size, input_size) 🤔
         # return np.repeat ..... (delta @ self._parameters.T)
