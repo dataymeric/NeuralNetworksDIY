@@ -49,6 +49,37 @@ class MSELoss(Loss):
         return -2 * (y - yhat)
 
 
+class CrossEntropyLoss(Loss):
+    def __init__(self) -> None:
+        super().__init__()
+
+    def forward(self, y, yhat):
+        assert y.shape == yhat.shape, ValueError(
+            f"dimension mismatch, y and yhat must of same dimension. Here it is {y.shape} and {yhat.shape}")
+        return 1 - (yhat * y).sum(axis=1)
+
+    def backward(self, y, yhat):
+        assert y.shape == yhat.shape, ValueError(
+            f"dimension mismatch, y and yhat must of same dimension. Here it is {y.shape} and {yhat.shape}")
+        return yhat - y
+
+
+class LogCrossEntropyLoss(Loss):
+    def __init__(self) -> None:
+        super().__init__()
+        self.CELoss = CrossEntropyLoss()
+
+    def forward(self, y, yhat):
+        assert y.shape == yhat.shape, ValueError(
+            f"dimension mismatch, y and yhat must of same dimension. Here it is {y.shape} and {yhat.shape}")
+        ...
+
+    def backward(self, y, yhat):
+        assert y.shape == yhat.shape, ValueError(
+            f"dimension mismatch, y and yhat must of same dimension. Here it is {y.shape} and {yhat.shape}")
+        ...
+
+
 class Linear(Module):
     def __init__(self, input_size: int, output_size: int) -> None:
         """Couche linéaire
@@ -100,9 +131,9 @@ class Linear(Module):
         """
         assert input.shape[1] == self.input_size
         assert delta.shape[1] == self.output_size
-        
+
         # Si delta : ndarray (output_size, input_size)
-        self._gradient += input.T @ delta # (output_size, batch )
+        self._gradient += input.T @ delta  # (output_size, batch )
         # Plutot logique avec l'idée que le la Loss : R^? ==> R donne un gradient de cette forme
 
         # Si delta : ndarray (batch, output_size, input_size)
@@ -126,7 +157,7 @@ class Linear(Module):
         """
         assert input.shape[1] == self.input_size
         assert delta.shape[1] == self.output_size
-        
+
         # c'est la dérivé du module par rapport aux entrée !!!
         # delta * self._parameters
 
