@@ -13,7 +13,6 @@ net = Sequential(
     Linear(2, 2),
     TanH(),
     Linear(2, 1),
-    TanH(),
     Sigmoide(),
 )
 
