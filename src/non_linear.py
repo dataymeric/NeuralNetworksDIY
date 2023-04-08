@@ -42,6 +42,8 @@ class TanH(Module):
         """
         return delta * (1 - np.tanh(input)**2)
 
+    def update_parameters(self, gradient_step=0.001):
+        ...
 
 class Sigmoide(Module):
     def __init__(self) -> None:
@@ -83,3 +85,6 @@ class Sigmoide(Module):
         # assert delta.shape == (self.input_size, self.output_size), ValueError()
         sig_X = self.forward(input)
         return delta * (sig_X * (1 - sig_X))
+
+    def update_parameters(self, gradient_step=0.001):
+        ...

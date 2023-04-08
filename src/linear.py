@@ -46,7 +46,7 @@ class MSELoss(Loss):
         """
         assert y.shape == yhat.shape, ValueError(
             f"dimensionf mismatch, y and yhat must be of same dimension. Here it is {y.shape} and {yhat.shape}")
-        return 2 * (y - yhat)
+        return -2 * (y - yhat)
 
 
 class Linear(Module):
@@ -64,8 +64,8 @@ class Linear(Module):
 
         # Initialisation des paramètres
         # self._parameters = np.random.random(size=(input_size, output))
-        # self._parameters = np.ones(shape=(input_size, output_size))
-        self._parameters = np.random.randn(input_size, output_size)
+        self._parameters = np.ones(shape=(input_size, output_size))
+        # self._parameters = np.random.randn(input_size, output_size)
 
         # Initialisation du gradient
         self._gradient = np.zeros((input_size, output_size))
@@ -95,12 +95,14 @@ class Linear(Module):
         ----------
         input : ndarray (batch, input_size)
             _description_
-        delta : ndarray 
+        delta : ndarray (input_size, output_size) 
             _description_
-
         """
+        assert input.shape[1] == self.input_size
+        assert delta.shape[1] == self.output_size
+        
         # Si delta : ndarray (output_size, input_size)
-        self._gradient += delta @ input.T  # (output_size, batch )
+        self._gradient += input.T @ delta # (output_size, batch )
         # Plutot logique avec l'idée que le la Loss : R^? ==> R donne un gradient de cette forme
 
         # Si delta : ndarray (batch, output_size, input_size)
@@ -114,7 +116,7 @@ class Linear(Module):
         ----------
         input : ndarray (batch, input_size)
             _description_
-        delta : ndarray (output_size, input_size) 
+        delta : ndarray (input_size, output_size)
             _description_
 
         Returns
@@ -122,6 +124,9 @@ class Linear(Module):
         _type_
             _description_
         """
+        assert input.shape[1] == self.input_size
+        assert delta.shape[1] == self.output_size
+        
         # c'est la dérivé du module par rapport aux entrée !!!
         # delta * self._parameters
 
