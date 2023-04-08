@@ -3,10 +3,10 @@ from typing import Any
 
 class Loss(object):
     def forward(self, y, yhat):
-        pass
+        raise NotImplementedError()
 
     def backward(self, y, yhat):
-        pass
+        raise NotImplementedError()
 
 
 class Module(object):
