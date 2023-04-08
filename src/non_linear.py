@@ -12,12 +12,13 @@ class TanH(Module):
 
     def backward_update_gradient(self, input, delta):
         """Rien à apprendre donc on ajoute rien au gradient
+        Genre pas de dérivé par rapport au paramètre vu que y'a pas de paramètre
 
         Parameters
         ----------
         input : ndarray (batch, input_size)
             _description_
-        delta : ndarray (output_size, input_size) 
+        delta : ndarray (input_size, output_size) 
             _description_
 
         """
@@ -30,7 +31,7 @@ class TanH(Module):
         ----------
         input : ndarray (batch, input_size)
             _description_
-        delta : ndarray (output_size, input_size) 
+        delta : ndarray (input_size, output_size) 
             _description_
 
 
@@ -39,7 +40,7 @@ class TanH(Module):
         _type_
             _description_
         """
-        return delta @ (1 - np.tanh(input)**2).T
+        return delta * (1 - np.tanh(input)**2)
 
 
 class Sigmoide(Module):
@@ -51,13 +52,13 @@ class Sigmoide(Module):
         return 1 / (1 + np.exp(-X))
 
     def backward_update_gradient(self, input, delta):
-        """Rien à apprendre donc on ajoute rien au gradient
+        """Rien à apprendre donc return ajoute rien au gradient
 
         Parameters
         ----------
         input : ndarray (batch, input_size)
             _description_
-        delta : ndarray (output_size, input_size) 
+        delta : ndarray (input_size, output_size) 
             _description_
         """
         pass
@@ -69,7 +70,7 @@ class Sigmoide(Module):
         ----------
         input : ndarray (batch, input_size)
             _description_
-        delta : ndarray (output_size, input_size) 
+        delta : ndarray (input_size, output_size) 
             _description_
 
 
@@ -78,4 +79,7 @@ class Sigmoide(Module):
         _type_
             _description_
         """
-        return delta @ (self.forward(input) * (1 - self.forward(input))).T
+        # assert input.shape[1] == self.input_size, ValueError()
+        # assert delta.shape == (self.input_size, self.output_size), ValueError()
+        sig_X = self.forward(input)
+        return delta * (sig_X * (1 - sig_X))
