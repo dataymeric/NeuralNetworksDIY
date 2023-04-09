@@ -80,6 +80,17 @@ class LogCrossEntropyLoss(Loss):
         ...
 
 
+class BinaryCrossEntropy(Loss):
+    def __init__(self) -> None:
+        super().__init__()
+
+    def forward(self, y, yhat):
+        return - (y * np.log(yhat) + (1 - y) * np.log(1 - yhat))
+
+    def backward(self, y, yhat):
+        return - ( (y / yhat) + (1 - y) / (1 - yhat) )
+
+
 class Linear(Module):
     def __init__(self, input_size: int, output_size: int, param_init: str = None) -> None:
         """Couche linéaire
