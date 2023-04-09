@@ -1,9 +1,8 @@
 from sklearn.datasets import load_digits
 from sklearn.preprocessing import OneHotEncoder
 import numpy as np
-import pandas as pd
-from src.module import Module
-from src.linear import MSELoss, CrossEntropyLoss, Linear
+from src.linear import Linear
+from src.losses import MSELoss, CrossEntropyLoss, BinaryCrossEntropy, LogCrossEntropyLoss
 from src.non_linear import TanH, Sigmoide, SoftMax
 from src.encapsulation import Sequential, Optim
 np.random.seed(42)
@@ -23,7 +22,7 @@ net = Sequential(
     TanH(),
     Linear(8, 2),
     Sigmoide(),
-    # SoftMax(), 
+    # SoftMax(),
 )
 
 optimizer = Optim(net, CrossEntropyLoss(), eps=1e-2)

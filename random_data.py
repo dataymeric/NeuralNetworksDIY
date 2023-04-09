@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
-from src.linear import MSELoss, Linear, CrossEntropyLoss
+from src.linear import Linear
+from src.losses import MSELoss, CrossEntropyLoss, BinaryCrossEntropy, LogCrossEntropyLoss
 from src.non_linear import TanH, Sigmoide, SoftMax
 from src.encapsulation import Sequential, Optim
 np.random.seed(42)
