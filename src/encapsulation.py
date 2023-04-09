@@ -13,8 +13,10 @@ class Sequential:
         self.input_list = [input]
         for module in self.modules:
             print(f"Forward de {module.__class__.__name__}")
+            print(f"Input : {input.shape}")
             input = module(input)
             self.input_list.append(input)
+        print(f"Output: {input.shape}")
         return input
 
     def backward(self, delta):
@@ -30,11 +32,8 @@ class Sequential:
         _type_
             _description_
         """
-
-        ic(self.input_list)
         self.input_list.reverse()
 
-        ic([i.shape for i in self.input_list])
         print(f"Shape of loss delta : {delta.shape}")
 
         for i, module in enumerate(reversed(self.modules)):
@@ -74,7 +73,9 @@ class Optim:
         self.eps = eps
 
     def step(self, batch_x, batch_y):
-        y_hat = self.network.forward(batch_x).reshape(-1, 1)  # (batchsize, 1)
+        # y_hat = self.network.forward(batch_x).reshape(-1, 1)  # (batchsize, 1)
+        # Il faut fix ce reshape, il broke en multiclass en reshapant de (batchsize=8, 2 class) => (16, 1)
+        y_hat = self.network.forward(batch_x)
         loss_value = self.loss.forward(batch_y, y_hat)
         loss_delta = self.loss.backward(batch_y, y_hat)
         self.network.backward(loss_delta)
@@ -109,6 +110,12 @@ class Optim:
             print(f"Epoch {i+1}\n-------------------------------")
             # for X_i, y_i in tqdm(zip(batch_X, batch_Y)):
             for X_i, y_i in zip(batch_X, batch_Y):
-                loss_list.append(self.step(X_i, y_i))
-                print(f"Epoch {i}, loss = {loss_list[-1]}")
-        return loss_list
+                last_loss = self.step(X_i, y_i)
+            loss_list.append(np.mean(last_loss))
+            print(f"loss = {loss_list[-1]}")
+
+        return np.array(loss_list)
+
+    def score(self, X, y):
+        y_hat = np.argmax(self.network.forward(X), axis=1)
+        return np.where(y == y_hat, 1, 0).mean()
