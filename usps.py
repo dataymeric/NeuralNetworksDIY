@@ -23,7 +23,7 @@ net = Sequential(
     TanH(),
     Linear(8, 2),
     Sigmoide(),
-    SoftMax(),
+    # SoftMax(), 
 )
 
 optimizer = Optim(net, CrossEntropyLoss(), eps=1e-2)
