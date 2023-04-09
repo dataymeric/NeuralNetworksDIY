@@ -1,13 +1,15 @@
 import numpy as np
-from src.linear import MSELoss, Linear
-from src.non_linear import TanH, Sigmoide
+import pandas as pd
+from src.linear import MSELoss, Linear, CrossEntropyLoss
+from src.non_linear import TanH, Sigmoide, SoftMax
 from src.encapsulation import Sequential, Optim
+np.random.seed(42)
 
-batch_size = 8
+batch_size = 32
 d = 2  # Dim des entrées
 
 X = np.random.random(size=(256, d))
-y = np.random.choice([-1, 1], size=(256, 1))
+y = np.random.choice([1], size=(256, 1))
 
 net = Sequential(
     Linear(2, 2),
@@ -16,5 +18,7 @@ net = Sequential(
     Sigmoide(),
 )
 
-optimizer = Optim(net, MSELoss(), eps=1e-4)
-optimizer.SGD(X, y, batch_size, 3)
+optimizer = Optim(net, CrossEntropyLoss(), eps=1e-1)
+lossList = optimizer.SGD(X, y, batch_size, 10)
+print(lossList)
+pd.Series(lossList).plot()
