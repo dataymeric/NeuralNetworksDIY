@@ -1,7 +1,7 @@
 import numpy as np
 from tqdm import tqdm
 from icecream import ic
-from src.module import Module, Loss
+from .module import Module, Loss
 
 
 class Sequential:

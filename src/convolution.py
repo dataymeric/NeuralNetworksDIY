@@ -1,4 +1,4 @@
-from src.module import Module
+from .module import Module
 import numpy as np
 
 
@@ -6,11 +6,11 @@ class Conv1D(Module):
     def __init__(self, k_size, chan_in, chan_out, stride):
         """(k_size,chan_in,chan_out)"""
         super().__init__()
-        self._k_size = k_size
-        self._chan_in = chan_in
-        self._chan_out = chan_out
-        self._stride = stride
-        self._parameters = np.ones((chan_out, chan_in, k_size))
+        self.k_size = k_size
+        self.chan_in = chan_in
+        self.chan_out = chan_out
+        self.stride = stride
+        self.parameters = np.ones((chan_out, chan_in, k_size))
         self.dw = np.zeros((chan_out, chan_in, k_size))
 
     def forward(self, X):
