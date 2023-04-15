@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
 from src.linear import Linear
-from src.losses import MSELoss, CrossEntropyLoss, BCELoss, LogCrossEntropyLoss
-from src.non_linear import TanH, Sigmoide, SoftMax
+from src.losses import MSELoss, CrossEntropyLoss, BCELoss, LogSoftmax
+from src.non_linear import TanH, Sigmoide, Softmax
 from src.encapsulation import Sequential, Optim
 np.random.seed(42)
 
@@ -21,6 +21,8 @@ encoder = [
 decoder = [
 
 ]
+
+net = ()
 
 optimizer = Optim(net, CrossEntropyLoss(), eps=1e-1)
 lossList = optimizer.SGD(X, y, batch_size, 10)

@@ -21,10 +21,10 @@ class MSELoss(Loss):
         Returns
         -------
         ndarray (batch,)
-            Loss.
         """
         assert y.shape == yhat.shape, ValueError(
-            f"dimension mismatch, y and yhat must of same dimension. Here it is {y.shape} and {yhat.shape}"
+            f"dimension mismatch, y and yhat must of same dimension. "
+            f"Here it is {y.shape} and {yhat.shape}"
         )
         return np.linalg.norm(y - yhat) ** 2
 
@@ -42,11 +42,10 @@ class MSELoss(Loss):
 
         Returns
         -------
-        ndarray
-            Gradient.
+        ndarray (batch, d)
         """
         assert y.shape == yhat.shape, ValueError(
-            f"dimension mismatch, y and yhat must of same dimension."
+            f"dimension mismatch, y and yhat must of same dimension. "
             f"Here it is {y.shape} and {yhat.shape}"
         )
         return -2 * (y - yhat)
@@ -58,14 +57,14 @@ class CrossEntropyLoss(Loss):
 
     def forward(self, y, yhat):
         assert y.shape == yhat.shape, ValueError(
-            f"dimension mismatch, y and yhat must of same dimension."
+            f"dimension mismatch, y and yhat must of same dimension. "
             f"Here it is {y.shape} and {yhat.shape}"
         )
         return 1 - (yhat * y).sum(axis=1)
 
     def backward(self, y, yhat):
         assert y.shape == yhat.shape, ValueError(
-            f"dimension mismatch, y and yhat must of same dimension."
+            f"dimension mismatch, y and yhat must of same dimension. "
             f"Here it is {y.shape} and {yhat.shape}"
         )
         return yhat - y
@@ -76,10 +75,31 @@ class BCELoss(Loss):
         super().__init__()
 
     def forward(self, y, yhat):
-        yhat += 1e-100
-        return -(y * np.log(yhat) + (1 - y) * np.log(1 - yhat))
+        """Coût cross-entropique binaire.
+
+        Parameters
+        ----------
+        y : ndarray (batch, d,)
+            Supervision.
+        yhat : ndarray (batch, d,)
+            Prédiction.
+        """
+        assert y.shape == yhat.shape, ValueError(
+            f"dimension mismatch, y and yhat must of same dimension. "
+            f"Here it is {y.shape} and {yhat.shape}"
+        )
+        yhat += 1e-10
+        return -(
+            y * np.maximum(-100, np.log(yhat))
+            + (1 - y) * np.maximum(-100, np.log(1 - yhat))
+        )
 
     def backward(self, y, yhat):
+        assert y.shape == yhat.shape, ValueError(
+            f"dimension mismatch, y and yhat must of same dimension. "
+            f"Here it is {y.shape} and {yhat.shape}"
+        )
+        yhat += 1e-10
         return -((y / yhat) + (1 - y) / (1 - yhat))
 
 
@@ -91,18 +111,20 @@ class LogSoftmax(Loss):
         self.CELoss = CrossEntropyLoss()
 
     def forward(self, y, yhat):
-        """.. math:: $CE(y, \hat{y}) = - \log \frac {e^{\hat{y}_y}} 
-        {\sum_{i=1}^{K}e^{\hat{y}_i}} = -\hat{y}_y} + \log \sum_{i=1}^{K}e^{\hat{y}_i}}$
+        """Fonction LogSoftmax.
+
+        .. math:: $CE(y, \hat{y}) = - \log \frac {e^{\hat{y}_y}} {\sum_{i=1}^{K}
+        e^{\hat{y}_i}} = -\hat{y}_y} + \log \sum_{i=1}^{K}e^{\hat{y}_i}}$
 
         Parameters
         ----------
-        y : _type_
-            _description_
-        yhat : _type_
-            _description_
+        y : ndarray (batch, d,)
+            Supervision.
+        yhat : ndarray (batch, d,)
+            Prédiction.
         """
         assert y.shape == yhat.shape, ValueError(
-            f"dimension mismatch, y and yhat must of same dimension."
+            f"dimension mismatch, y and yhat must of same dimension. "
             f"Here it is {y.shape} and {yhat.shape}"
         )
         np.log(np.exp(yhat).sum(axis=1)) - (y * yhat).sum(axis=1)
@@ -110,7 +132,7 @@ class LogSoftmax(Loss):
 
     def backward(self, y, yhat):
         assert y.shape == yhat.shape, ValueError(
-            f"dimension mismatch, y and yhat must of same dimension."
+            f"dimension mismatch, y and yhat must of same dimension. "
             f"Here it is {y.shape} and {yhat.shape}"
         )
         return np.exp(yhat) / np.exp(yhat).sum(axis=1).reshape((-1, 1)) - y
