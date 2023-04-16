@@ -1,5 +1,5 @@
 import numpy as np
-from src.module import Module
+from .module import Module
 
 
 class Linear(Module):

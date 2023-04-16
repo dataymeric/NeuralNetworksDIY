@@ -2,8 +2,8 @@ from sklearn.datasets import load_digits
 from sklearn.preprocessing import OneHotEncoder
 import numpy as np
 from src.linear import Linear
-from src.losses import MSELoss, CrossEntropyLoss, BinaryCrossEntropy, LogCrossEntropyLoss
-from src.non_linear import TanH, Sigmoide, SoftMax
+from src.losses import MSELoss, CrossEntropyLoss, BCELoss, LogSoftmax
+from src.non_linear import TanH, Sigmoide, Softmax
 from src.encapsulation import Sequential, Optim
 np.random.seed(42)
 

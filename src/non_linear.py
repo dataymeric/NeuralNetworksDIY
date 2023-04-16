@@ -1,6 +1,6 @@
 import numpy as np
 
-from src.module import Module
+from .module import Module
 
 
 class TanH(Module):
@@ -89,7 +89,7 @@ class Sigmoide(Module):
     def update_parameters(self, gradient_step=0.001):
         ...
     
-class SoftMax(Module):
+class Softmax(Module):
     def __init__(self):
         super().__init__()
     
