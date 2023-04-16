@@ -3,29 +3,49 @@ import numpy as np
 
 
 class Conv1D(Module):
-    def __init__(self, k_size, chan_in, chan_out, stride):
+    def __init__(self, k_size, chan_in, chan_out, stride=1):
         """(k_size,chan_in,chan_out)"""
         super().__init__()
-        self.k_size = k_size
-        self.chan_in = chan_in
-        self.chan_out = chan_out
+        self.k_size = k_size  # taille du filtre
+        self.chan_in = chan_in  # C
+        self.chan_out = chan_out  # nombre de filtres
         self.stride = stride
-        self.parameters = np.ones((chan_out, chan_in, k_size))
-        self.dw = np.zeros((chan_out, chan_in, k_size))
+        self.parameters = np.ones((k_size, chan_in, chan_out))  # filtres
 
     def forward(self, X):
-        """_summary_
+        """Performe une convolution en 1D.
 
         Parameters
         ----------
-        X : _type_ (batch,length,chan_in)
-            _description_
+        X : ndarray (batch,length,chan_in)
 
         Returns
         -------
-        (batch, (length-k_size)/stride +1,chan_out)
+        ndarray (batch, (length-k_size)/stride + 1, chan_out)
         """
-        pass
+        batch, length, chan_in = X.shape
+
+        # Initialize the output array
+        out_size = int(np.floor((length - self.k_size) / self.stride) + 1)
+        out = np.zeros((batch, out_size, self.chan_out))
+
+        # Convolve for each batch element
+        # Faisable sans boucles ? :thinking:
+        for b in range(batch):
+            # Convolve for each output channel
+            for c_out in range(self.chan_out):
+                # Convolve for each position in the output
+                for i in range(out_size):
+                    # Compute the receptive field
+                    start = i * self.stride
+                    end = start + self.k_size
+
+                    # Compute the convolution
+                    out[b, i, c_out] = np.sum(
+                        X[b, start:end, :] * self.parameters[:, :, c_out]
+                    )
+
+        return out
 
 
 class MaxPool1D(Module):
@@ -35,17 +55,32 @@ class MaxPool1D(Module):
         self.stride = stride
 
     def forward(self, X):
-        """(batch, length, chan_in) -> (batch,(length-k_size)/stride +1,chan_in)."""
-        pass
+        """(batch, length, chan_in) -> (batch, (length-k_size)/stride + 1, chan_in)."""
+        batch, length, chan_in = X.shape
+
+        out_size = int(np.floor((length - self.k_size) / self.stride) + 1)
+        out = np.zeros((batch, out_size, self.chan_out))
+
+        # Faisable sans boucles ? :thinking:
+        for b in range(batch):
+            for c_out in range(self.chan_out):
+                for i in range(out_size):
+                    start = i * self.stride
+                    end = start + self.k_size
+                    out[b, i, c_out] = np.max(X[b, start:end, :])
+
+        return out
 
 
 class Flatten(Module):
     """(batch, length, chan_in) -> (batch, length * chan_in)"""
+
     def __init__(self) -> None:
         super().__init__()
 
     def forward(self, X):
-        return X.reshape(self.batch, self.chan_in * self.length)
+        batch, length, chan_in = X.shape
+        return X.reshape(batch, chan_in * length)
 
     def backward(self, X):
         return X.reshape(self.batch, self.length, self.chan_in)
@@ -53,6 +88,7 @@ class Flatten(Module):
 
 class ReLU(Module):
     """ReLU (rectified linear unit) activation function."""
+
     def __init__(self) -> None:
         super().__init__()
 
