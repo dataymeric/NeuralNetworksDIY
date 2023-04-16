@@ -12,11 +12,11 @@ class Sequential:
     def forward(self, input):
         self.input_list = [input]
         for module in self.modules:
-            print(f"Forward de {module.__class__.__name__}")
-            print(f"Input : {input.shape}")
+            # print(f"Forward de {module.__class__.__name__}")
+            # print(f"Input : {input.shape}")
             input = module(input)
             self.input_list.append(input)
-        print(f"Output: {input.shape}")
+        # print(f"Output: {input.shape}")
         return input
 
     def backward(self, delta):
@@ -34,22 +34,22 @@ class Sequential:
         """
         self.input_list.reverse()
 
-        print(f"Shape of loss delta : {delta.shape}")
+        # print(f"Shape of loss delta : {delta.shape}")
 
         for i, module in enumerate(reversed(self.modules)):
 
-            print(f"➡️ Backward de {module.__class__.__name__}")
-            print(f"Shape of delta : {delta.shape}")
-            print(f"Shape of inputs : {self.input_list[i+1].shape}")
+            # print(f"➡️ Backward de {module.__class__.__name__}")
+            # print(f"Shape of delta : {delta.shape}")
+            # print(f"Shape of inputs : {self.input_list[i+1].shape}")
             module.backward_update_gradient(self.input_list[i + 1], delta)
             delta = module.backward_delta(self.input_list[i + 1], delta)
-            print(f"Backward de {module.__class__.__name__} ✅")
+            # print(f"Backward de {module.__class__.__name__} ✅")
 
         # Pas sur des indices des listes !
 
     def update_parameters(self, eps=1e-3):
         for module in self.modules:
-            print(f"➡️ Update parameter de {module.__class__.__name__}")
+            # print(f"➡️ Update parameter de {module.__class__.__name__}")
             module.update_parameters(gradient_step=eps)
             module.zero_grad()
 
@@ -106,13 +106,13 @@ class Optim:
             batch_Y = np.array_split(Y, len(X) / batch_size)
 
         loss_list = []
-        for i in range(epoch):
-            print(f"Epoch {i+1}\n-------------------------------")
+        for _ in tqdm(range(epoch)):
+            # print(f"Epoch {i+1}\n-------------------------------")
             # for X_i, y_i in tqdm(zip(batch_X, batch_Y)):
             for X_i, y_i in zip(batch_X, batch_Y):
                 last_loss = self.step(X_i, y_i)
             loss_list.append(np.mean(last_loss))
-            print(f"loss = {loss_list[-1]}")
+            # print(f"loss = {loss_list[-1]}")
 
         return np.array(loss_list)
 
