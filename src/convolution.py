@@ -72,6 +72,30 @@ class MaxPool1D(Module):
         return out
 
 
+class AvgPool1D(Module):
+    def __init__(self, k_size, stride):
+        super().__init__()
+        self.k_size = k_size
+        self.stride = stride
+
+    def forward(self, X):
+        """(batch, length, chan_in) -> (batch, (length-k_size)/stride + 1, chan_in)."""
+        batch, length, chan_in = X.shape
+
+        out_size = int(np.floor((length - self.k_size) / self.stride) + 1)
+        out = np.zeros((batch, out_size, self.chan_out))
+
+        # Faisable sans boucles ? :thinking:
+        for b in range(batch):
+            for c_out in range(self.chan_out):
+                for i in range(out_size):
+                    start = i * self.stride
+                    end = start + self.k_size
+                    out[b, i, c_out] = np.mean(X[b, start:end, :])
+
+        return out
+
+
 class Flatten(Module):
     """(batch, length, chan_in) -> (batch, length * chan_in)"""
 
@@ -110,15 +134,15 @@ class SoftPlus(Module):
     def forward(self, X):
         """math:: $f(x) = \ln(1+e^x)$
 
-        Possibilité d'ajouter un hyperparamètre $\beta$. Alors :
-        
-        ..math:: $f(x) = \frac{1}{\beta}\ln(1+e^{\beta x})$
+        Possibilité d'ajouter un hyperparamètre :math:`\beta`. Alors :
+
+        ..math:: f(x) = \frac{1}{\beta}\ln(1+e^{\beta x})
         """
         return np.log(1 + np.exp(X))
 
     def backward(self, input, delta):
         """math:: f'(x) = \frac{1}{1+e^{-x}}
-        
+
         Avec hyperparamètre :math:`\beta` :
         ..math:: f(x) = \frac{\beta}{1+e^{-\beta x}}
         """
