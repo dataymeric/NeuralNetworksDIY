@@ -113,8 +113,8 @@ class LogSoftmax(Loss):
     def forward(self, y, yhat):
         """Fonction LogSoftmax.
 
-        .. math:: $CE(y, \hat{y}) = - \log \frac {e^{\hat{y}_y}} {\sum_{i=1}^{K}
-        e^{\hat{y}_i}} = -\hat{y}_y} + \log \sum_{i=1}^{K}e^{\hat{y}_i}}$
+        .. math:: CE(y, \hat{y}) = - \log \frac {e^{\hat{y}_y}} {\sum_{i=1}^{K}
+        e^{\hat{y}_i}} = -\hat{y}_y} + \log \sum_{i=1}^{K}e^{\hat{y}_i}}
 
         Parameters
         ----------

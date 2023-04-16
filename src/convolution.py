@@ -93,7 +93,33 @@ class ReLU(Module):
         super().__init__()
 
     def forward(self, X):
+        """math:: f(x) = x^+"""
         return np.maximum(0, X)
 
     def backward(self, input, delta):
+        """math:: f'(x) = 1 \text{if} x > 0 \text{else} 0."""
         return delta * (self.forward(input) > 0)
+
+
+class SoftPlus(Module):
+    """Smooth approximation of the ReLU activation function."""
+
+    def __init__(self):
+        super().__init__()
+
+    def forward(self, X):
+        """math:: $f(x) = \ln(1+e^x)$
+
+        Possibilité d'ajouter un hyperparamètre $\beta$. Alors :
+        
+        ..math:: $f(x) = \frac{1}{\beta}\ln(1+e^{\beta x})$
+        """
+        return np.log(1 + np.exp(X))
+
+    def backward(self, input, delta):
+        """math:: f'(x) = \frac{1}{1+e^{-x}}
+        
+        Avec hyperparamètre :math:`\beta` :
+        ..math:: f(x) = \frac{\beta}{1+e^{-\beta x}}
+        """
+        return delta / (1 + np.exp(-input))
