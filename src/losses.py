@@ -83,10 +83,13 @@ class LogCrossEntropyLoss(Loss):
 
 
 class BinaryCrossEntropy(Loss):
-    def __init__(self) -> None:
+    def __init__(self, clip=0) -> None:
         super().__init__()
+        self.clip = clip
+        # TO DO
 
     def forward(self, y, yhat):
+        # Prévoir les éventuel y_hat = 0
         return - (y * np.log(yhat) + (1 - y) * np.log(1 - yhat))
 
     def backward(self, y, yhat):
