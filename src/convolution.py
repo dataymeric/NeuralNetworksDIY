@@ -24,6 +24,7 @@ class Conv1D(Module):
         ndarray (batch, (length-k_size)/stride + 1, chan_out)
         """
         batch, length, chan_in = X.shape
+        assert chan_in == self.chan_in
 
         # Initialize the output array
         out_size = int(np.floor((length - self.k_size) / self.stride) + 1)
@@ -55,8 +56,18 @@ class MaxPool1D(Module):
         self.stride = stride
 
     def forward(self, X):
-        """(batch, length, chan_in) -> (batch, (length-k_size)/stride + 1, chan_in)."""
+        """Performe un max pooling en 1D.
+
+        Parameters
+        ----------
+        X : ndarray (batch, length, chan_in)
+
+        Returns
+        -------
+        (batch, (length-k_size)/stride + 1, chan_in)
+        """      
         batch, length, chan_in = X.shape
+        assert chan_in == self.chan_in
 
         out_size = int(np.floor((length - self.k_size) / self.stride) + 1)
         out = np.zeros((batch, out_size, self.chan_out))
@@ -79,8 +90,18 @@ class AvgPool1D(Module):
         self.stride = stride
 
     def forward(self, X):
-        """(batch, length, chan_in) -> (batch, (length-k_size)/stride + 1, chan_in)."""
+        """Performe un average pooling en 1D.
+
+        Parameters
+        ----------
+        X : ndarray (batch, length, chan_in)
+
+        Returns
+        -------
+        (batch, (length-k_size)/stride + 1, chan_in)
+        """     
         batch, length, chan_in = X.shape
+        assert chan_in == self.chan_in
 
         out_size = int(np.floor((length - self.k_size) / self.stride) + 1)
         out = np.zeros((batch, out_size, self.chan_out))
@@ -136,7 +157,7 @@ class SoftPlus(Module):
 
         Possibilité d'ajouter un hyperparamètre :math:`\beta`. Alors :
 
-        ..math:: f(x) = \frac{1}{\beta}\ln(1+e^{\beta x})
+        .. math:: f(x) = \frac{1}{\beta}\ln(1+e^{\beta x})
         """
         return np.log(1 + np.exp(X))
 
@@ -144,6 +165,6 @@ class SoftPlus(Module):
         """math:: f'(x) = \frac{1}{1+e^{-x}}
 
         Avec hyperparamètre :math:`\beta` :
-        ..math:: f(x) = \frac{\beta}{1+e^{-\beta x}}
+        .. math:: f(x) = \frac{\beta}{1+e^{-\beta x}}
         """
         return delta / (1 + np.exp(-input))
