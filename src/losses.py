@@ -135,4 +135,20 @@ class LogSoftmax(Loss):
             f"dimension mismatch, y and yhat must of same dimension. "
             f"Here it is {y.shape} and {yhat.shape}"
         )
-        return np.exp(yhat) / np.exp(yhat).sum(axis=1).reshape((-1, 1)) - y
+        return np.exp(yhat) / np.exp(yhat).sum(axis=1).reshape((-1, 1)) - y (
+            f"dimension mismatch, y and yhat must of same dimension. Here it is {y.shape} and {yhat.shape}")
+        ...
+
+
+class BinaryCrossEntropy(Loss):
+    def __init__(self, clip=0) -> None:
+        super().__init__()
+        self.clip = clip
+        # TO DO
+
+    def forward(self, y, yhat):
+        # Prévoir les éventuel y_hat = 0
+        return - (y * np.log(yhat) + (1 - y) * np.log(1 - yhat))
+
+    def backward(self, y, yhat):
+        return - ((y / yhat) + (1 - y) / (1 - yhat))

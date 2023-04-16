@@ -21,9 +21,7 @@ encoder = [
 decoder = [
 
 ]
-
-net = ()
-
+net = encoder + decoder
 optimizer = Optim(net, CrossEntropyLoss(), eps=1e-1)
 lossList = optimizer.SGD(X, y, batch_size, 10)
 print(lossList)
