@@ -10,7 +10,7 @@ class Conv1D(Module):
         self.chan_in = chan_in  # C
         self.chan_out = chan_out  # nombre de filtres
         self.stride = stride
-        self.parameters = np.ones((k_size, chan_in, chan_out))  # filtres
+        self.parameters = np.random.rand(k_size, chan_in, chan_out)  # filtres
 
     def forward(self, X):
         """Performe une convolution en 1D.
