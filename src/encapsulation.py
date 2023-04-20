@@ -2,6 +2,8 @@ import numpy as np
 from tqdm import tqdm
 from icecream import ic
 from .module import Module, Loss
+from sklearn.model_selection import train_test_split
+from pandas import DataFrame
 
 
 class Sequential:
@@ -116,6 +118,83 @@ class Optim:
 
         return np.array(loss_list)
 
+    def SGD_eval(
+        self,
+        X,
+        y,
+        batch_size: int,
+        epoch: int,
+        test_size: float,
+        network: Sequential = None,
+        shuffle_train: bool = True,
+        shuffle_test: bool = False,
+        return_dataframe: bool = False
+    ):
+        if not network:
+            network = self.network
+
+        # Train test split
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size=test_size, random_state=42)
+        
+        # Sauvegarde pour éventuel utilisation en dehors de la fonction
+        self.X_train, self.X_test, self.y_train, self.y_test = X_train, X_test, y_train, y_test
+
+        # Batch creation
+        if shuffle_train:
+            shuffled_idx = np.arange(len(X_train))
+            np.random.shuffle(shuffled_idx)
+            batch_idx = np.array_split(shuffled_idx, len(X_train) / batch_size)
+            batch_X_train = [X_train[idx] for idx in batch_idx]
+            batch_Y_train = [y_train[idx] for idx in batch_idx]
+        else:
+            batch_X_train = np.array_split(X_train, len(X_train) / batch_size)
+            batch_Y_train = np.array_split(y_train, len(X_train) / batch_size)
+
+        if shuffle_test:
+            shuffled_idx = np.arange(len(X_test))
+            np.random.shuffle(shuffled_idx)
+            batch_idx = np.array_split(shuffled_idx, len(X_test) / batch_size)
+            batch_X_test = [X_test[idx] for idx in batch_idx]
+            batch_Y_test = [y_test[idx] for idx in batch_idx]
+        else:
+            batch_X_test = np.array_split(X_test, len(X_test) / batch_size)
+            batch_Y_test = np.array_split(y_test, len(X_test) / batch_size)
+
+        # Training
+        loss_list_train = []
+        loss_list_test = []
+        score_train = []
+        score_test = []
+        for _ in tqdm(range(epoch)):
+            # print(f"Epoch {i+1}\n-------------------------------")
+            # for X_i, y_i in tqdm(zip(batch_X, batch_Y)):
+            loss_sum = 0
+            for X_i, y_i in zip(batch_X_train, batch_Y_train):
+                loss_sum += self.step(X_i, y_i).sum()
+            loss_list_train.append(loss_sum / len(y_train))
+            score_train.append(self.score(X_train, y_train))
+            # print(f"loss = {loss_list[-1]}")
+
+            # Epoch evaluation
+            loss_sum = 0
+            y_hat = self.network.forward(X_test)
+            loss_list_test.append(self.loss.forward(y_test, y_hat).mean())
+            score_test.append(self.score(X_test, y_test))
+
+            
+        if return_dataframe:
+            return DataFrame({
+                'epoch': [i for i in range(epoch)],
+                'loss_test': loss_list_train,
+                'loss_train': loss_list_test,
+                'score_train': score_train,
+                'score_test': score_test,
+            })
+        else:
+            return np.array(loss_list_train), np.array(score_train), np.array(loss_list_test),  np.array(score_test)
+
     def score(self, X, y):
         y_hat = np.argmax(self.network.forward(X), axis=1)
+        print(y)
         return np.where(y == y_hat, 1, 0).mean()
