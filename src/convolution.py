@@ -6,11 +6,11 @@ class Conv1D(Module):
     def __init__(self, k_size, chan_in, chan_out, stride=1):
         """(k_size,chan_in,chan_out)"""
         super().__init__()
-        self.k_size = k_size  # taille du filtre
-        self.chan_in = chan_in  # C
-        self.chan_out = chan_out  # nombre de filtres
-        self.stride = stride
-        self.parameters = np.random.rand(k_size, chan_in, chan_out)  # filtres
+        self._k_size = k_size  # taille du filtre
+        self._chan_in = chan_in  # C
+        self._chan_out = chan_out  # nombre de filtres
+        self._stride = stride
+        self._parameters = np.random.rand(k_size, chan_in, chan_out)  # filtres
 
     def forward(self, X):
         """Performe une convolution en 1D.
@@ -24,26 +24,26 @@ class Conv1D(Module):
         ndarray (batch, (length-k_size)/stride + 1, chan_out)
         """
         batch, length, chan_in = X.shape
-        assert chan_in == self.chan_in
+        assert chan_in == self._chan_in
 
         # Initialize the output array
-        out_size = int(np.floor((length - self.k_size) / self.stride) + 1)
-        out = np.zeros((batch, out_size, self.chan_out))
+        out_size = int(np.floor((length - self._k_size) / self._stride) + 1)
+        out = np.zeros((batch, out_size, self._chan_out))
 
         # Convolve for each batch element
         # Faisable sans boucles ? :thinking:
         for b in range(batch):
             # Convolve for each output channel
-            for c_out in range(self.chan_out):
+            for c_out in range(self._chan_out):
                 # Convolve for each position in the output
                 for i in range(out_size):
                     # Compute the receptive field
-                    start = i * self.stride
-                    end = start + self.k_size
+                    start = i * self._stride
+                    end = start + self._k_size
 
                     # Compute the convolution
                     out[b, i, c_out] = np.sum(
-                        X[b, start:end, :] * self.parameters[:, :, c_out]
+                        X[b, start:end, :] * self._parameters[:, :, c_out]
                     )
 
         return out
@@ -52,8 +52,8 @@ class Conv1D(Module):
 class MaxPool1D(Module):
     def __init__(self, k_size, stride):
         super().__init__()
-        self.k_size = k_size
-        self.stride = stride
+        self._k_size = k_size
+        self._stride = stride
 
     def forward(self, X):
         """Performe un max pooling en 1D.
@@ -67,18 +67,17 @@ class MaxPool1D(Module):
         (batch, (length-k_size)/stride + 1, chan_in)
         """      
         batch, length, chan_in = X.shape
-        assert chan_in == self.chan_in
 
-        out_size = int(np.floor((length - self.k_size) / self.stride) + 1)
-        out = np.zeros((batch, out_size, self.chan_out))
+        out_size = int(np.floor((length - self._k_size) / self._stride) + 1)
+        out = np.zeros((batch, out_size, chan_in))
 
         # Faisable sans boucles ? :thinking:
         for b in range(batch):
-            for c_out in range(self.chan_out):
+            for c_in in range(chan_in):
                 for i in range(out_size):
-                    start = i * self.stride
-                    end = start + self.k_size
-                    out[b, i, c_out] = np.max(X[b, start:end, :])
+                    start = i * self._stride
+                    end = start + self._k_size
+                    out[b, i, c_in] = np.max(X[b, start:end, :])
 
         return out
 
@@ -86,8 +85,8 @@ class MaxPool1D(Module):
 class AvgPool1D(Module):
     def __init__(self, k_size, stride):
         super().__init__()
-        self.k_size = k_size
-        self.stride = stride
+        self._k_size = k_size
+        self._stride = stride
 
     def forward(self, X):
         """Performe un average pooling en 1D.
@@ -101,21 +100,25 @@ class AvgPool1D(Module):
         (batch, (length-k_size)/stride + 1, chan_in)
         """     
         batch, length, chan_in = X.shape
-        assert chan_in == self.chan_in
 
-        out_size = int(np.floor((length - self.k_size) / self.stride) + 1)
-        out = np.zeros((batch, out_size, self.chan_out))
+        out_size = int(np.floor((length - self._k_size) / self._stride) + 1)
+        out = np.zeros((batch, out_size, chan_in))
 
         # Faisable sans boucles ? :thinking:
         for b in range(batch):
-            for c_out in range(self.chan_out):
+            for c_in in range(chan_in):
                 for i in range(out_size):
-                    start = i * self.stride
-                    end = start + self.k_size
-                    out[b, i, c_out] = np.mean(X[b, start:end, :])
+                    start = i * self._stride
+                    end = start + self._k_size
+                    out[b, i, c_in] = np.mean(X[b, start:end, :])
 
         return out
 
+    def backward_update_gradient(self, input, delta):
+        ...
+
+    def backward_delta(self, input, delta):
+        ...
 
 class Flatten(Module):
     """(batch, length, chan_in) -> (batch, length * chan_in)"""
