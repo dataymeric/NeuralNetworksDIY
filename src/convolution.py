@@ -48,6 +48,14 @@ class Conv1D(Module):
 
         return out
 
+    def backward_update_gradient(self, input, delta):
+        """TO DO"""
+        ...
+
+    def backward_delta(self, input, delta):
+        """TO DO"""
+        ...
+
 
 class MaxPool1D(Module):
     def __init__(self, k_size, stride):
@@ -80,6 +88,14 @@ class MaxPool1D(Module):
                     out[b, i, c_in] = np.max(X[b, start:end, :])
 
         return out
+
+    def backward_update_gradient(self, input, delta):
+        """TO DO"""
+        ...
+
+    def backward_delta(self, input, delta):
+        """TO DO"""
+        ...
 
 
 class AvgPool1D(Module):
@@ -115,9 +131,11 @@ class AvgPool1D(Module):
         return out
 
     def backward_update_gradient(self, input, delta):
+        """TO DO"""
         ...
 
     def backward_delta(self, input, delta):
+        """TO DO"""
         ...
 
 class Flatten(Module):
@@ -127,8 +145,8 @@ class Flatten(Module):
         super().__init__()
 
     def forward(self, X):
-        batch, length, chan_in = X.shape
-        return X.reshape(batch, chan_in * length)
+        self.batch, self.length, self.chan_in = X.shape
+        return X.reshape(self.batch, self.chan_in * self.length)
 
     def backward(self, X):
         return X.reshape(self.batch, self.length, self.chan_in)
