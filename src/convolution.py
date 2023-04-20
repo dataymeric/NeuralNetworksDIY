@@ -50,7 +50,8 @@ class Conv1D(Module):
 
 
 class MaxPool1D(Module):
-    def __init__(self, k_size, stride):
+    def __init__(self, k_size, stridede .
+                 ):
         super().__init__()
         self.k_size = k_size
         self.stride = stride
