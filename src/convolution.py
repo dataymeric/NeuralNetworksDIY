@@ -73,7 +73,7 @@ class MaxPool1D(Module):
         Returns
         -------
         (batch, (length-k_size)/stride + 1, chan_in)
-        """      
+        """
         batch, length, chan_in = X.shape
 
         out_size = int(np.floor((length - self._k_size) / self._stride) + 1)
@@ -114,7 +114,7 @@ class AvgPool1D(Module):
         Returns
         -------
         (batch, (length-k_size)/stride + 1, chan_in)
-        """     
+        """
         batch, length, chan_in = X.shape
 
         out_size = int(np.floor((length - self._k_size) / self._stride) + 1)
@@ -138,6 +138,7 @@ class AvgPool1D(Module):
         """TO DO"""
         ...
 
+
 class Flatten(Module):
     """(batch, length, chan_in) -> (batch, length * chan_in)"""
 
@@ -150,42 +151,3 @@ class Flatten(Module):
 
     def backward(self, X):
         return X.reshape(self.batch, self.length, self.chan_in)
-
-
-class ReLU(Module):
-    """ReLU (rectified linear unit) activation function."""
-
-    def __init__(self) -> None:
-        super().__init__()
-
-    def forward(self, X):
-        """math:: f(x) = x^+"""
-        return np.maximum(0, X)
-
-    def backward(self, input, delta):
-        """math:: f'(x) = 1 \text{if} x > 0 \text{else} 0."""
-        return delta * (self.forward(input) > 0)
-
-
-class SoftPlus(Module):
-    """Smooth approximation of the ReLU activation function."""
-
-    def __init__(self):
-        super().__init__()
-
-    def forward(self, X):
-        """math:: $f(x) = \ln(1+e^x)$
-
-        Possibilité d'ajouter un hyperparamètre :math:`\beta`. Alors :
-
-        .. math:: f(x) = \frac{1}{\beta}\ln(1+e^{\beta x})
-        """
-        return np.log(1 + np.exp(X))
-
-    def backward(self, input, delta):
-        """math:: f'(x) = \frac{1}{1+e^{-x}}
-
-        Avec hyperparamètre :math:`\beta` :
-        .. math:: f(x) = \frac{\beta}{1+e^{-\beta x}}
-        """
-        return delta / (1 + np.exp(-input))

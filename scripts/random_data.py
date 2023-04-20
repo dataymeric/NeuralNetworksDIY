@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
 from src.linear import Linear
-from src.losses import MSELoss, CrossEntropyLoss, BCELoss, LogSoftmax
-from src.non_linear import TanH, Sigmoide, Softmax
+from src.loss import MSELoss, CrossEntropyLoss, BCELoss, LogSoftmax
+from src.activation import TanH, Sigmoide, Softmax
 from src.encapsulation import Sequential, Optim
 np.random.seed(42)
 
