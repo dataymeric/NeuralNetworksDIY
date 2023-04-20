@@ -103,6 +103,9 @@ class ReLU(Module):
         """math:: f'(x) = 1 \text{if} x > 0 \text{else} 0."""
         return delta * (self.forward(input) > 0)
 
+    def update_parameters(self, gradient_step=0.001):
+        pass
+
 
 class Softplus(Module):
     """Smooth approximation of the ReLU activation function.
@@ -121,3 +124,6 @@ class Softplus(Module):
 
     def backward_delta(self, input, delta):
         return delta / (1 + np.exp(-input))
+
+    def update_parameters(self, gradient_step=0.001):
+        pass
