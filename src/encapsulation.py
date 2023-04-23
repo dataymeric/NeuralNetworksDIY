@@ -4,11 +4,13 @@ from icecream import ic
 from .module import Module, Loss
 from sklearn.model_selection import train_test_split
 from pandas import DataFrame
+from copy import deepcopy
 
 
 class Sequential:
     def __init__(self, *args: Module) -> None:
         self.modules = [*args]
+        self.modules_copy = deepcopy(self.modules)
         self.input_list = []
 
     def forward(self, input):
@@ -39,7 +41,6 @@ class Sequential:
         # print(f"Shape of loss delta : {delta.shape}")
 
         for i, module in enumerate(reversed(self.modules)):
-
             # print(f"➡️ Backward de {module.__class__.__name__}")
             # print(f"Shape of delta : {delta.shape}")
             # print(f"Shape of inputs : {self.input_list[i+1].shape}")
@@ -66,6 +67,17 @@ class Sequential:
         Insert a module in the sequential list
         """
         raise NotImplementedError()
+
+    def reset(self):
+        """Reset module list to the original first one and so reset all parameters.
+
+        Returns
+        -------
+        Sequential
+            self
+        """
+        self.modules = deepcopy(self.modules_copy)
+        return self
 
 
 class Optim:
@@ -129,17 +141,23 @@ class Optim:
         network: Sequential = None,
         shuffle_train: bool = True,
         shuffle_test: bool = False,
-        return_dataframe: bool = False
+        return_dataframe: bool = False,
     ):
         if not network:
             network = self.network
 
         # Train test split
         X_train, X_test, y_train, y_test = train_test_split(
-            X, y, test_size=test_size, random_state=42)
-        
+            X, y, test_size=test_size, random_state=42
+        )
+
         # Sauvegarde pour éventuel utilisation en dehors de la fonction
-        self.X_train, self.X_test, self.y_train, self.y_test = X_train, X_test, y_train, y_test
+        self.X_train, self.X_test, self.y_train, self.y_test = (
+            X_train,
+            X_test,
+            y_train,
+            y_test,
+        )
 
         # Batch creation
         if shuffle_train:
@@ -183,21 +201,27 @@ class Optim:
             loss_list_test.append(self.loss.forward(y_test, y_hat).mean())
             score_test.append(self.score(X_test, y_test))
 
-            
         if return_dataframe:
-            return DataFrame({
-                'epoch': [i for i in range(epoch)],
-                'loss_test': loss_list_train,
-                'loss_train': loss_list_test,
-                'score_train': score_train,
-                'score_test': score_test,
-            })
+            return DataFrame(
+                {
+                    "epoch": [i for i in range(epoch)],
+                    "loss_test": loss_list_train,
+                    "loss_train": loss_list_test,
+                    "score_train": score_train,
+                    "score_test": score_test,
+                }
+            )
         else:
-            return np.array(loss_list_train), np.array(score_train), np.array(loss_list_test),  np.array(score_test)
+            return (
+                np.array(loss_list_train),
+                np.array(score_train),
+                np.array(loss_list_test),
+                np.array(score_test),
+            )
 
     def score(self, X, y):
         assert X.shape[0] == y.shape[0], ValueError()
-        if len(y.shape) != 1: # eventual y with OneHot encoding
+        if len(y.shape) != 1:  # eventual y with OneHot encoding
             y = y.argmax(axis=1)
         y_hat = np.argmax(self.network.forward(X), axis=1)
         return np.where(y == y_hat, 1, 0).mean()
