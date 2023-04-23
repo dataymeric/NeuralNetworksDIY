@@ -10,13 +10,13 @@ class Loss(object):
 
 
 class Module(object):
-    def __init__(self):
+    def __init__(self) -> None:
         self._parameters = None
         self._gradient = None
 
     def __call__(self, *args: Any, **kwds: Any) -> Any:
         return self.forward(*args, **kwds)
-        
+
     def zero_grad(self):
         """Réinitialise à 0 le gradient."""
         self._gradient = 0
@@ -26,18 +26,17 @@ class Module(object):
         raise NotImplementedError()
 
     def update_parameters(self, gradient_step=1e-3):
-        # Calcule la mise a jour des paramètres selon le gradient calcule et le pas de gradient_step
-        self._parameters -= gradient_step*self._gradient
+        # Calcule la mise a jour des paramètres selon le gradient calcule et le pas de 
+        # gradient_step
+        self._parameters -= gradient_step * self._gradient
 
     def backward_update_gradient(self, input, delta):
         # Met a jour la valeur du gradient
-        # C'est la somme dans le sujet
-        # EQUATION 1
-        raise NotImplementedError() 
+        # C'est la somme dans le sujet (EQUATION 1)
+        raise NotImplementedError()
 
     def backward_delta(self, input, delta):
         # Calcul la dérivée de l'erreur
-        # calcul le prochain delta
-        # dérivé du module par rapport aux entrée
-        # EQUATION 2
+        # Calcul le prochain delta
+        # Dérivée du module par rapport aux entrées (EQUATION 2)
         raise NotImplementedError()
