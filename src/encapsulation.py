@@ -195,6 +195,7 @@ class Optim:
             return np.array(loss_list_train), np.array(score_train), np.array(loss_list_test),  np.array(score_test)
 
     def score(self, X, y):
+        if len(y.shape) != 1: # eventual y with OneHot encoding
+            y = y.argmax(axis=1)
         y_hat = np.argmax(self.network.forward(X), axis=1)
-        print(y)
         return np.where(y == y_hat, 1, 0).mean()
