@@ -87,7 +87,7 @@ class Optim:
     def SGD(
         self,
         X,
-        Y,
+        y,
         batch_size: int,
         epoch: int,
         network: Sequential = None,
@@ -102,18 +102,19 @@ class Optim:
             np.random.shuffle(shuffled_idx)
             batch_idx = np.array_split(shuffled_idx, len(X) / batch_size)
             batch_X = [X[idx] for idx in batch_idx]
-            batch_Y = [Y[idx] for idx in batch_idx]
+            batch_Y = [y[idx] for idx in batch_idx]
         else:
             batch_X = np.array_split(X, len(X) / batch_size)
-            batch_Y = np.array_split(Y, len(X) / batch_size)
+            batch_Y = np.array_split(y, len(X) / batch_size)
 
         loss_list = []
         for _ in tqdm(range(epoch)):
             # print(f"Epoch {i+1}\n-------------------------------")
             # for X_i, y_i in tqdm(zip(batch_X, batch_Y)):
+            loss_sum = 0
             for X_i, y_i in zip(batch_X, batch_Y):
-                last_loss = self.step(X_i, y_i)
-            loss_list.append(np.mean(last_loss))
+                loss_sum += self.step(X_i, y_i).sum()
+            loss_list.append(loss_sum / len(y))
             # print(f"loss = {loss_list[-1]}")
 
         return np.array(loss_list)
@@ -195,6 +196,7 @@ class Optim:
             return np.array(loss_list_train), np.array(score_train), np.array(loss_list_test),  np.array(score_test)
 
     def score(self, X, y):
+        assert X.shape[0] == y.shape[0], ValueError()
         if len(y.shape) != 1: # eventual y with OneHot encoding
             y = y.argmax(axis=1)
         y_hat = np.argmax(self.network.forward(X), axis=1)
