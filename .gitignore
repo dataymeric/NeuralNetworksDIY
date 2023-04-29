@@ -4,3 +4,4 @@ __pycache__
 .vscode
 data/fashion-mnist/fashion-mnist_train.csv
 data/fashion-mnist/fashion-mnist_test.csv
+archive

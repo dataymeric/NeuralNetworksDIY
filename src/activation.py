@@ -18,16 +18,13 @@ class TanH(Module):
         return np.tanh(X)
 
     def backward_update_gradient(self, input, delta):
-        """Rien à apprendre donc on ajoute rien au gradient
-        Genre pas de dérivé par rapport au paramètre vu que y'a pas de paramètre
-        """
-        pass
+        pass  # No gradient to update in TanH
 
     def backward_delta(self, input, delta):
-        return delta * (1 - np.tanh(input) ** 2)
+        return delta * (1 - self(input) ** 2)
 
-    def update_parameters(self, gradient_step=0.001):
-        pass
+    def update_parameters(self, learning_rate=0.001):
+        pass  # No parameters to update in TanH
 
 
 class Sigmoid(Module):
@@ -44,17 +41,14 @@ class Sigmoid(Module):
         return 1 / (1 + np.exp(-X))
 
     def backward_update_gradient(self, input, delta):
-        """Rien à apprendre donc return ajoute rien au gradient"""
-        pass
+        pass  # No gradient to update in Sigmoid
 
     def backward_delta(self, input, delta):
-        # assert input.shape[1] == self.input_size, ValueError()
-        # assert delta.shape == (self.input_size, self.output_size), ValueError()
-        sig_X = self.forward(input)
-        return delta * (sig_X * (1 - sig_X))
+        sig_X = self(input)
+        return delta * sig_X * (1 - sig_X)
 
-    def update_parameters(self, gradient_step=0.001):
-        pass
+    def update_parameters(self, learning_rate=0.001):
+        pass  # No parameters to update in Sigmoid
 
 
 class Softmax(Module):
@@ -67,21 +61,32 @@ class Softmax(Module):
         super().__init__()
 
     def forward(self, X):
-        X_exp = np.exp(X)
-        return X_exp / X_exp.sum(axis=1, keepdims=True)
+        exp_X = np.exp(X - np.max(X, axis=1, keepdims=True))
+        return exp_X / np.sum(exp_X, axis=1, keepdims=True)
 
     def backward_update_gradient(self, input, delta):
-        """Rien à apprendre donc return ajoute rien au gradient"""
-        pass
+        pass  # No gradient to update in Softmax
 
     def backward_delta(self, input, delta):
-        # assert input.shape[1] == self.input_size, ValueError()
-        # assert delta.shape == (self.input_size, self.output_size), ValueError()
-        softmax = self.forward(input)
+        softmax = self(input)
         return delta * (softmax * (1 - softmax))
 
-    def update_parameters(self, gradient_step=0.001):
-        pass
+    def update_parameters(self, learning_rate=0.001):
+        pass  # No parameters to update in Softmax
+
+
+class LogSoftmax(Module):
+    def forward(self, X):
+        return X - np.log(np.sum(np.exp(X), axis=1, keepdims=True))
+
+    def backward_update_gradient(self, input, delta):
+        pass  # No gradient to update in LogSoftmax
+
+    def backward_delta(self, input, delta):
+        return delta - np.exp(self(input))
+
+    def update_parameters(self, learning_rate=0.001):
+        pass  # No parameters to update in LogSoftmax
 
 
 class ReLU(Module):
@@ -97,14 +102,14 @@ class ReLU(Module):
         return np.maximum(0, X)
 
     def backward_update_gradient(self, input, delta):
-        pass
+        pass  # No gradient to update in ReLU
 
     def backward_delta(self, input, delta):
         """math:: f'(x) = 1 \text{if} x > 0 \text{else} 0."""
-        return delta * (self.forward(input) > 0)
+        return delta * (self(input) > 0)
 
-    def update_parameters(self, gradient_step=0.001):
-        pass
+    def update_parameters(self, learning_rate=0.001):
+        pass  # No parameters to update in ReLU
 
 
 class Softplus(Module):
@@ -120,10 +125,10 @@ class Softplus(Module):
         return np.log(1 + np.exp(X))
 
     def backward_update_gradient(self, input, delta):
-        pass
+        pass  # No gradient to update in Softplus
 
     def backward_delta(self, input, delta):
         return delta / (1 + np.exp(-input))
 
-    def update_parameters(self, gradient_step=0.001):
-        pass
+    def update_parameters(self, learning_rate=0.001):
+        pass  # No parameters to update in Softplus

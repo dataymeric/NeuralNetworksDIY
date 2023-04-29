@@ -9,7 +9,7 @@ class MSELoss(Loss):
     """Mean Squared Error loss function.
 
     .. math:: MSE = ||y - \hat{y}||^2
-    .. math:: \nabla_{MSE} = 2(y - \hat{y})
+    .. math:: \nabla_{MSE} = -2(y - \hat{y})
     """
 
     def __init__(self) -> None:
@@ -41,14 +41,14 @@ class CrossEntropyLoss(Loss):
             f"dimension mismatch, y and yhat must of same dimension. "
             f"Here it is {y.shape} and {yhat.shape}"
         )
-        return 1 - (yhat * y).sum(axis=1)
+        return -np.sum(y * yhat) / y.shape[0]
 
     def backward(self, y, yhat):
         assert y.shape == yhat.shape, ValueError(
             f"dimension mismatch, y and yhat must of same dimension. "
             f"Here it is {y.shape} and {yhat.shape}"
         )
-        return yhat - y
+        return -y / y.shape[0]
 
 
 class BCELoss(Loss):
@@ -62,19 +62,14 @@ class BCELoss(Loss):
             f"dimension mismatch, y and yhat must of same dimension. "
             f"Here it is {y.shape} and {yhat.shape}"
         )
-        yhat += 1e-10
-        return -(
-            y * np.maximum(-100, np.log(yhat))
-            + (1 - y) * np.maximum(-100, np.log(1 - yhat))
-        )
+        return -np.mean(y * np.log(np.clip(yhat, 1e-10, 1)) + (1 - y) * np.log(np.clip(1 - yhat, 1e-10, 1)))
 
     def backward(self, y, yhat):
         assert y.shape == yhat.shape, ValueError(
             f"dimension mismatch, y and yhat must of same dimension. "
             f"Here it is {y.shape} and {yhat.shape}"
         )
-        yhat += 1e-10
-        return -((y / yhat) + (1 - y) / (1 - yhat))
+        return -(y / np.clip(yhat, 1e-10, 1) - (1 - y) / np.clip(1 - yhat, 1e-10, 1))
 
 
 class CELogSoftmax(Loss):

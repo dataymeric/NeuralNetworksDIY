@@ -11,73 +11,65 @@ class Sequential:
     def __init__(self, *args: Module) -> None:
         self.modules = [*args]
         self.modules_copy = deepcopy(self.modules)
-        self.input_list = []
+        self.inputs = []
+
+    def add(self, module: Module):
+        """Add a module to the network."""
+        self.modules.append(module)
+
+    def insert(self, idx: int, module: Module):
+        """Insert a module to the network at a specified indice."""
+        self.modules.insert(idx, module)
+
+    def reset(self):
+        """Reset network to initial parameters and modules."""
+        self.modules = deepcopy(self.modules_copy)
+        return self
 
     def forward(self, input):
-        self.input_list = [input]
+        self.inputs = [input]
+
         for module in self.modules:
-            # print(f"Forward de {module.__class__.__name__}")
-            # print(f"Input : {input.shape}")
+
+            print(f"Forward de {module.__class__.__name__}")
+            print(f"Input : {input.shape}")
+
             input = module(input)
-            self.input_list.append(input)
-        # print(f"Output: {input.shape}")
+            self.inputs.append(input)
+
+        print(f"Output: {input.shape}")
+
         return input
 
-    def backward(self, delta):
-        """_summary_
+    def backward(self, input, delta):
+        # Pas sur des indices des listes !
+        self.inputs.reverse()
 
-        Parameters
-        ----------
-        delta : _type_
-            Le delta de la Loss
-
-        Returns
-        -------
-        _type_
-            _description_
-        """
-        self.input_list.reverse()
-
-        # print(f"Shape of loss delta : {delta.shape}")
+        print(f"Shape of loss delta : {delta.shape}")
 
         for i, module in enumerate(reversed(self.modules)):
-            # print(f"➡️ Backward de {module.__class__.__name__}")
-            # print(f"Shape of delta : {delta.shape}")
-            # print(f"Shape of inputs : {self.input_list[i+1].shape}")
-            module.backward_update_gradient(self.input_list[i + 1], delta)
-            delta = module.backward_delta(self.input_list[i + 1], delta)
-            # print(f"Backward de {module.__class__.__name__} ✅")
 
-        # Pas sur des indices des listes !
+            print(f"➡️ Backward de {module.__class__.__name__}")
+            print(f"Shape of delta : {delta.shape}")
+            print(f"Shape of inputs : {self.inputs[i+1].shape}")
+
+            module.backward_update_gradient(self.inputs[i + 1], delta)
+            delta = module.backward_delta(self.inputs[i + 1], delta)
+
+            print(f"Backward de {module.__class__.__name__} ✅")
 
     def update_parameters(self, eps=1e-3):
         for module in self.modules:
-            # print(f"➡️ Update parameter de {module.__class__.__name__}")
-            module.update_parameters(gradient_step=eps)
-            module.zero_grad()
+            if hasattr(module, "update_parameters"):
 
-    def append(self, module: Module) -> None:
-        """
-        Append a module in the sequential list
-        """
-        raise NotImplementedError()
+                print(f"➡️ update_parameters de {module.__class__.__name__}")
 
-    def insert(self, idx: int, module: Module) -> None:
-        """
-        Insert a module in the sequential list
-        """
-        raise NotImplementedError()
+                module.update_parameters(learning_rate=eps)
 
-    def reset(self):
-        """Reset module list to the original first one and so reset all parameters.
-
-        Returns
-        -------
-        Sequential
-            self
-        """
-        self.modules = deepcopy(self.modules_copy)
-        return self
+    def zero_grad(self):
+        for module in self.modules:
+            if hasattr(module, "zero_grad"):
+                module.zero_grad()
 
 
 class Optim:
@@ -86,14 +78,35 @@ class Optim:
         self.loss = loss
         self.eps = eps
 
+    def _create_batches(self, X, y, batch_size, shuffle=True, seed=None):
+        n_samples = X.shape[0]
+        if shuffle:
+            if seed is not None:
+                np.random.seed(seed)
+            indices = np.random.permutation(n_samples)
+            X = X[indices]
+            y = y[indices]
+        for X_batch, y_batch in zip(
+            np.array_split(X, n_samples // batch_size),
+            np.array_split(y, n_samples // batch_size),
+        ):
+            yield X_batch, y_batch
+
     def step(self, batch_x, batch_y):
-        # y_hat = self.network.forward(batch_x).reshape(-1, 1)  # (batchsize, 1)
-        # Il faut fix ce reshape, il broke en multiclass en reshapant de (batchsize=8, 2 class) => (16, 1)
+        """TODO
+        y_hat = self.network.forward(batch_x).reshape(-1, 1)  # (batchsize, 1)
+        Il faut fix ce reshape, il broke en multiclass en reshapant de (batchsize=8, 2 class) => (16, 1)
+        """
+        # Forward pass
         y_hat = self.network.forward(batch_x)
         loss_value = self.loss.forward(batch_y, y_hat)
+
+        # Backward pass
         loss_delta = self.loss.backward(batch_y, y_hat)
-        self.network.backward(loss_delta)
+        self.network.zero_grad()
+        self.network.backward(batch_x, loss_delta)
         self.network.update_parameters(self.eps)
+
         return loss_value
 
     def SGD(
@@ -101,46 +114,34 @@ class Optim:
         X,
         y,
         batch_size: int,
-        epoch: int,
+        epochs: int,
         network: Sequential = None,
         shuffle: bool = True,
+        seed: int = None,
     ):
         if not network:
             network = self.network
 
-        # Shuffle ?
-        if shuffle:
-            shuffled_idx = np.arange(len(X))
-            np.random.shuffle(shuffled_idx)
-            batch_idx = np.array_split(shuffled_idx, len(X) / batch_size)
-            batch_X = [X[idx] for idx in batch_idx]
-            batch_Y = [y[idx] for idx in batch_idx]
-        else:
-            batch_X = np.array_split(X, len(X) / batch_size)
-            batch_Y = np.array_split(y, len(X) / batch_size)
-
-        loss_list = []
-        for _ in tqdm(range(epoch)):
-            # print(f"Epoch {i+1}\n-------------------------------")
-            # for X_i, y_i in tqdm(zip(batch_X, batch_Y)):
+        losses = []
+        for epoch in tqdm(range(epochs)):
             loss_sum = 0
-            for X_i, y_i in zip(batch_X, batch_Y):
+            for X_i, y_i in self._create_batches(X, y, batch_size, shuffle, seed):
                 loss_sum += self.step(X_i, y_i).sum()
-            loss_list.append(loss_sum / len(y))
-            # print(f"loss = {loss_list[-1]}")
-
-        return np.array(loss_list)
+            losses.append(loss_sum / len(y))
+            print(f"Epoch [{epoch+1}], Loss = {losses[-1]:.4f}")
+        return np.array(losses)
 
     def SGD_eval(
         self,
         X,
         y,
         batch_size: int,
-        epoch: int,
+        epochs: int,
         test_size: float,
         network: Sequential = None,
         shuffle_train: bool = True,
         shuffle_test: bool = False,
+        seed: int = None,
         return_dataframe: bool = False,
     ):
         if not network:
@@ -151,7 +152,7 @@ class Optim:
             X, y, test_size=test_size, random_state=42
         )
 
-        # Sauvegarde pour éventuel utilisation en dehors de la fonction
+        # Sauvegarde pour éventuelle utilisation en dehors de la fonction
         self.X_train, self.X_test, self.y_train, self.y_test = (
             X_train,
             X_test,
@@ -160,16 +161,6 @@ class Optim:
         )
 
         # Batch creation
-        if shuffle_train:
-            shuffled_idx = np.arange(len(X_train))
-            np.random.shuffle(shuffled_idx)
-            batch_idx = np.array_split(shuffled_idx, len(X_train) / batch_size)
-            batch_X_train = [X_train[idx] for idx in batch_idx]
-            batch_Y_train = [y_train[idx] for idx in batch_idx]
-        else:
-            batch_X_train = np.array_split(X_train, len(X_train) / batch_size)
-            batch_Y_train = np.array_split(y_train, len(X_train) / batch_size)
-
         if shuffle_test:
             shuffled_idx = np.arange(len(X_test))
             np.random.shuffle(shuffled_idx)
@@ -181,42 +172,40 @@ class Optim:
             batch_Y_test = np.array_split(y_test, len(X_test) / batch_size)
 
         # Training
-        loss_list_train = []
-        loss_list_test = []
-        score_train = []
-        score_test = []
-        for _ in tqdm(range(epoch)):
-            # print(f"Epoch {i+1}\n-------------------------------")
-            # for X_i, y_i in tqdm(zip(batch_X, batch_Y)):
+        losses_train = []
+        losses_test = []
+        scores_train = []
+        scores_test = []
+        for epoch in tqdm(range(epochs)):
             loss_sum = 0
-            for X_i, y_i in zip(batch_X_train, batch_Y_train):
+            for X_i, y_i in self._create_batches(X_train, y_train, shuffle_train, seed):
                 loss_sum += self.step(X_i, y_i).sum()
-            loss_list_train.append(loss_sum / len(y_train))
-            score_train.append(self.score(X_train, y_train))
-            # print(f"loss = {loss_list[-1]}")
+            losses_train.append(loss_sum / len(y_train))
+            scores_train.append(self.score(X_train, y_train))
+            # print(f"Epoch [{epoch+1}], Loss = {loss_list[-1]:.4f}")
 
             # Epoch evaluation
             loss_sum = 0
             y_hat = self.network.forward(X_test)
-            loss_list_test.append(self.loss.forward(y_test, y_hat).mean())
-            score_test.append(self.score(X_test, y_test))
+            losses_test.append(self.loss.forward(y_test, y_hat).mean())
+            scores_test.append(self.score(X_test, y_test))
 
         if return_dataframe:
             return DataFrame(
                 {
-                    "epoch": [i for i in range(epoch)],
-                    "loss_test": loss_list_train,
-                    "loss_train": loss_list_test,
-                    "score_train": score_train,
-                    "score_test": score_test,
+                    "epoch": [i for i in range(epochs)],
+                    "loss_test": losses_train,
+                    "loss_train": losses_test,
+                    "score_train": scores_train,
+                    "score_test": scores_test,
                 }
             )
         else:
             return (
-                np.array(loss_list_train),
-                np.array(score_train),
-                np.array(loss_list_test),
-                np.array(score_test),
+                np.array(losses_train),
+                np.array(scores_train),
+                np.array(losses_test),
+                np.array(scores_test),
             )
 
     def score(self, X, y):
