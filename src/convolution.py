@@ -11,59 +11,140 @@ class Conv1D(Module):
 
     Returns
     -------
-    ndarray (batch, (length-k_size)/stride + 1, chan_out)
+    ndarray (batch, (length - k_size) // stride + 1, chan_in)
     """
 
-    def __init__(self, k_size, chan_in, chan_out, stride):
+    def __init__(
+        self,
+        k_size: int,
+        chan_in: int,
+        chan_out: int,
+        stride: int = 1,
+        bias: bool = False,
+        init_type: str = "normal",
+    ):
         super().__init__()
         self.k_size = k_size
         self.chan_in = chan_in
         self.chan_out = chan_out
         self.stride = stride
-        self._parameters["weight"] = np.random.randn(k_size, chan_in, chan_out)
+        self.include_bias = bias
+        self.__init_params(init_type)
+
+    def __init_params(self, init_type):
+        gain = self.calculate_gain()
+
+        if init_type == "normal":
+            self._parameters["weight"] = np.random.randn(self.k_size, self.chan_in, self.chan_out)
+            self._parameters["bias"] = np.random.randn(self.chan_out)
+
+        elif init_type == "uniform":
+            self._parameters["weight"] = np.random.uniform(0.0, 1.0, (self.k_size, self.chan_in, self.chan_out))
+            self._parameters["bias"] = np.random.uniform(0.0, 1.0, (self.chan_out))
+
+        elif init_type == "zeros":
+            self._parameters["weight"] = np.zeros((self.k_size, self.chan_in, self.chan_out))
+            self._parameters["bias"] = np.zeros(self.chan_out)
+
+        elif init_type == "ones":
+            self._parameters["weight"] = np.ones((self.k_size, self.chan_in, self.chan_out))
+            self._parameters["bias"] = np.ones(self.chan_out)
+
+        elif init_type == "he_normal":
+            std_dev = gain * np.sqrt(2 / self.input_size)
+            self._parameters["weight"] = np.random.normal(0, std_dev, (self.k_size, self.chan_in, self.chan_out))
+            self._parameters["bias"] = np.random.normal(0, std_dev, (self.chan_out))
+
+        elif init_type == "he_uniform":
+            limit = gain * np.sqrt(6 / self.input_size)
+            self._parameters["weight"] = np.random.uniform(-limit, limit, (self.k_size, self.chan_in, self.chan_out))
+            self._parameters["bias"] = np.random.uniform(-limit, limit, (self.chan_out))
+
+        elif init_type == "xavier_normal":
+            std_dev = gain * np.sqrt(2 / (self.input_size + self.output_size))
+            self._parameters["weight"] = np.random.normal(0, std_dev, (self.k_size, self.chan_in, self.chan_out))
+            self._parameters["bias"] = np.random.normal(0, std_dev, (self.chan_out))
+
+        elif init_type == "xavier_uniform":
+            limit = gain * np.sqrt(6 / (self.input_size + self.output_size))
+            self._parameters["weight"] = np.random.uniform(-limit, limit, (self.k_size, self.chan_in, self.chan_out))
+            self._parameters["bias"] = np.random.uniform(-limit, limit, (self.chan_out))
+
+        else:
+            raise ValueError(f"Unknown initialization type: {init_type}")
+
         self._gradient["weight"] = np.zeros_like(self._parameters["weight"])
+        self._gradient["bias"] = np.zeros_like(self._parameters["bias"])
+
+        if not self.include_bias:
+            self._parameters["bias"] = None
+            self._gradient["bias"] = None
 
     def zero_grad(self):
-        return np.zeros_like(self._parameters["weight"])
+        self._gradient["weight"] = np.zeros_like(self._parameters["weight"])
+        if self.include_bias:
+            self._gradient["bias"] = np.zeros_like(self._parameters["bias"])
 
     def forward(self, X):
         batch_size, length, _ = X.shape
         self.output_shape = (batch_size, (length - self.k_size) // self.stride + 1, self.chan_out)
 
         # Prepare the input view for the convolution operation
-        x_view = np.lib.stride_tricks.sliding_window_view(X, (1, self.k_size, self.chan_in))[::1, :: self.stride, ::1]
-        x_view = x_view.reshape(batch_size, self.output_shape[1], self.k_size * self.chan_in)
+        X_view = np.lib.stride_tricks.sliding_window_view(X, (1, self.k_size, self.chan_in))[::1, :: self.stride, ::1]
+        X_view = X_view.reshape(batch_size, self.output_shape[1], self.k_size * self.chan_in)
 
         # Perform the convolution
-        self.output = np.einsum("ijk, lk -> ijl", x_view, self._parameters["weight"].reshape(self.chan_out, -1))
+        self.output = np.einsum("bik, lk -> bil", X_view, self._parameters["weight"].reshape(self.chan_out, -1))
+
+        if self.include_bias:
+            self.output += self._parameters["bias"]
+
         return self.output
 
-    def backward_update_gradient(self, x, delta):
-        batch, length, chan_in = x.shape
+    def backward_update_gradient(self, input, delta):
+        """        
+        Notes
+        -----
+        Shapes reminder :
+            input : ndarray (batch, length, chan_in)
+            X_view : ndarray (batch, out_length, chan_in, self.k_size)
+            delta : ndarray (batch, out_length, chan_out)
+            _gradient["weight"] : ndarray (k_size, chan_in, chan_out)
+        """
+        batch, length, chan_in = input.shape
         out_length = (length - self.k_size) // self.stride + 1
-        x_view = np.lib.stride_tricks.sliding_window_view(x, (1, self.k_size, 1))[::1, :: self.stride, ::1]
-        x_view = x_view.reshape(batch, out_length, chan_in, self.k_size)
+        X_view = np.lib.stride_tricks.sliding_window_view(input, (1, self.k_size, 1))[::1, :: self.stride, ::1]
+        X_view = X_view.reshape(batch, out_length, chan_in, self.k_size)
 
-        for k in range(self.chan_out):
-            for i in range(self.chan_in):
-                for j in range(self.k_size):
-                    self._gradient["weight"][j, i, k] += np.sum(x_view[:, :, i, j] * delta[:, :, k])
+        self._gradient["weight"] += np.einsum('bijk, bim -> kjm', X_view, delta)
 
-        # self._gradient["bias"] += np.sum(delta, axis=(0, 1))
+        if self.include_bias:
+            self._gradient["bias"] += np.sum(delta, axis=(0, 1))
 
     def backward_delta(self, input, delta):
+        """        
+        Notes
+        -----
+        Shapes reminder :
+            d_out : ndarray (batch, length, chan_in) == input.shape
+            delta : ndarray (batch, out_length, chan_out)
+            _parameters["weight"] : ndarray (k_size, chan_in, chan_out)
+        """
         batch, length, chan_in = input.shape
         out_length = (length - self.k_size) // self.stride + 1
         d_out = np.zeros_like(input)
 
+        reshaped_weights = self._parameters["weight"].transpose(1, 0, 2) # (chan_in, k_size, chan_out)
+
         for i in range(self.k_size):
-            for k in range(self.chan_out):
-                d_out[:, i : i + out_length * self.stride : self.stride, :] += np.outer(delta[:, :, k], self._parameters["weight"][i, :, k]).reshape(batch, out_length, chan_in)
+            d_out[:, i:i + out_length * self.stride:self.stride, :] += np.einsum('bim, km -> bik', delta, reshaped_weights[:, i])
 
         return d_out
 
     def update_parameters(self, learning_rate):
         self._parameters["weight"] -= learning_rate * self._gradient["weight"]
+        if self.include_bias:
+            self._parameters["bias"] -= learning_rate * self._gradient["bias"]
 
 
 class MaxPool1D(Module):
@@ -75,33 +156,53 @@ class MaxPool1D(Module):
 
     Returns
     -------
-    ndarray (batch, (length-k_size)/stride + 1, chan_in)
+    ndarray (batch, (length - k_size) // stride + 1, chan_in)
     """
 
     def __init__(self, k_size, stride):
         self.k_size = k_size
         self.stride = stride
 
-    def forward(self, x):
-        batch, length, chan_in = x.shape
+    def forward(self, X):
+        batch, length, chan_in = X.shape
         out_length = (length - self.k_size) // self.stride + 1
-        x_view = np.lib.stride_tricks.sliding_window_view(x, (1, self.k_size, 1))[::1, :: self.stride, ::1]
-        x_view = x_view.reshape(batch, out_length, chan_in, -1)
-        output = np.max(x_view, axis=-1)
+        X_view = np.lib.stride_tricks.sliding_window_view(X, (1, self.k_size, 1))[::1, :: self.stride, ::1]
+        X_view = X_view.reshape(batch, out_length, chan_in, -1)
+        output = np.max(X_view, axis=-1)
         return output
 
-    def backward_update_gradient(self, x, delta):
+    def backward_update_gradient(self, input, delta):
         pass  # No gradient to update in MaxPool1D
 
-    def backward_delta(self, x, delta):
-        batch, length, chan_in = x.shape
-        d_out = np.zeros_like(x)
+    # def backward_delta(self, input, delta):
+    #     batch, length, chan_in = input.shape
+    #     d_out = np.zeros_like(input)
 
-        for b in range(batch):
-            for i in range(0, length - self.k_size + 1, self.stride):
-                window = x[b, i : i + self.k_size]
-                max_indices = np.argmax(window, axis=0)
-                d_out[b, i + max_indices] += delta[b, i // self.stride]
+    #     for b in range(batch):
+    #         for i in range(0, length - self.k_size + 1, self.stride):
+    #             window = input[b, i : i + self.k_size]
+    #             max_indices = np.argmax(window, axis=0)
+    #             d_out[b, i + max_indices] += delta[b, i // self.stride]
+
+    #     return d_out
+    
+    def backward_delta(self, input, delta):
+        batch, length, chan_in = input.shape
+        out_length = (length - self.k_size) // self.stride + 1
+
+        # Create a sliding window view of the input
+        input_view = np.lib.stride_tricks.sliding_window_view(input, (1, self.k_size, 1))[::1, ::self.stride, ::1]
+        input_view = input_view.reshape(batch, out_length, chan_in, self.k_size)
+
+        # Find the max indices along the window dimension (axis=3)
+        max_indices = np.argmax(input_view, axis=3)
+
+        # Create indices for batch and channel dimensions
+        batch_indices, out_indices, chan_indices = np.meshgrid(np.arange(batch), np.arange(out_length), np.arange(chan_in), indexing='ij')
+        
+        # Update d_out using advanced indexing
+        d_out = np.zeros_like(input)
+        d_out[batch_indices, out_indices * self.stride + max_indices, chan_indices] += delta
 
         return d_out
 
@@ -118,28 +219,28 @@ class AvgPool1D(Module):
 
     Returns
     -------
-    ndarray (batch, (length-k_size)/stride + 1, chan_in)
+    ndarray (batch, (length - k_size) // stride + 1, chan_in)
     """
 
     def __init__(self, k_size, stride):
         self.k_size = k_size
         self.stride = stride
 
-    def forward(self, x):
-        batch, length, chan_in = x.shape
+    def forward(self, X):
+        batch, length, chan_in = X.shape
         out_length = (length - self.k_size) // self.stride + 1
-        x_view = np.lib.stride_tricks.sliding_window_view(x, (1, self.k_size, 1))[::1, :: self.stride, ::1]
-        x_view = x_view.reshape(batch, out_length, chan_in, -1)
-        output = np.mean(x_view, axis=-1)
+        X_view = np.lib.stride_tricks.sliding_window_view(X, (1, self.k_size, 1))[::1, :: self.stride, ::1]
+        X_view = X_view.reshape(batch, out_length, chan_in, -1)
+        output = np.mean(X_view, axis=-1)
         return output
 
     def backward_update_gradient(self, x, delta):
         pass  # No gradient to update in AvgPool1D
 
-    def backward_delta(self, x, delta):
-        batch, length, chan_in = x.shape
+    def backward_delta(self, input, delta):
+        batch, length, chan_in = input.shape
         out_length = (length - self.k_size) // self.stride + 1
-        d_out = np.zeros_like(x)
+        d_out = np.zeros_like(input)
         delta_repeated = np.repeat(delta[:, :, np.newaxis], self.k_size, axis=2) / self.k_size
         for i in range(self.k_size):
             d_out[:, i : i + out_length * self.stride : self.stride] += delta_repeated[:, :, i]
