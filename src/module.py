@@ -28,7 +28,7 @@ class Module(object):
         
     def zero_grad(self):
         """Réinitialise le gradient."""
-        self._gradient = 0
+        raise NotImplementedError()
 
     def forward(self, X):
         """Passe forward."""

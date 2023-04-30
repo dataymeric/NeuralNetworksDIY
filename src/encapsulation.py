@@ -31,13 +31,13 @@ class Sequential:
 
         for module in self.modules:
 
-            print(f"Forward de {module.__class__.__name__}")
-            print(f"Input : {input.shape}")
+            # print(f"Forward de {module.__class__.__name__}")
+            # print(f"Input : {input.shape}")
 
             input = module(input)
             self.inputs.append(input)
 
-        print(f"Output: {input.shape}")
+        # print(f"Output: {input.shape}")
 
         return input
 
@@ -45,24 +45,24 @@ class Sequential:
         # Pas sur des indices des listes !
         self.inputs.reverse()
 
-        print(f"Shape of loss delta : {delta.shape}")
+        # print(f"Shape of loss delta : {delta.shape}")
 
         for i, module in enumerate(reversed(self.modules)):
 
-            print(f"➡️ Backward de {module.__class__.__name__}")
-            print(f"Shape of delta : {delta.shape}")
-            print(f"Shape of inputs : {self.inputs[i+1].shape}")
+            # print(f"➡️ Backward de {module.__class__.__name__}")
+            # print(f"Shape of delta : {delta.shape}")
+            # print(f"Shape of inputs : {self.inputs[i+1].shape}")
 
             module.backward_update_gradient(self.inputs[i + 1], delta)
             delta = module.backward_delta(self.inputs[i + 1], delta)
 
-            print(f"Backward de {module.__class__.__name__} ✅")
+            # print(f"Backward de {module.__class__.__name__} ✅")
 
     def update_parameters(self, eps=1e-3):
         for module in self.modules:
             if hasattr(module, "update_parameters"):
 
-                print(f"➡️ update_parameters de {module.__class__.__name__}")
+                # print(f"➡️ update_parameters de {module.__class__.__name__}")
 
                 module.update_parameters(learning_rate=eps)
 

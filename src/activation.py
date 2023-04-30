@@ -1,7 +1,7 @@
 import numpy as np
 from .module import Module
 
-__all__ = ["TanH", "Sigmoid", "Softmax", "ReLU", "Softplus"]
+__all__ = ["TanH", "Sigmoid", "Softmax", "LogSoftmax", "ReLU", "Softplus"]
 
 
 class TanH(Module):
@@ -16,6 +16,9 @@ class TanH(Module):
 
     def forward(self, X):
         return np.tanh(X)
+
+    def zero_grad(self):
+        pass
 
     def backward_update_gradient(self, input, delta):
         pass  # No gradient to update in TanH
@@ -35,6 +38,9 @@ class Sigmoid(Module):
 
     def __init__(self) -> None:
         super().__init__()
+
+    def zero_grad(self):
+        pass
 
     def forward(self, X):
         # X a grande valeurs vas donner +inf, nécéssité de normaliser ?
@@ -60,6 +66,9 @@ class Softmax(Module):
     def __init__(self) -> None:
         super().__init__()
 
+    def zero_grad(self):
+        pass
+
     def forward(self, X):
         exp_X = np.exp(X - np.max(X, axis=1, keepdims=True))
         return exp_X / np.sum(exp_X, axis=1, keepdims=True)
@@ -79,6 +88,9 @@ class LogSoftmax(Module):
     def forward(self, X):
         return X - np.log(np.sum(np.exp(X), axis=1, keepdims=True))
 
+    def zero_grad(self):
+        pass
+
     def backward_update_gradient(self, input, delta):
         pass  # No gradient to update in LogSoftmax
 
@@ -97,6 +109,9 @@ class ReLU(Module):
 
     def __init__(self) -> None:
         super().__init__()
+
+    def zero_grad(self):
+        pass
 
     def forward(self, X):
         return np.maximum(0, X)
@@ -120,6 +135,9 @@ class Softplus(Module):
 
     def __init__(self) -> None:
         super().__init__()
+
+    def zero_grad(self):
+        pass
 
     def forward(self, X):
         return np.log(1 + np.exp(X))

@@ -41,14 +41,14 @@ class CrossEntropyLoss(Loss):
             f"dimension mismatch, y and yhat must of same dimension. "
             f"Here it is {y.shape} and {yhat.shape}"
         )
-        return -np.sum(y * yhat) / y.shape[0]
+        return 1 - (yhat * y).sum(axis=1)
 
     def backward(self, y, yhat):
         assert y.shape == yhat.shape, ValueError(
             f"dimension mismatch, y and yhat must of same dimension. "
             f"Here it is {y.shape} and {yhat.shape}"
         )
-        return -y / y.shape[0]
+        return yhat - y
 
 
 class BCELoss(Loss):

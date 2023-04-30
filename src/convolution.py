@@ -87,11 +87,11 @@ class Conv1D(Module):
 
     def forward(self, X):
         batch_size, length, _ = X.shape
-        self.output_shape = (batch_size, (length - self.k_size) // self.stride + 1, self.chan_out)
+        out_length = (length - self.k_size) // self.stride + 1
 
         # Prepare the input view for the convolution operation
         X_view = np.lib.stride_tricks.sliding_window_view(X, (1, self.k_size, self.chan_in))[::1, :: self.stride, ::1]
-        X_view = X_view.reshape(batch_size, self.output_shape[1], self.k_size * self.chan_in)
+        X_view = X_view.reshape(batch_size, out_length, self.k_size * self.chan_in)
 
         # Perform the convolution
         self.output = np.einsum("bik, lk -> bil", X_view, self._parameters["weight"].reshape(self.chan_out, -1))
@@ -171,6 +171,9 @@ class MaxPool1D(Module):
         output = np.max(X_view, axis=-1)
         return output
 
+    def zero_grad(self):
+        pass
+
     def backward_update_gradient(self, input, delta):
         pass  # No gradient to update in MaxPool1D
 
@@ -222,6 +225,9 @@ class AvgPool1D(Module):
         output = np.mean(X_view, axis=-1)
         return output
 
+    def zero_grad(self):
+        pass
+
     def backward_update_gradient(self, x, delta):
         pass  # No gradient to update in AvgPool1D
 
@@ -255,6 +261,9 @@ class Flatten(Module):
 
     def backward_delta(self, input, delta):
         return delta.reshape(input.shape)
+    
+    def zero_grad(self):
+        pass
 
     def backward_update_gradient(self, input, delta):
         pass
