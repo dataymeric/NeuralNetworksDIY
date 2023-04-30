@@ -102,7 +102,7 @@ class Conv1D(Module):
         return self.output
 
     def backward_update_gradient(self, input, delta):
-        """        
+        """
         Notes
         -----
         Shapes reminder :
@@ -116,13 +116,13 @@ class Conv1D(Module):
         X_view = np.lib.stride_tricks.sliding_window_view(input, (1, self.k_size, 1))[::1, :: self.stride, ::1]
         X_view = X_view.reshape(batch, out_length, chan_in, self.k_size)
 
-        self._gradient["weight"] += np.einsum('bijk, bim -> kjm', X_view, delta)
+        self._gradient["weight"] += np.einsum("bijk, bim -> kjm", X_view, delta)
 
         if self.include_bias:
             self._gradient["bias"] += np.sum(delta, axis=(0, 1))
 
     def backward_delta(self, input, delta):
-        """        
+        """
         Notes
         -----
         Shapes reminder :
@@ -134,10 +134,10 @@ class Conv1D(Module):
         out_length = (length - self.k_size) // self.stride + 1
         d_out = np.zeros_like(input)
 
-        reshaped_weights = self._parameters["weight"].transpose(1, 0, 2) # (chan_in, k_size, chan_out)
+        reshaped_weights = self._parameters["weight"].transpose(1, 0, 2)  # (chan_in, k_size, chan_out)
 
         for i in range(self.k_size):
-            d_out[:, i:i + out_length * self.stride:self.stride, :] += np.einsum('bim, km -> bik', delta, reshaped_weights[:, i])
+            d_out[:, i : i + out_length * self.stride : self.stride, :] += np.einsum("bim, km -> bik", delta, reshaped_weights[:, i])
 
         return d_out
 
@@ -174,32 +174,20 @@ class MaxPool1D(Module):
     def backward_update_gradient(self, input, delta):
         pass  # No gradient to update in MaxPool1D
 
-    # def backward_delta(self, input, delta):
-    #     batch, length, chan_in = input.shape
-    #     d_out = np.zeros_like(input)
-
-    #     for b in range(batch):
-    #         for i in range(0, length - self.k_size + 1, self.stride):
-    #             window = input[b, i : i + self.k_size]
-    #             max_indices = np.argmax(window, axis=0)
-    #             d_out[b, i + max_indices] += delta[b, i // self.stride]
-
-    #     return d_out
-    
     def backward_delta(self, input, delta):
         batch, length, chan_in = input.shape
         out_length = (length - self.k_size) // self.stride + 1
 
         # Create a sliding window view of the input
-        input_view = np.lib.stride_tricks.sliding_window_view(input, (1, self.k_size, 1))[::1, ::self.stride, ::1]
+        input_view = np.lib.stride_tricks.sliding_window_view(input, (1, self.k_size, 1))[::1, :: self.stride, ::1]
         input_view = input_view.reshape(batch, out_length, chan_in, self.k_size)
 
         # Find the max indices along the window dimension (axis=3)
         max_indices = np.argmax(input_view, axis=3)
 
         # Create indices for batch and channel dimensions
-        batch_indices, out_indices, chan_indices = np.meshgrid(np.arange(batch), np.arange(out_length), np.arange(chan_in), indexing='ij')
-        
+        batch_indices, out_indices, chan_indices = np.meshgrid(np.arange(batch), np.arange(out_length), np.arange(chan_in), indexing="ij")
+
         # Update d_out using advanced indexing
         d_out = np.zeros_like(input)
         d_out[batch_indices, out_indices * self.stride + max_indices, chan_indices] += delta
