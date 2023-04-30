@@ -1,3 +1,4 @@
+import numpy as np
 from typing import Any
 
 
@@ -17,6 +18,14 @@ class Module(object):
     def __call__(self, *args: Any, **kwds: Any) -> Any:
         return self.forward(*args, **kwds)
 
+    def calculate_gain(self):
+        if self.__class__.__name__.lower() == "tanh":
+            return 5 / 3
+        elif self.__class__.__name__.lower() == "relu":
+            return np.sqrt(2)
+        else:
+            return 1.0
+        
     def zero_grad(self):
         """Réinitialise le gradient."""
         self._gradient = 0

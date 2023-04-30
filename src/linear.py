@@ -20,7 +20,9 @@ class Linear(Module):
         self.include_bias = bias,
         self.__init_params(init_type)
 
-    def __init_params(self, init_type, gain=1.0):
+    def __init_params(self, init_type):
+        gain = self.calculate_gain()
+
         if init_type == "normal":
             self._parameters["weight"] = np.random.randn(self.input_size, self.output_size)
             self._parameters["bias"] = np.random.randn(1, self.output_size)
