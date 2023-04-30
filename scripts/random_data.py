@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
 from src.linear import Linear
-from src.loss import MSELoss, CrossEntropyLoss, BCELoss, LogSoftmax
-from src.activation import TanH, Sigmoide, Softmax
+from src.loss import MSELoss, CrossEntropyLoss, BCELoss
+from src.activation import TanH, Sigmoid, Softmax
 from src.encapsulation import Sequential, Optim
 np.random.seed(42)
 
@@ -16,7 +16,7 @@ net = Sequential(
     Linear(2, 2),
     TanH(),
     Linear(2, 1),
-    Sigmoide(),
+    Sigmoid(),
 )
 
 optimizer = Optim(net, CrossEntropyLoss(), eps=1e-1)
