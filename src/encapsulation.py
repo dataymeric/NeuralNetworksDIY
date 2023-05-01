@@ -54,6 +54,14 @@ class Sequential:
             # print(f"Shape of inputs : {self.inputs[i+1].shape}")
 
             module.backward_update_gradient(self.inputs[i + 1], delta)
+            
+            # if hasattr(module, "_parameters"):
+            #     if "weight" in module._parameters:
+            #         print("paramètres ", module._parameters["weight"])
+            # if hasattr(module, "_gradient"):
+            #     if "weight" in module._gradient:
+            #         print("gradient ", module._gradient["weight"])
+
             delta = module.backward_delta(self.inputs[i + 1], delta)
 
             # print(f"Backward de {module.__class__.__name__} ✅")
@@ -118,6 +126,7 @@ class Optim:
         network: Sequential = None,
         shuffle: bool = True,
         seed: int = None,
+        verbose: bool = True,
     ):
         if not network:
             network = self.network
@@ -125,10 +134,15 @@ class Optim:
         losses = []
         for epoch in tqdm(range(epochs)):
             loss_sum = 0
+
             for X_i, y_i in self._create_batches(X, y, batch_size, shuffle, seed):
                 loss_sum += self.step(X_i, y_i).sum()
+                
             losses.append(loss_sum / len(y))
-            print(f"Epoch [{epoch+1}], Loss = {losses[-1]:.4f}")
+
+            if verbose:
+                print(f"Epoch [{epoch+1}], Loss = {losses[-1]:.4f}")
+
         return np.array(losses)
 
     def SGD_eval(
