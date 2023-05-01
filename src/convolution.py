@@ -200,13 +200,13 @@ class Conv1D(Module):
 
         out_length = (length - self.k_size) // self.stride + 1
 
-        d_out = np.zeros_like(input)
+        self.d_out = np.zeros_like(input)
         d_in = np.einsum("bod, kcd -> kboc", delta, self._parameters["weight"])
 
         for i in range(self.k_size):
-            d_out[:, i : i + out_length * self.stride : self.stride, :] += d_in[i]
+            self.d_out[:, i : i + out_length * self.stride : self.stride, :] += d_in[i]
 
-        return d_out
+        return self.d_out
 
     def update_parameters(self, learning_rate):
         self._parameters["weight"] -= learning_rate * self._gradient["weight"]
@@ -237,8 +237,8 @@ class MaxPool1D(Module):
         X_view = sliding_window_view(X, (1, self.k_size, 1))[::1, :: self.stride, ::1]
         X_view = X_view.reshape(batch_size, out_length, chan_in, self.k_size)
 
-        output = np.max(X_view, axis=-1)
-        return output
+        self.output = np.max(X_view, axis=-1)
+        return self.output
 
     def zero_grad(self):
         pass  # No gradient in MaxPool1D
@@ -261,10 +261,10 @@ class MaxPool1D(Module):
         )
 
         # Update d_out using advanced indexing
-        d_out = np.zeros_like(input)
-        d_out[batch_indices, out_indices * self.stride + max_indices, chan_indices] += delta[batch_indices, max_indices, chan_indices]
+        self.d_out = np.zeros_like(input)
+        self.d_out[batch_indices, out_indices * self.stride + max_indices, chan_indices] += delta[batch_indices, max_indices, chan_indices]
 
-        return d_out
+        return self.d_out
 
     def update_parameters(self, learning_rate):
         pass  # No parameters to update in MaxPool1D
@@ -289,12 +289,12 @@ class AvgPool1D(Module):
     def forward(self, X):
         batch_size, length, chan_in = X.shape
         out_length = (length - self.k_size) // self.stride + 1
-        
+
         X_view = sliding_window_view(X, (1, self.k_size, 1))[::1, :: self.stride, ::1]
         X_view = X_view.reshape(batch_size, out_length, chan_in, self.k_size)
-        
-        output = np.mean(X_view, axis=-1)
-        return output
+
+        self.output = np.mean(X_view, axis=-1)
+        return self.output
 
     def zero_grad(self):
         pass  # No gradient in AvgPool1D
@@ -305,14 +305,14 @@ class AvgPool1D(Module):
     def backward_delta(self, input, delta):
         batch_size, length, chan_in = input.shape
         out_length = (length - self.k_size) // self.stride + 1
-        
-        d_out = np.zeros_like(input)
+
+        self.d_out = np.zeros_like(input)
         delta_repeated = np.repeat(delta[:, :, np.newaxis], self.k_size, axis=2) / self.k_size
-        
+
         for i in range(self.k_size):
-            d_out[:, i : i + out_length * self.stride : self.stride] += delta_repeated[:, :, i]
-        
-        return d_out
+            self.d_out[:, i : i + out_length * self.stride : self.stride] += delta_repeated[:, :, i]
+
+        return self.d_out
 
     def update_parameters(self, learning_rate):
         pass  # No parameters to update in AvgPool1D

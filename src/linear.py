@@ -13,11 +13,17 @@ class Linear(Module):
         Size of output sample.
     """
 
-    def __init__(self, input_size: int, output_size: int, bias: bool = True, init_type: str = "normal"):
+    def __init__(
+        self,
+        input_size: int,
+        output_size: int,
+        bias: bool = True,
+        init_type: str = "normal",
+    ):
         super().__init__()
         self.input_size = input_size
         self.output_size = output_size
-        self.include_bias = bias,
+        self.include_bias = bias
         self.__init_params(init_type)
 
     def __init_params(self, init_type):
@@ -61,7 +67,7 @@ class Linear(Module):
 
         else:
             raise ValueError(f"Unknown initialization type: {init_type}")
-        
+
         self._gradient["weight"] = np.zeros_like(self._parameters["weight"])
         self._gradient["bias"] = np.zeros_like(self._parameters["bias"])
 
@@ -81,40 +87,31 @@ class Linear(Module):
         -------
         ndarray (batch, output_size)
         """
-        assert X.shape[1] == self.input_size, ValueError(
-            "X must be of shape (batch_size, input_size)"
-        )
+        assert X.shape[1] == self.input_size, ValueError("X must be of shape (batch_size, input_size)")
+
+        self.output = X @ self._parameters["weight"]
+
         if self.include_bias:
-            return X @ self._parameters["weight"] + self._parameters["bias"]
-        else:
-            return X @ self._parameters["weight"]
+            self.output += self._parameters["bias"]
+
+        return self.output
 
     def backward_update_gradient(self, input, delta):
         assert input.shape[1] == self.input_size
         assert delta.shape[1] == self.output_size
 
-        # Si delta : ndarray (output_size, input_size)
-        self._gradient["weight"] += input.T @ delta  # (output_size, batch )
+        # delta : ndarray (output_size, input_size)
+        self._gradient["weight"] += input.T @ delta  # (output_size, batch)
         if self.include_bias:
             self._gradient["bias"] += delta.sum(axis=0)
-        # Plutot logique avec l'idée que le la Loss : R^? ==> R donne un gradient de cette forme
-
-        # Si delta : ndarray (batch, output_size, input_size)
-        # self._gradient += delta @ input.T # (batch, output_size, batch)
-        # Un peu étrange quoi
 
     def backward_delta(self, input, delta):
         assert input.shape[1] == self.input_size
         assert delta.shape[1] == self.output_size
 
-        # c'est la dérivé du module par rapport aux entrée !!!
-        # delta * self._parameters
-
-        # Si delta : ndarray (output, input_size)
-        return delta @ self._parameters["weight"].T
-
-        # Si delta : ndarray (batch, output_size, input_size) 🤔
-        # return np.repeat ..... (delta @ self._parameters.T)
+        # delta : ndarray (output_size, input_size)
+        self.d_out = delta @ self._parameters["weight"].T
+        return self.d_out
 
     def zero_grad(self):
         self._gradient["weight"] = np.zeros((self.input_size, self.output_size))
