@@ -175,10 +175,10 @@ class LeakyReLU(Module):
     """Leaky ReLU activation function.
     
     .. math::
-        \text{LeakyReLU}(x) =
+        \text{LeakyReLU}(x) = \max(\alpha x, x) =
         \begin{cases}
         x, & \text{ if } x \geq 0 \\
-        \text{negative\_slope} \times x, & \text{ otherwise }
+        \alpha \times x, & \text{ otherwise }
         \end{cases}
     """
 
@@ -190,7 +190,7 @@ class LeakyReLU(Module):
         pass
 
     def forward(self, X):
-        return np.where(X >= 0, X, self.alpha * X)
+        return np.maximum(self.alpha * X, X)
 
     def backward_update_gradient(self, input, delta):
         pass  # No gradient to update in Leaky ReLU
