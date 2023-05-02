@@ -97,7 +97,7 @@ class Conv1D(Module):
         Stride of the convolution.
     bias : bool, optional, default=False
         If True, adds a learnable bias to the output.
-    init_type : str, optional, default="normal"
+    init_type : str, optional, default="xavier_normal"
         Change the initialization of parameters.
 
     Shape
@@ -115,7 +115,7 @@ class Conv1D(Module):
         chan_out: int,
         stride: int = 1,
         bias: bool = False,
-        init_type: str = "normal",
+        init_type: str = "xavier_normal",
     ):
         super().__init__()
         self.k_size = k_size
