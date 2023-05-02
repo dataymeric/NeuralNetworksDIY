@@ -57,10 +57,10 @@ class Sequential:
             
             # if hasattr(module, "_parameters"):
             #     if "weight" in module._parameters:
-            #         print("paramètres ", module._parameters["weight"])
+            #         print(f"{module.__class__.__name__} paramètres ", module._parameters["weight"])
             # if hasattr(module, "_gradient"):
             #     if "weight" in module._gradient:
-            #         print("gradient ", module._gradient["weight"])
+            #         print(f"{module.__class__.__name__} gradient ", module._gradient["weight"])
 
             delta = module.backward_delta(self.inputs[i + 1], delta)
 
@@ -74,9 +74,19 @@ class Sequential:
 
                 module.update_parameters(learning_rate=eps)
 
+                # if hasattr(module, "_parameters"):
+                #     if "weight" in module._parameters:
+                #         print(f"{module.__class__.__name__} paramètres ", module._parameters["weight"])
+                # if hasattr(module, "_gradient"):
+                #     if "weight" in module._gradient:
+                #         print(f"{module.__class__.__name__} gradient ", module._gradient["weight"])
+
     def zero_grad(self):
         for module in self.modules:
             if hasattr(module, "zero_grad"):
+
+                # print(f"➡️ zero_grad de {module.__class__.__name__}")
+
                 module.zero_grad()
 
 
