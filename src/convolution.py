@@ -12,9 +12,9 @@ fastest compared to `as_strided` (but maybe less risky too).
 The calculations are done using `np.einsum`, which is relatively easy to understand
 and use. The key relies in understanding the shapes of your inputs/outputs.
 
-Notes
+Shape
 -----
-Shapes reminder in 1D:
+Reminder for 1D:
 input : ndarray (batch, length, chan_in)
 d_out : ndarray (batch, length, chan_in) == input.shape
 X_view : ndarray (batch, out_length, chan_in, self.k_size)
@@ -22,6 +22,8 @@ delta : ndarray (batch, out_length, chan_out)
 _gradient["weight"] : ndarray (k_size, chan_in, chan_out)
 _parameters["weight"] : ndarray (k_size, chan_in, chan_out)
 
+Notes
+-----
 Notation used for `np.einsum`:
 - b : batch_size
 - w : width (2D) / length (1D)
