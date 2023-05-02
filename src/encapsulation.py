@@ -1,3 +1,4 @@
+import logging
 import numpy as np
 from tqdm import tqdm
 from icecream import ic
@@ -31,13 +32,13 @@ class Sequential:
 
         for module in self.modules:
 
-            # print(f"Forward de {module.__class__.__name__}")
-            # print(f"Input : {input.shape}")
+            logging.debug(f"Forward de {module.__class__.__name__}")
+            logging.debug(f"Input : {input.shape}")
 
             input = module(input)
             self.inputs.append(input)
 
-        # print(f"Output: {input.shape}")
+        logging.debug(f"Output: {input.shape}")
 
         return input
 
@@ -45,47 +46,48 @@ class Sequential:
         # Pas sur des indices des listes !
         self.inputs.reverse()
 
-        # print(f"Shape of loss delta : {delta.shape}")
+        logging.debug(f"Shape of loss delta : {delta.shape}")
 
         for i, module in enumerate(reversed(self.modules)):
 
-            # print(f"➡️ Backward de {module.__class__.__name__}")
-            # print(f"Shape of delta : {delta.shape}")
-            # print(f"Shape of inputs : {self.inputs[i+1].shape}")
+            logging.debug(f"➡️ Backward de {module.__class__.__name__}")
+            logging.debug(f"Shape of delta : {delta.shape}")
+            logging.debug(f"Shape of inputs : {self.inputs[i+1].shape}")
 
             module.backward_update_gradient(self.inputs[i + 1], delta)
-            
+
             # if hasattr(module, "_parameters"):
             #     if "weight" in module._parameters:
-            #         print(f"{module.__class__.__name__} paramètres ", module._parameters["weight"])
+            #         logging.debug(f"{module.__class__.__name__} paramètres ", module._parameters["weight"])
             # if hasattr(module, "_gradient"):
             #     if "weight" in module._gradient:
-            #         print(f"{module.__class__.__name__} gradient ", module._gradient["weight"])
+            #         logging.debug(f"{module.__class__.__name__} gradient ", module._gradient["weight"])
 
             delta = module.backward_delta(self.inputs[i + 1], delta)
 
-            # print(f"Backward de {module.__class__.__name__} ✅")
+            logging.debug(f"Backward de {module.__class__.__name__} ✅")
 
     def update_parameters(self, eps=1e-3):
         for module in self.modules:
             if hasattr(module, "update_parameters"):
 
-                # print(f"➡️ update_parameters de {module.__class__.__name__}")
+                logging.debug(
+                    f"➡️ update_parameters de {module.__class__.__name__}")
 
                 module.update_parameters(learning_rate=eps)
 
                 # if hasattr(module, "_parameters"):
                 #     if "weight" in module._parameters:
-                #         print(f"{module.__class__.__name__} paramètres ", module._parameters["weight"])
+                #         logging.debug(f"{module.__class__.__name__} paramètres ", module._parameters["weight"])
                 # if hasattr(module, "_gradient"):
                 #     if "weight" in module._gradient:
-                #         print(f"{module.__class__.__name__} gradient ", module._gradient["weight"])
+                #         logging.debug(f"{module.__class__.__name__} gradient ", module._gradient["weight"])
 
     def zero_grad(self):
         for module in self.modules:
             if hasattr(module, "zero_grad"):
 
-                # print(f"➡️ zero_grad de {module.__class__.__name__}")
+                logging.debug(f"➡️ zero_grad de {module.__class__.__name__}")
 
                 module.zero_grad()
 
@@ -147,11 +149,11 @@ class Optim:
 
             for X_i, y_i in self._create_batches(X, y, batch_size, shuffle, seed):
                 loss_sum += self.step(X_i, y_i).sum()
-                
+
             losses.append(loss_sum / len(y))
 
             if verbose:
-                print(f"Epoch [{epoch+1}], Loss = {losses[-1]:.4f}")
+                logging.info(f"Epoch [{epoch+1}], Loss = {losses[-1]:.4f}")
 
         return np.array(losses)
 
@@ -206,7 +208,7 @@ class Optim:
                 loss_sum += self.step(X_i, y_i).sum()
             losses_train.append(loss_sum / len(y_train))
             scores_train.append(self.score(X_train, y_train))
-            # print(f"Epoch [{epoch+1}], Loss = {loss_list[-1]:.4f}")
+            logging.debug(f"Epoch [{epoch+1}], Loss = {loss_list[-1]:.4f}")
 
             # Epoch evaluation
             loss_sum = 0
