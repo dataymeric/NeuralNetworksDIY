@@ -213,7 +213,6 @@ class Optim:
                 f"Epoch [{epoch+1}], Loss train = {losses_train[-1]:.4f}")
 
             # Epoch evaluation
-            loss_sum = 0
             y_hat = self.network.forward(X_test)
             losses_test.append(self.loss.forward(y_test, y_hat).mean())
             scores_test.append(self.score(X_test, y_test))
