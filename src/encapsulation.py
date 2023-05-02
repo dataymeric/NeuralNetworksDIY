@@ -66,6 +66,7 @@ class Sequential:
             delta = module.backward_delta(self.inputs[i + 1], delta)
 
             logging.debug(f"Backward de {module.__class__.__name__} ✅")
+        return delta
 
     def update_parameters(self, eps=1e-3):
         for module in self.modules:
@@ -208,7 +209,8 @@ class Optim:
                 loss_sum += self.step(X_i, y_i).sum()
             losses_train.append(loss_sum / len(y_train))
             scores_train.append(self.score(X_train, y_train))
-            logging.debug(f"Epoch [{epoch+1}], Loss = {loss_list[-1]:.4f}")
+            logging.debug(
+                f"Epoch [{epoch+1}], Loss train = {losses_train[-1]:.4f}")
 
             # Epoch evaluation
             loss_sum = 0
