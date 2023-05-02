@@ -32,13 +32,14 @@ class Sequential:
 
         for module in self.modules:
 
-            logging.debug(f"Forward de {module.__class__.__name__}")
-            logging.debug(f"Input : {input.shape}")
+            logging.debug(f"[{module.__class__.__name__}] ➡️ Forward...")
+            logging.debug(f"\tInput's shape : {input.shape}")
 
             input = module(input)
             self.inputs.append(input)
 
-        logging.debug(f"Output: {input.shape}")
+        logging.debug(f"\tOutput's shape : {input.shape}")
+        logging.debug(f"[{module.__class__.__name__}] ✅ Forward done!")
 
         return input
 
@@ -46,50 +47,49 @@ class Sequential:
         # Pas sur des indices des listes !
         self.inputs.reverse()
 
-        logging.debug(f"Shape of loss delta : {delta.shape}")
+        logging.debug(f"\tDelta's (loss) shape : {delta.shape}")
 
         for i, module in enumerate(reversed(self.modules)):
 
-            logging.debug(f"➡️ Backward de {module.__class__.__name__}")
-            logging.debug(f"Shape of delta : {delta.shape}")
-            logging.debug(f"Shape of inputs : {self.inputs[i+1].shape}")
+            logging.debug(f"[{module.__class__.__name__}] ➡️ Backward...")
+            logging.debug(f"\tDelta's shape : {delta.shape}")
+            logging.debug(f"\tInput's shape : {self.inputs[i+1].shape}")
 
             module.backward_update_gradient(self.inputs[i + 1], delta)
 
-            # if hasattr(module, "_parameters"):
-            #     if "weight" in module._parameters:
-            #         logging.debug(f"{module.__class__.__name__} paramètres ", module._parameters["weight"])
-            # if hasattr(module, "_gradient"):
-            #     if "weight" in module._gradient:
-            #         logging.debug(f"{module.__class__.__name__} gradient ", module._gradient["weight"])
+            if hasattr(module, "_parameters") and "weight" in module._parameters:
+                logging.debug(f"\tParamètres {module._parameters['weight']}")
+            if hasattr(module, "_gradient") and "weight" in module._gradient:
+                logging.debug(f"\tGradient {module._gradient['weight']}")
 
             delta = module.backward_delta(self.inputs[i + 1], delta)
 
-            logging.debug(f"Backward de {module.__class__.__name__} ✅")
+            logging.debug(f"[{module.__class__.__name__}] ✅ Backward done!")
 
     def update_parameters(self, eps=1e-3):
         for module in self.modules:
-            if hasattr(module, "update_parameters"):
 
-                logging.debug(
-                    f"➡️ update_parameters de {module.__class__.__name__}")
+            logging.debug(f"[{module.__class__.__name__}] ➡️ Updating parameters...")
 
-                module.update_parameters(learning_rate=eps)
+            if hasattr(module, "_parameters") and "weight" in module._parameters:
+                logging.debug(f"\tParamètres {module._parameters['weight']}")
+            if hasattr(module, "_gradient") and "weight" in module._gradient:
+                logging.debug(f"\tGradient {module._gradient['weight']}")
 
-                # if hasattr(module, "_parameters"):
-                #     if "weight" in module._parameters:
-                #         logging.debug(f"{module.__class__.__name__} paramètres ", module._parameters["weight"])
-                # if hasattr(module, "_gradient"):
-                #     if "weight" in module._gradient:
-                #         logging.debug(f"{module.__class__.__name__} gradient ", module._gradient["weight"])
+            module.update_parameters(learning_rate=eps)
+
+            logging.debug(f"[{module.__class__.__name__}] Parameters updated! ✅")
+
+            if hasattr(module, "_parameters") and "weight" in module._parameters:
+                logging.debug(f"\tParamètres {module._parameters['weight']}")
+            if hasattr(module, "_gradient") and "weight" in module._gradient:
+                logging.debug(f"\tGradient {module._gradient['weight']}")
 
     def zero_grad(self):
         for module in self.modules:
-            if hasattr(module, "zero_grad"):
+            module.zero_grad()
 
-                logging.debug(f"➡️ zero_grad de {module.__class__.__name__}")
-
-                module.zero_grad()
+            logging.debug(f"[{module.__class__.__name__}] Gradient reinitialized ✅")
 
 
 class Optim:
@@ -138,7 +138,6 @@ class Optim:
         network: Sequential = None,
         shuffle: bool = True,
         seed: int = None,
-        verbose: bool = True,
     ):
         if not network:
             network = self.network
@@ -152,8 +151,7 @@ class Optim:
 
             losses.append(loss_sum / len(y))
 
-            if verbose:
-                logging.info(f"Epoch [{epoch+1}], Loss = {losses[-1]:.4f}")
+            logging.info(f"Epoch [{epoch+1}], Loss = {losses[-1]:.4f}")
 
         return np.array(losses)
 
@@ -208,13 +206,18 @@ class Optim:
                 loss_sum += self.step(X_i, y_i).sum()
             losses_train.append(loss_sum / len(y_train))
             scores_train.append(self.score(X_train, y_train))
-            logging.debug(f"Epoch [{epoch+1}], Loss = {loss_list[-1]:.4f}")
+            logging.info(
+                f"[Train] Epoch [{epoch+1}], Loss = {losses_train[-1]:.4f}, Score = {scores_train[-1]:.4f}"
+            )
 
             # Epoch evaluation
             loss_sum = 0
             y_hat = self.network.forward(X_test)
             losses_test.append(self.loss.forward(y_test, y_hat).mean())
             scores_test.append(self.score(X_test, y_test))
+            logging.info(
+                f"[Test] Epoch [{epoch+1}], Loss = {losses_test[-1]:.4f}, Score = {scores_test[-1]:.4f}"
+            )
 
         if return_dataframe:
             return DataFrame(
