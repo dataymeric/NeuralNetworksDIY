@@ -11,6 +11,17 @@ class Linear(Module):
         Size of input sample.
     output_size : int
         Size of output sample.
+    bias : bool, optional, default=False
+        If True, adds a learnable bias to the output.
+    init_type : str, optional, default="normal"
+        Change the initialization of parameters.
+
+    Shape
+    -----
+    Input : ndarray (batch, input_size)
+    Output : ndarray (batch, output_size)
+    Weight : ndarray (input_size, output_size)
+    Bias : ndarray (1, output_size)
     """
 
     def __init__(
@@ -76,16 +87,11 @@ class Linear(Module):
             self._gradient["bias"] = None
 
     def forward(self, X):
-        """X @ w
-        (batch, input_size) @ (input_size, output_size) = (batch, output_size)
+        """Forward pass.
 
-        Parameters
-        ----------
-        X : ndarray (batch, input_size)
-
-        Returns
-        -------
-        ndarray (batch, output_size)
+        Notes
+        -----
+        X @ w = (batch, input_size) @ (input_size, output_size) = (batch, output_size)
         """
         assert X.shape[1] == self.input_size, ValueError("X must be of shape (batch_size, input_size)")
 

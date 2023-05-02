@@ -47,13 +47,11 @@ class Module(object):
         .. math::
         \frac{\partial L}{\partial w_i^h}=\sum_k \frac{\partial L}{\partial z_k^h} 
         \frac{\partial z_k^h}{\partial w_i^h}=\sum_k \delta_k^h 
-        \frac{\partial z_k^h}{\partial w_i^h}, \text { let } 
-        \nabla_{\mathbf{w}^h} L=\left(\begin{array}{ccc}
+        \frac{\partial z_k^h}{\partial w_i^h}, 
+        \text { let } \nabla_{\mathbf{w}^h} L=\left(\begin{array}{ccc}
         \frac{\partial z_1^h}{\partial w_1^h} & \frac{\partial z_2^h}{\partial w_1^h} 
-        & \cdots \\
-        \frac{\partial z_1^h}{\partial w_2^h} & \ddots & \\
-        \vdots & &
-        \end{array}\right) \nabla_{\mathbf{z}^h L} 
+        & \cdots \\ \frac{\partial z_1^h}{\partial w_2^h} & \ddots & \\
+        \vdots & \end{array}\right) \nabla_{\mathbf{z}^h L} 
         """
         raise NotImplementedError()
 
@@ -67,7 +65,6 @@ class Module(object):
         \text { let } \nabla_{\mathbf{z}^{h-1}} L=\left(\begin{array}{ccc}
         \frac{\partial z_1^h}{z_1^{h-1}} & \frac{\partial z_2^h}{z_1^{h-1}} & \cdots \\
         \frac{\partial z_2^h}{z_2^{h-1}} & \ddots & \cdots \\
-        \vdots &
-        \end{array}\right) \nabla_{\mathbf{z}^h L}
+        \vdots & \end{array}\right) \nabla_{\mathbf{z}^h L}
         """
         raise NotImplementedError()

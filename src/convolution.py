@@ -14,7 +14,7 @@ and use. The key relies in understanding the shapes of your inputs/outputs.
 
 Notes
 -----
-Shapes reminder:
+Shapes reminder in 1D:
 input : ndarray (batch, length, chan_in)
 d_out : ndarray (batch, length, chan_in) == input.shape
 X_view : ndarray (batch, out_length, chan_in, self.k_size)
@@ -24,9 +24,10 @@ _parameters["weight"] : ndarray (k_size, chan_in, chan_out)
 
 Notation used for `np.einsum`:
 - b : batch_size
-- w : width / length (1D)
+- w : width (2D) / length (1D)
 - h : height (2D)
-- o : out_length
+- o : out_width (2D) / out_length (1D)
+- p : out_height (2D)
 - c : chan_in
 - d : chan_out
 - k : k_size (ij for 2D)
@@ -84,11 +85,25 @@ class Conv1D(Module):
 
     Parameters
     ----------
-    X : ndarray (batch, length, chan_in)
+    k_size : int
+        Size of the convolving kernel.
+    chan_in : int
+        Number of channels in the input image.
+    chan_out : in
+        Number of channels produced by the convolution.
+    stride : int, optional, default=1
+        Stride of the convolution.
+    bias : bool, optional, default=False
+        If True, adds a learnable bias to the output.
+    init_type : str, optional, default="normal"
+        Change the initialization of parameters.
 
-    Returns
-    -------
-    ndarray (batch, (length - k_size) // stride + 1, chan_in)
+    Shape
+    -----
+    Input : ndarray (batch, length, chan_in)
+    Output : ndarray (batch, (length - k_size) // stride + 1, chan_out)
+    Weight : ndarray (k_size, chan_in, chan_out)
+    Bias : ndarray (chan_out)
     """
 
     def __init__(
@@ -219,11 +234,15 @@ class MaxPool1D(Module):
 
     Parameters
     ----------
-    X : ndarray (batch, length, chan_in)
+    k_size : int
+        Size of the convolving kernel.
+    stride : int, optional, default=1
+        Stride of the convolution.
 
-    Returns
-    -------
-    ndarray (batch, (length - k_size) // stride + 1, chan_in)
+    Shape
+    -----
+    Input : ndarray (batch, length, chan_in)
+    Output : ndarray (batch, (length - k_size) // stride + 1, chan_out)
     """
 
     def __init__(self, k_size, stride):
@@ -275,11 +294,15 @@ class AvgPool1D(Module):
 
     Parameters
     ----------
-    X : ndarray (batch, length, chan_in)
+    k_size : int
+        Size of the convolving kernel.
+    stride : int, optional, default=1
+        Stride of the convolution.
 
-    Returns
-    -------
-    ndarray (batch, (length - k_size) // stride + 1, chan_in)
+    Shape
+    -----
+    Input : ndarray (batch, length, chan_in)
+    Output : ndarray (batch, (length - k_size) // stride + 1, chan_out)
     """
 
     def __init__(self, k_size, stride):
@@ -321,13 +344,10 @@ class AvgPool1D(Module):
 class Flatten(Module):
     """Flatten an output.
 
-    Parameters
-    ----------
-    X : ndarray (batch, length, chan_in)
-
-    Returns
-    -------
-    ndarray (batch, length * chan_in)
+    Shape
+    -----
+    Input : ndarray (batch, length, chan_in)
+    Output : ndarray (batch, length * chan_in)
     """
 
     def forward(self, X):
