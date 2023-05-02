@@ -65,6 +65,8 @@ class Sequential:
             delta = module.backward_delta(self.inputs[i + 1], delta)
 
             logging.debug(f"[{module.__class__.__name__}] ✅ Backward done!")
+        
+        return delta
 
     def update_parameters(self, eps=1e-3):
         for module in self.modules:
@@ -211,7 +213,6 @@ class Optim:
             )
 
             # Epoch evaluation
-            loss_sum = 0
             y_hat = self.network.forward(X_test)
             losses_test.append(self.loss.forward(y_test, y_hat).mean())
             scores_test.append(self.score(X_test, y_test))
