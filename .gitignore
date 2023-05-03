@@ -5,3 +5,4 @@ __pycache__
 data/fashion-mnist/fashion-mnist_train.csv
 data/fashion-mnist/fashion-mnist_test.csv
 archive
+.venv
