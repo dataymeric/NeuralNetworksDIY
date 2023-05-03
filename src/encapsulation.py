@@ -1,5 +1,5 @@
 import numpy as np
-from tqdm import tqdm
+from tqdm.autonotebook import tqdm, trange
 from icecream import ic
 from .module import Module, Loss
 from sklearn.model_selection import train_test_split
@@ -141,7 +141,7 @@ class Optim:
             network = self.network
 
         losses = []
-        for epoch in tqdm(range(epochs)):
+        for epoch in trange(epochs):
             loss_sum = 0
 
             for X_i, y_i in self._create_batches(X, y, batch_size, shuffle, seed):
@@ -182,40 +182,57 @@ class Optim:
             y_test,
         )
 
-        # Batch creation
-        if shuffle_test:
-            shuffled_idx = np.arange(len(X_test))
-            np.random.shuffle(shuffled_idx)
-            batch_idx = np.array_split(shuffled_idx, len(X_test) / batch_size)
-            batch_X_test = [X_test[idx] for idx in batch_idx]
-            batch_Y_test = [y_test[idx] for idx in batch_idx]
-        else:
-            batch_X_test = np.array_split(X_test, len(X_test) / batch_size)
-            batch_Y_test = np.array_split(y_test, len(X_test) / batch_size)
-
         # Training
         losses_train = []
         losses_test = []
         scores_train = []
         scores_test = []
-        for epoch in tqdm(range(epochs)):
+
+        epoch_progress = tqdm(range(epochs), desc="Epoch", position=0)
+        batch_progress = tqdm(
+            desc="Batch",
+            position=1,
+            total=len(X_train),
+        )
+        for epoch in epoch_progress:
             loss_sum = 0
-            for X_i, y_i in self._create_batches(X_train, y_train, shuffle_train, seed):
-                loss_sum += self.step(X_i, y_i).sum()
-            losses_train.append(loss_sum / len(y_train))
-            scores_train.append(self.score(X_train, y_train))
-            print(
-                f"[Train] Epoch [{epoch+1}], Loss = {losses_train[-1]:.4f}, Score = {scores_train[-1]:.4f}"
-            )
+
+            batch_iter = self._create_batches(X_train, y_train, shuffle_train, seed)
+            # Initialize the tqdm progress bar for the batch loop
+            for i, (X_i, y_i) in enumerate(batch_iter):
+                loss_batch_vect = self.step(X_i, y_i).sum()
+                loss_sum += loss_batch_vect
+                batch_progress.update()
+            batch_progress.reset()  # Reset batch bar
+
+            epoch_train_loss = loss_sum / len(y_train)
+            losses_train.append(epoch_train_loss)
+            epoch_train_score = self.score(X_train, y_train)
+            scores_train.append(epoch_train_score)
+            # print(
+            #     f"[Train] Epoch [{epoch+1}], Loss = {losses_train[-1]:.4f}, Score = {scores_train[-1]:.4f}"
+            # )
 
             # Epoch evaluation
             y_hat = self.network.forward(X_test)
-            losses_test.append(self.loss.forward(y_test, y_hat).mean())
-            scores_test.append(self.score(X_test, y_test))
-            print(
-                f"[Test] Epoch [{epoch+1}], Loss = {losses_test[-1]:.4f}, Score = {scores_test[-1]:.4f}"
-            )
+            epoch_test_loss = self.loss.forward(y_test, y_hat).mean()
+            epoch_test_score = self.score(X_test, y_test)
+            losses_test.append(epoch_test_loss)
+            scores_test.append(epoch_test_score)
+            # print(
+            #     f"[Test] Epoch [{epoch+1}], Loss = {losses_test[-1]:.4f}, Score = {scores_test[-1]:.4f}"
+            # )
 
+            # Update the epoch progress bar with the latest epoch loss value
+            epoch_progress.set_postfix(
+                {
+                    "train_loss": epoch_train_loss,
+                    "train_score": epoch_train_score,
+                    "test_loss": epoch_test_loss,
+                    "test_score": epoch_test_score,
+                }
+            )
+        batch_progress.close()
         if return_dataframe:
             return DataFrame(
                 {
