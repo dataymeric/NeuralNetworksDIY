@@ -1,4 +1,3 @@
-import logging
 import numpy as np
 from tqdm import tqdm
 from icecream import ic
@@ -31,15 +30,14 @@ class Sequential:
         self.inputs = [input]
 
         for module in self.modules:
-
-            logging.debug(f"[{module.__class__.__name__}] ➡️ Forward...")
-            logging.debug(f"\tInput's shape : {input.shape}")
+            # print(f"[{module.__class__.__name__}] ➡️ Forward...")
+            # print(f"\tInput's shape : {input.shape}")
 
             input = module(input)
             self.inputs.append(input)
 
-        logging.debug(f"\tOutput's shape : {input.shape}")
-        logging.debug(f"[{module.__class__.__name__}] ✅ Forward done!")
+        # print(f"\tOutput's shape : {input.shape}")
+        # print(f"[{module.__class__.__name__}] ✅ Forward done!")
 
         return input
 
@@ -47,51 +45,49 @@ class Sequential:
         # Pas sur des indices des listes !
         self.inputs.reverse()
 
-        logging.debug(f"\tDelta's (loss) shape : {delta.shape}")
+        # print(f"\tDelta's (loss) shape : {delta.shape}")
 
         for i, module in enumerate(reversed(self.modules)):
-
-            logging.debug(f"[{module.__class__.__name__}] ➡️ Backward...")
-            logging.debug(f"\tDelta's shape : {delta.shape}")
-            logging.debug(f"\tInput's shape : {self.inputs[i+1].shape}")
+            # print(f"[{module.__class__.__name__}] ➡️ Backward...")
+            # print(f"\tDelta's shape : {delta.shape}")
+            # print(f"\tInput's shape : {self.inputs[i+1].shape}")
 
             module.backward_update_gradient(self.inputs[i + 1], delta)
 
-            if hasattr(module, "_parameters") and "weight" in module._parameters:
-                logging.debug(f"\tParamètres {module._parameters['weight']}")
-            if hasattr(module, "_gradient") and "weight" in module._gradient:
-                logging.debug(f"\tGradient {module._gradient['weight']}")
+            # if hasattr(module, "_parameters") and "weight" in module._parameters:
+            # print(f"\tParamètres {module._parameters['weight']}")
+            # if hasattr(module, "_gradient") and "weight" in module._gradient:
+            # print(f"\tGradient {module._gradient['weight']}")
 
             delta = module.backward_delta(self.inputs[i + 1], delta)
 
-            logging.debug(f"[{module.__class__.__name__}] ✅ Backward done!")
-        
+            # print(f"[{module.__class__.__name__}] ✅ Backward done!")
+
         return delta
 
     def update_parameters(self, eps=1e-3):
         for module in self.modules:
+            # print(f"[{module.__class__.__name__}] ➡️ Updating parameters...")
 
-            logging.debug(f"[{module.__class__.__name__}] ➡️ Updating parameters...")
-
-            if hasattr(module, "_parameters") and "weight" in module._parameters:
-                logging.debug(f"\tParamètres {module._parameters['weight']}")
-            if hasattr(module, "_gradient") and "weight" in module._gradient:
-                logging.debug(f"\tGradient {module._gradient['weight']}")
+            # if hasattr(module, "_parameters") and "weight" in module._parameters:
+            # print(f"\tParamètres {module._parameters['weight']}")
+            # if hasattr(module, "_gradient") and "weight" in module._gradient:
+            # print(f"\tGradient {module._gradient['weight']}")
 
             module.update_parameters(learning_rate=eps)
 
-            logging.debug(f"[{module.__class__.__name__}] Parameters updated! ✅")
+            # print(f"[{module.__class__.__name__}] Parameters updated! ✅")
 
-            if hasattr(module, "_parameters") and "weight" in module._parameters:
-                logging.debug(f"\tParamètres {module._parameters['weight']}")
-            if hasattr(module, "_gradient") and "weight" in module._gradient:
-                logging.debug(f"\tGradient {module._gradient['weight']}")
+            # if hasattr(module, "_parameters") and "weight" in module._parameters:
+            # print(f"\tParamètres {module._parameters['weight']}")
+            # if hasattr(module, "_gradient") and "weight" in module._gradient:
+            # print(f"\tGradient {module._gradient['weight']}")
 
     def zero_grad(self):
         for module in self.modules:
             module.zero_grad()
 
-            logging.debug(f"[{module.__class__.__name__}] Gradient reinitialized ✅")
+            # print(f"[{module.__class__.__name__}] Gradient reinitialized ✅")
 
 
 class Optim:
@@ -153,7 +149,7 @@ class Optim:
 
             losses.append(loss_sum / len(y))
 
-            logging.info(f"Epoch [{epoch+1}], Loss = {losses[-1]:.4f}")
+            print(f"Epoch [{epoch+1}], Loss = {losses[-1]:.4f}")
 
         return np.array(losses)
 
@@ -208,7 +204,7 @@ class Optim:
                 loss_sum += self.step(X_i, y_i).sum()
             losses_train.append(loss_sum / len(y_train))
             scores_train.append(self.score(X_train, y_train))
-            logging.info(
+            print(
                 f"[Train] Epoch [{epoch+1}], Loss = {losses_train[-1]:.4f}, Score = {scores_train[-1]:.4f}"
             )
 
@@ -216,7 +212,7 @@ class Optim:
             y_hat = self.network.forward(X_test)
             losses_test.append(self.loss.forward(y_test, y_hat).mean())
             scores_test.append(self.score(X_test, y_test))
-            logging.info(
+            print(
                 f"[Test] Epoch [{epoch+1}], Loss = {losses_test[-1]:.4f}, Score = {scores_test[-1]:.4f}"
             )
 
