@@ -5,6 +5,8 @@ from .module import Module, Loss
 from sklearn.model_selection import train_test_split
 from pandas import DataFrame
 from copy import deepcopy
+import matplotlib.pyplot as plt
+from IPython import display
 
 
 class Sequential:
@@ -165,9 +167,13 @@ class Optim:
         shuffle_test: bool = False,
         seed: int = None,
         return_dataframe: bool = False,
+        fig=None,
+        ax=None,
     ):
         if not network:
             network = self.network
+        if fig and ax:
+            dh = display.display(fig, display_id=True)
 
         # Train test split
         X_train, X_test, y_train, y_test = train_test_split(
@@ -232,6 +238,11 @@ class Optim:
                     "test_score": epoch_test_score,
                 }
             )
+            if fig and ax:
+                ax.plot(losses_train)
+                ax.plot(losses_test)
+                dh.update(fig, clear=True)
+
         batch_progress.close()
         if return_dataframe:
             return DataFrame(
