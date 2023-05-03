@@ -220,8 +220,8 @@ class Optim:
             return DataFrame(
                 {
                     "epoch": [i for i in range(epochs)],
-                    "loss_test": losses_train,
-                    "loss_train": losses_test,
+                    "loss_train": losses_train,
+                    "loss_test": losses_test,
                     "score_train": scores_train,
                     "score_test": scores_test,
                 }
