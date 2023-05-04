@@ -204,7 +204,7 @@ class Optim:
         )
         for epoch in epoch_progress:
             loss_sum = 0
-            batch_iter = self._create_batches(X_train, y_train, shuffle_train, seed)
+            batch_iter = self._create_batches(X_train, y_train, batch_size, shuffle_train, seed)
             for X_i, y_i in batch_iter:
                 loss_batch_vect = self.step(X_i, y_i).sum()
                 loss_sum += loss_batch_vect
