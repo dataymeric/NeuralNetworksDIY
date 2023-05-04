@@ -1,3 +1,4 @@
+from typing import Any
 import numpy as np
 from tqdm.autonotebook import tqdm, trange
 from icecream import ic
@@ -14,6 +15,9 @@ class Sequential:
         self.modules = [*args]
         self.modules_copy = deepcopy(self.modules)
         self.inputs = []
+
+    def __call__(self, *args: Any, **kwds: Any) -> Any:
+        return self.forward(*args, **kwds)
 
     def add(self, module: Module):
         """Add a module to the network."""
@@ -211,7 +215,7 @@ class Optim:
             losses_train.append(epoch_train_loss)
             epoch_train_score = self.score(X_train, y_train)
             scores_train.append(epoch_train_score)
-            
+
             # Epoch evaluation
             y_hat = self.network.forward(X_test)
             epoch_test_loss = self.loss.forward(y_test, y_hat).mean()
