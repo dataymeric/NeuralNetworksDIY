@@ -6,7 +6,7 @@ __all__ = ["MSELoss", "CrossEntropyLoss", "BCELoss", "CELogSoftmax"]
 
 
 class MSELoss(Loss):
-    """Mean Squared Error loss function.
+    r"""Mean Squared Error loss function.
 
     .. math:: MSE = ||y - \hat{y}||^2
     .. math:: \nabla_{MSE} = -2(y - \hat{y})
@@ -73,7 +73,7 @@ class BCELoss(Loss):
 
 
 class CELogSoftmax(Loss):
-    """TO DO
+    r"""TO DO
 
     .. math::
         \text{CE}(y, \hat{y}) = - \log \frac {e^{\hat{y}_y}} {\sum_{i=1}^{K}

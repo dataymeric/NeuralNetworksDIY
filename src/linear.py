@@ -3,7 +3,7 @@ from .module import Module
 
 
 class Linear(Module):
-    """Linear module.
+    r"""Linear module.
 
     Parameters
     ----------
@@ -41,40 +41,53 @@ class Linear(Module):
         gain = self.calculate_gain()
 
         if init_type == "normal":
-            self._parameters["weight"] = np.random.randn(self.input_size, self.output_size)
+            self._parameters["weight"] = np.random.randn(
+                self.input_size, self.output_size)
             self._parameters["bias"] = np.random.randn(1, self.output_size)
 
         elif init_type == "uniform":
-            self._parameters["weight"] = np.random.uniform(0.0, 1.0, (self.input_size, self.output_size))
-            self._parameters["bias"] = np.random.uniform(0.0, 1.0, (1, self.output_size))
+            self._parameters["weight"] = np.random.uniform(
+                0.0, 1.0, (self.input_size, self.output_size))
+            self._parameters["bias"] = np.random.uniform(
+                0.0, 1.0, (1, self.output_size))
 
         elif init_type == "zeros":
-            self._parameters["weight"] = np.zeros((self.input_size, self.output_size))
+            self._parameters["weight"] = np.zeros(
+                (self.input_size, self.output_size))
             self._parameters["bias"] = np.zeros(1, self.output_size)
 
         elif init_type == "ones":
-            self._parameters["weight"] = np.ones((self.input_size, self.output_size))
+            self._parameters["weight"] = np.ones(
+                (self.input_size, self.output_size))
             self._parameters["bias"] = np.ones(1, self.output_size)
 
         elif init_type == "he_normal":
             std_dev = gain * np.sqrt(2 / self.input_size)
-            self._parameters["weight"] = np.random.normal(0, std_dev, (self.input_size, self.output_size))
-            self._parameters["bias"] = np.random.normal(0, std_dev, (1, self.output_size))
+            self._parameters["weight"] = np.random.normal(
+                0, std_dev, (self.input_size, self.output_size))
+            self._parameters["bias"] = np.random.normal(
+                0, std_dev, (1, self.output_size))
 
         elif init_type == "he_uniform":
             limit = gain * np.sqrt(6 / self.input_size)
-            self._parameters["weight"] = np.random.uniform(-limit, limit, (self.input_size, self.output_size))
-            self._parameters["bias"] = np.random.uniform(-limit, limit, (1, self.output_size))
+            self._parameters["weight"] = np.random.uniform(
+                -limit, limit, (self.input_size, self.output_size))
+            self._parameters["bias"] = np.random.uniform(
+                -limit, limit, (1, self.output_size))
 
         elif init_type == "xavier_normal":
             std_dev = gain * np.sqrt(2 / (self.input_size + self.output_size))
-            self._parameters["weight"] = np.random.normal(0, std_dev, (self.input_size, self.output_size))
-            self._parameters["bias"] = np.random.normal(0, std_dev, (1, self.output_size))
+            self._parameters["weight"] = np.random.normal(
+                0, std_dev, (self.input_size, self.output_size))
+            self._parameters["bias"] = np.random.normal(
+                0, std_dev, (1, self.output_size))
 
         elif init_type == "xavier_uniform":
             limit = gain * np.sqrt(6 / (self.input_size + self.output_size))
-            self._parameters["weight"] = np.random.uniform(-limit, limit, (self.input_size, self.output_size))
-            self._parameters["bias"] = np.random.uniform(-limit, limit, (1, self.output_size))
+            self._parameters["weight"] = np.random.uniform(
+                -limit, limit, (self.input_size, self.output_size))
+            self._parameters["bias"] = np.random.uniform(
+                -limit, limit, (1, self.output_size))
 
         else:
             raise ValueError(f"Unknown initialization type: {init_type}")
@@ -87,13 +100,14 @@ class Linear(Module):
             self._gradient["bias"] = None
 
     def forward(self, X):
-        """Forward pass.
+        r"""Forward pass.
 
         Notes
         -----
         X @ w = (batch, input_size) @ (input_size, output_size) = (batch, output_size)
         """
-        assert X.shape[1] == self.input_size, ValueError("X must be of shape (batch_size, input_size)")
+        assert X.shape[1] == self.input_size, ValueError(
+            "X must be of shape (batch_size, input_size)")
 
         self.output = X @ self._parameters["weight"]
 
@@ -120,7 +134,8 @@ class Linear(Module):
         return self.d_out
 
     def zero_grad(self):
-        self._gradient["weight"] = np.zeros((self.input_size, self.output_size))
+        self._gradient["weight"] = np.zeros(
+            (self.input_size, self.output_size))
         if self.include_bias:
             self._gradient["bias"] = np.zeros((1, self.output_size))
 
