@@ -14,7 +14,7 @@ __all__ = [
 
 
 class TanH(Module):
-    """Hyperbolic Tangent activation function.
+    r"""Hyperbolic Tangent activation function.
 
     .. math::
         \text{TanH}(x) = \tanh(x) = \frac{\exp(x) - \exp(-x)} {\exp(x) + \exp(-x)}
@@ -40,7 +40,7 @@ class TanH(Module):
 
 
 class Sigmoid(Module):
-    """Sigmoid activation function.
+    r"""Sigmoid activation function.
 
     .. math:: \text{Sigmoid}(x) = \sigma(x) = \frac{1}{1 + \exp(-x)}
     """
@@ -67,7 +67,7 @@ class Sigmoid(Module):
 
 
 class StableSigmoid(Module):
-    """Numerically stable Sigmoid activation function."""
+    r"""Numerically stable Sigmoid activation function."""
 
     def __init__(self) -> None:
         super().__init__()
@@ -90,7 +90,7 @@ class StableSigmoid(Module):
 
 
 class Softmax(Module):
-    """Softmax activation function.
+    r"""Softmax activation function.
 
     .. math:: \text{Softmax}(x_{i}) = \frac{\exp(x_i)}{\sum_j \exp(x_j)}
     """
@@ -102,7 +102,8 @@ class Softmax(Module):
         pass
 
     def forward(self, X):
-        exp_X = np.exp(X - np.max(X, axis=-1, keepdims=True))  # log-sum-exp trick
+        # log-sum-exp trick
+        exp_X = np.exp(X - np.max(X, axis=-1, keepdims=True))
         return exp_X / np.sum(exp_X, axis=-1, keepdims=True)
 
     def backward_update_gradient(self, input, delta):
@@ -117,7 +118,7 @@ class Softmax(Module):
 
 
 class LogSoftmax(Module):
-    """LogSoftmax activation function.
+    r"""LogSoftmax activation function.
 
     .. math::
             \text{LogSoftmax}(x_{i}) =
@@ -146,7 +147,7 @@ class LogSoftmax(Module):
 
 
 class ReLU(Module):
-    """ReLU (rectified linear unit) activation function.
+    r"""ReLU (rectified linear unit) activation function.
 
     .. math:: \text{ReLU}(x) = x^+ = \max(0, x)
     """
@@ -172,8 +173,8 @@ class ReLU(Module):
 
 
 class LeakyReLU(Module):
-    """Leaky ReLU activation function.
-    
+    r"""Leaky ReLU activation function.
+
     .. math::
         \text{LeakyReLU}(x) = \max(\alpha x, x) =
         \begin{cases}
@@ -205,7 +206,7 @@ class LeakyReLU(Module):
 
 
 class Softplus(Module):
-    """Smooth approximation of the ReLU activation function.
+    r"""Smooth approximation of the ReLU activation function.
 
     .. math:: \text{Softplus}(x) = \ln(1+e^x)
     """

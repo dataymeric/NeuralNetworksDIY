@@ -2,7 +2,7 @@ from .module import Module
 import numpy as np
 from numpy.lib.stride_tricks import sliding_window_view
 
-"""
+r"""
 We tried to vectorize our convolutions to the maximum, prioritizing the performance.
 
 It implies creating special views of our array, by using the `numpy.lib.stride_tricks`
@@ -83,7 +83,7 @@ operational.
 
 
 class Conv1D(Module):
-    """1D convolution.
+    r"""1D convolution.
 
     Parameters
     ----------
@@ -129,40 +129,53 @@ class Conv1D(Module):
         gain = self.calculate_gain()
 
         if init_type == "normal":
-            self._parameters["weight"] = np.random.randn(self.k_size, self.chan_in, self.chan_out)
+            self._parameters["weight"] = np.random.randn(
+                self.k_size, self.chan_in, self.chan_out)
             self._parameters["bias"] = np.random.randn(self.chan_out)
 
         elif init_type == "uniform":
-            self._parameters["weight"] = np.random.uniform(0.0, 1.0, (self.k_size, self.chan_in, self.chan_out))
-            self._parameters["bias"] = np.random.uniform(0.0, 1.0, (self.chan_out))
+            self._parameters["weight"] = np.random.uniform(
+                0.0, 1.0, (self.k_size, self.chan_in, self.chan_out))
+            self._parameters["bias"] = np.random.uniform(
+                0.0, 1.0, (self.chan_out))
 
         elif init_type == "zeros":
-            self._parameters["weight"] = np.zeros((self.k_size, self.chan_in, self.chan_out))
+            self._parameters["weight"] = np.zeros(
+                (self.k_size, self.chan_in, self.chan_out))
             self._parameters["bias"] = np.zeros(self.chan_out)
 
         elif init_type == "ones":
-            self._parameters["weight"] = np.ones((self.k_size, self.chan_in, self.chan_out))
+            self._parameters["weight"] = np.ones(
+                (self.k_size, self.chan_in, self.chan_out))
             self._parameters["bias"] = np.ones(self.chan_out)
 
         elif init_type == "he_normal":
             std_dev = gain * np.sqrt(2 / self.chan_in)
-            self._parameters["weight"] = np.random.normal(0, std_dev, (self.k_size, self.chan_in, self.chan_out))
-            self._parameters["bias"] = np.random.normal(0, std_dev, (self.chan_out))
+            self._parameters["weight"] = np.random.normal(
+                0, std_dev, (self.k_size, self.chan_in, self.chan_out))
+            self._parameters["bias"] = np.random.normal(
+                0, std_dev, (self.chan_out))
 
         elif init_type == "he_uniform":
             limit = gain * np.sqrt(6 / self.chan_in)
-            self._parameters["weight"] = np.random.uniform(-limit, limit, (self.k_size, self.chan_in, self.chan_out))
-            self._parameters["bias"] = np.random.uniform(-limit, limit, (self.chan_out))
+            self._parameters["weight"] = np.random.uniform(
+                -limit, limit, (self.k_size, self.chan_in, self.chan_out))
+            self._parameters["bias"] = np.random.uniform(
+                -limit, limit, (self.chan_out))
 
         elif init_type == "xavier_normal":
             std_dev = gain * np.sqrt(2 / (self.chan_in + self.chan_out))
-            self._parameters["weight"] = np.random.normal(0, std_dev, (self.k_size, self.chan_in, self.chan_out))
-            self._parameters["bias"] = np.random.normal(0, std_dev, (self.chan_out))
+            self._parameters["weight"] = np.random.normal(
+                0, std_dev, (self.k_size, self.chan_in, self.chan_out))
+            self._parameters["bias"] = np.random.normal(
+                0, std_dev, (self.chan_out))
 
         elif init_type == "xavier_uniform":
             limit = gain * np.sqrt(6 / (self.chan_in + self.chan_out))
-            self._parameters["weight"] = np.random.uniform(-limit, limit, (self.k_size, self.chan_in, self.chan_out))
-            self._parameters["bias"] = np.random.uniform(-limit, limit, (self.chan_out))
+            self._parameters["weight"] = np.random.uniform(
+                -limit, limit, (self.k_size, self.chan_in, self.chan_out))
+            self._parameters["bias"] = np.random.uniform(
+                -limit, limit, (self.chan_out))
 
         else:
             raise ValueError(f"Unknown initialization type: {init_type}")
@@ -186,11 +199,14 @@ class Conv1D(Module):
         out_length = (length - self.k_size) // self.stride + 1
 
         # Prepare the input view for the convolution operation
-        X_view = sliding_window_view(X, (1, self.k_size, self.chan_in))[::1, :: self.stride, ::1]
-        X_view = X_view.reshape(batch_size, out_length, self.chan_in, self.k_size)
+        X_view = sliding_window_view(X, (1, self.k_size, self.chan_in))[
+            ::1, :: self.stride, ::1]
+        X_view = X_view.reshape(batch_size, out_length,
+                                self.chan_in, self.k_size)
 
         # Perform the convolution
-        self.output = np.einsum("bock, kcd -> bod", X_view, self._parameters["weight"])
+        self.output = np.einsum(
+            "bock, kcd -> bod", X_view, self._parameters["weight"])
 
         if self.include_bias:
             self.output += self._parameters["bias"]
@@ -203,10 +219,13 @@ class Conv1D(Module):
 
         out_length = (length - self.k_size) // self.stride + 1
 
-        X_view = sliding_window_view(input, (1, self.k_size, self.chan_in))[::1, :: self.stride, ::1]
-        X_view = X_view.reshape(batch_size, out_length, self.chan_in, self.k_size)
+        X_view = sliding_window_view(input, (1, self.k_size, self.chan_in))[
+            ::1, :: self.stride, ::1]
+        X_view = X_view.reshape(batch_size, out_length,
+                                self.chan_in, self.k_size)
 
-        self._gradient["weight"] += np.einsum("bock, bod -> kcd", X_view, delta)
+        self._gradient["weight"] += np.einsum(
+            "bock, bod -> kcd", X_view, delta)
 
         if self.include_bias:
             self._gradient["bias"] += np.sum(delta, axis=(0, 1))
@@ -221,7 +240,8 @@ class Conv1D(Module):
         d_in = np.einsum("bod, kcd -> kboc", delta, self._parameters["weight"])
 
         for i in range(self.k_size):
-            self.d_out[:, i : i + out_length * self.stride : self.stride, :] += d_in[i]
+            self.d_out[:, i: i + out_length *
+                       self.stride: self.stride, :] += d_in[i]
 
         return self.d_out
 
@@ -232,7 +252,7 @@ class Conv1D(Module):
 
 
 class MaxPool1D(Module):
-    """1D max pooling.
+    r"""1D max pooling.
 
     Parameters
     ----------
@@ -255,7 +275,8 @@ class MaxPool1D(Module):
         batch_size, length, chan_in = X.shape
         out_length = (length - self.k_size) // self.stride + 1
 
-        X_view = sliding_window_view(X, (1, self.k_size, 1))[::1, :: self.stride, ::1]
+        X_view = sliding_window_view(X, (1, self.k_size, 1))[
+            ::1, :: self.stride, ::1]
         X_view = X_view.reshape(batch_size, out_length, chan_in, self.k_size)
 
         self.output = np.max(X_view, axis=-1)
@@ -271,8 +292,10 @@ class MaxPool1D(Module):
         batch_size, length, chan_in = input.shape
         out_length = (length - self.k_size) // self.stride + 1
 
-        input_view = sliding_window_view(input, (1, self.k_size, 1))[::1, :: self.stride, ::1]
-        input_view = input_view.reshape(batch_size, out_length, chan_in, self.k_size)
+        input_view = sliding_window_view(input, (1, self.k_size, 1))[
+            ::1, :: self.stride, ::1]
+        input_view = input_view.reshape(
+            batch_size, out_length, chan_in, self.k_size)
 
         max_indices = np.argmax(input_view, axis=-1)
 
@@ -283,7 +306,8 @@ class MaxPool1D(Module):
 
         # Update d_out using advanced indexing
         self.d_out = np.zeros_like(input)
-        self.d_out[batch_indices, out_indices * self.stride + max_indices, chan_indices] += delta[batch_indices, max_indices, chan_indices]
+        self.d_out[batch_indices, out_indices * self.stride + max_indices,
+                   chan_indices] += delta[batch_indices, max_indices, chan_indices]
 
         return self.d_out
 
@@ -292,7 +316,7 @@ class MaxPool1D(Module):
 
 
 class AvgPool1D(Module):
-    """1D average pooling.
+    r"""1D average pooling.
 
     Parameters
     ----------
@@ -315,7 +339,8 @@ class AvgPool1D(Module):
         batch_size, length, chan_in = X.shape
         out_length = (length - self.k_size) // self.stride + 1
 
-        X_view = sliding_window_view(X, (1, self.k_size, 1))[::1, :: self.stride, ::1]
+        X_view = sliding_window_view(X, (1, self.k_size, 1))[
+            ::1, :: self.stride, ::1]
         X_view = X_view.reshape(batch_size, out_length, chan_in, self.k_size)
 
         self.output = np.mean(X_view, axis=-1)
@@ -332,10 +357,12 @@ class AvgPool1D(Module):
         out_length = (length - self.k_size) // self.stride + 1
 
         self.d_out = np.zeros_like(input)
-        delta_repeated = np.repeat(delta[:, :, np.newaxis], self.k_size, axis=2) / self.k_size
+        delta_repeated = np.repeat(
+            delta[:, :, np.newaxis], self.k_size, axis=2) / self.k_size
 
         for i in range(self.k_size):
-            self.d_out[:, i : i + out_length * self.stride : self.stride] += delta_repeated[:, :, i]
+            self.d_out[:, i: i + out_length *
+                       self.stride: self.stride] += delta_repeated[:, :, i]
 
         return self.d_out
 
@@ -344,7 +371,7 @@ class AvgPool1D(Module):
 
 
 class Flatten(Module):
-    """Flatten an output.
+    r"""Flatten an output.
 
     Shape
     -----
