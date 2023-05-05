@@ -102,7 +102,7 @@ class Optim:
         self.loss = loss
         self.eps = eps
 
-    def _create_batches(self, X, y, batch_size, shuffle=True, seed=None):
+    def _create_batches(self, X, y, batch_size, shuffle=True, seed=42):
         n_samples = X.shape[0]
         if shuffle:
             if seed is not None:
@@ -111,8 +111,8 @@ class Optim:
             X = X[indices]
             y = y[indices]
         for X_batch, y_batch in zip(
-            np.array_split(X, n_samples // batch_size),
-            np.array_split(y, n_samples // batch_size),
+            np.array_split(X, n_samples / batch_size),
+            np.array_split(y, n_samples / batch_size),
         ):
             yield X_batch, y_batch
 
@@ -141,7 +141,7 @@ class Optim:
         epochs: int,
         network: Sequential = None,
         shuffle: bool = True,
-        seed: int = None,
+        seed: int = 42,
     ):
         if not network:
             network = self.network
@@ -169,7 +169,7 @@ class Optim:
         network: Sequential = None,
         shuffle_train: bool = True,
         shuffle_test: bool = False,
-        seed: int = None,
+        seed: int = 42,
         return_dataframe: bool = False,
         fig=None,
         ax=None,
@@ -200,11 +200,13 @@ class Optim:
 
         epoch_progress = tqdm(range(epochs), desc="Epoch", position=0)
         batch_progress = tqdm(
-            desc="Batch", position=1, total=len(X_train), mininterval=0.3
+            desc="Batch", position=1, total=len(X_train) // batch_size, mininterval=0.3
         )
         for epoch in epoch_progress:
             loss_sum = 0
-            batch_iter = self._create_batches(X_train, y_train, batch_size, shuffle_train, seed)
+            batch_iter = self._create_batches(
+                X_train, y_train, batch_size, shuffle_train, seed
+            )
             for X_i, y_i in batch_iter:
                 loss_batch_vect = self.step(X_i, y_i).sum()
                 loss_sum += loss_batch_vect
