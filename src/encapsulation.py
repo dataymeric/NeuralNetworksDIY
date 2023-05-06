@@ -171,12 +171,13 @@ class Optim:
         shuffle_test: bool = False,
         seed: int = 42,
         return_dataframe: bool = False,
-        fig=None,
-        ax=None,
+        online_plot: bool = False,
     ):
         if not network:
             network = self.network
-        if fig and ax:
+        if online_plot:
+            fig = plt.gcf()
+            ax = plt.gca()
             dh = display.display(fig, display_id=True)
 
         # Train test split
@@ -202,14 +203,14 @@ class Optim:
         batch_progress = tqdm(
             desc="Batch", position=1, total=len(X_train) // batch_size, mininterval=0.3
         )
-        for epoch in epoch_progress:
+        for _ in epoch_progress:
             loss_sum = 0
             batch_iter = self._create_batches(
                 X_train, y_train, batch_size, shuffle_train, seed
             )
             for X_i, y_i in batch_iter:
-                loss_batch_vect = self.step(X_i, y_i).sum()
-                loss_sum += loss_batch_vect
+                loss_batch_vect = self.step(X_i, y_i)
+                loss_sum += loss_batch_vect.sum()
                 batch_progress.update()
             batch_progress.reset()  # Reset batch bar
 
@@ -234,7 +235,7 @@ class Optim:
                     "test_score": epoch_test_score,
                 }
             )
-            if fig and ax:
+            if online_plot:
                 ax.plot(losses_train)
                 ax.plot(losses_test)
                 dh.update(fig, clear=True)
