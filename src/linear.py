@@ -30,7 +30,16 @@ class Linear(Module):
         input_size: int,
         output_size: int,
         bias: bool = True,
-        init_type: Literal['normal', 'uniform', 'zeros', 'ones', 'he_normal', 'he_uniform', 'xavier_normal', 'xavier_uniform'] = "he_normal",
+        init_type: Literal[
+            "normal",
+            "uniform",
+            "zeros",
+            "ones",
+            "he_normal",
+            "he_uniform",
+            "xavier_normal",
+            "xavier_uniform",
+        ] = "he_normal",
     ):
         super().__init__()
         self.input_size = input_size
@@ -57,11 +66,11 @@ class Linear(Module):
 
         elif init_type == "zeros":
             self._parameters["weight"] = np.zeros((self.input_size, self.output_size))
-            self._parameters["bias"] = np.zeros(1, self.output_size)
+            self._parameters["bias"] = np.zeros((1, self.output_size))
 
         elif init_type == "ones":
             self._parameters["weight"] = np.ones((self.input_size, self.output_size))
-            self._parameters["bias"] = np.ones(1, self.output_size)
+            self._parameters["bias"] = np.ones((1, self.output_size))
 
         elif init_type == "he_normal":
             std_dev = gain * np.sqrt(2 / self.input_size)
