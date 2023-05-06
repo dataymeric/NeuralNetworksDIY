@@ -1,3 +1,4 @@
+from typing import Literal
 import numpy as np
 from .module import Module
 
@@ -29,7 +30,7 @@ class Linear(Module):
         input_size: int,
         output_size: int,
         bias: bool = True,
-        init_type: str = "he_normal",
+        init_type: Literal['normal', 'uniform', 'zeros', 'ones', 'he_normal', 'he_uniform', 'xavier_normal', 'xavier_uniform'] = "he_normal",
     ):
         super().__init__()
         self.input_size = input_size
