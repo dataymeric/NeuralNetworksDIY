@@ -6,4 +6,3 @@ data/fashion-mnist/fashion-mnist_train.csv
 data/fashion-mnist/fashion-mnist_test.csv
 archive
 .venv
-docs/_build
