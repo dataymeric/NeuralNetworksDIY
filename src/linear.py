@@ -42,6 +42,8 @@ class Linear(Module):
         ] = "he_normal",
     ):
         super().__init__()
+        assert isinstance(input_size, int), ValueError(f"Input size of Linear module must be int, not {type(input_size)}")
+        assert isinstance(output_size, int), ValueError(f"Input size of Linear module must be int, not {type(output_size)}")
         self.input_size = input_size
         self.output_size = output_size
         self.include_bias = bias

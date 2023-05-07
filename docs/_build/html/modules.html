@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>src &mdash; Documentation Neural Networks DIY </title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/translations.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Neural Networks DIY
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">src</a></li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Neural Networks DIY</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">src</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/modules.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="src">
+<h1>src<a class="headerlink" href="#src" title="Lien permanent vers cette rubrique"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="src.html">src package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="src.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#module-src.activation">src.activation module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.activation.LeakyReLU"><code class="docutils literal notranslate"><span class="pre">LeakyReLU</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.LeakyReLU.backward_delta"><code class="docutils literal notranslate"><span class="pre">LeakyReLU.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.LeakyReLU.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">LeakyReLU.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.LeakyReLU.forward"><code class="docutils literal notranslate"><span class="pre">LeakyReLU.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.LeakyReLU.update_parameters"><code class="docutils literal notranslate"><span class="pre">LeakyReLU.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.LeakyReLU.zero_grad"><code class="docutils literal notranslate"><span class="pre">LeakyReLU.zero_grad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.activation.LogSoftmax"><code class="docutils literal notranslate"><span class="pre">LogSoftmax</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.LogSoftmax.backward_delta"><code class="docutils literal notranslate"><span class="pre">LogSoftmax.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.LogSoftmax.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">LogSoftmax.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.LogSoftmax.forward"><code class="docutils literal notranslate"><span class="pre">LogSoftmax.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.LogSoftmax.update_parameters"><code class="docutils literal notranslate"><span class="pre">LogSoftmax.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.LogSoftmax.zero_grad"><code class="docutils literal notranslate"><span class="pre">LogSoftmax.zero_grad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.activation.ReLU"><code class="docutils literal notranslate"><span class="pre">ReLU</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.ReLU.backward_delta"><code class="docutils literal notranslate"><span class="pre">ReLU.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.ReLU.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">ReLU.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.ReLU.forward"><code class="docutils literal notranslate"><span class="pre">ReLU.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.ReLU.update_parameters"><code class="docutils literal notranslate"><span class="pre">ReLU.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.ReLU.zero_grad"><code class="docutils literal notranslate"><span class="pre">ReLU.zero_grad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.activation.Sigmoid"><code class="docutils literal notranslate"><span class="pre">Sigmoid</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.Sigmoid.backward_delta"><code class="docutils literal notranslate"><span class="pre">Sigmoid.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.Sigmoid.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">Sigmoid.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.Sigmoid.forward"><code class="docutils literal notranslate"><span class="pre">Sigmoid.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.Sigmoid.update_parameters"><code class="docutils literal notranslate"><span class="pre">Sigmoid.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.Sigmoid.zero_grad"><code class="docutils literal notranslate"><span class="pre">Sigmoid.zero_grad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.activation.Softmax"><code class="docutils literal notranslate"><span class="pre">Softmax</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.Softmax.backward_delta"><code class="docutils literal notranslate"><span class="pre">Softmax.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.Softmax.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">Softmax.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.Softmax.forward"><code class="docutils literal notranslate"><span class="pre">Softmax.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.Softmax.update_parameters"><code class="docutils literal notranslate"><span class="pre">Softmax.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.Softmax.zero_grad"><code class="docutils literal notranslate"><span class="pre">Softmax.zero_grad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.activation.Softplus"><code class="docutils literal notranslate"><span class="pre">Softplus</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.Softplus.backward_delta"><code class="docutils literal notranslate"><span class="pre">Softplus.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.Softplus.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">Softplus.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.Softplus.forward"><code class="docutils literal notranslate"><span class="pre">Softplus.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.Softplus.update_parameters"><code class="docutils literal notranslate"><span class="pre">Softplus.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.Softplus.zero_grad"><code class="docutils literal notranslate"><span class="pre">Softplus.zero_grad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.activation.StableSigmoid"><code class="docutils literal notranslate"><span class="pre">StableSigmoid</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.StableSigmoid.backward_delta"><code class="docutils literal notranslate"><span class="pre">StableSigmoid.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.StableSigmoid.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">StableSigmoid.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.StableSigmoid.forward"><code class="docutils literal notranslate"><span class="pre">StableSigmoid.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.StableSigmoid.update_parameters"><code class="docutils literal notranslate"><span class="pre">StableSigmoid.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.StableSigmoid.zero_grad"><code class="docutils literal notranslate"><span class="pre">StableSigmoid.zero_grad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.activation.TanH"><code class="docutils literal notranslate"><span class="pre">TanH</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.TanH.backward_delta"><code class="docutils literal notranslate"><span class="pre">TanH.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.TanH.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">TanH.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.TanH.forward"><code class="docutils literal notranslate"><span class="pre">TanH.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.TanH.update_parameters"><code class="docutils literal notranslate"><span class="pre">TanH.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.activation.TanH.zero_grad"><code class="docutils literal notranslate"><span class="pre">TanH.zero_grad()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#module-src.convolution">src.convolution module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.convolution.AvgPool1D"><code class="docutils literal notranslate"><span class="pre">AvgPool1D</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.convolution.AvgPool1D.backward_delta"><code class="docutils literal notranslate"><span class="pre">AvgPool1D.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.convolution.AvgPool1D.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">AvgPool1D.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.convolution.AvgPool1D.forward"><code class="docutils literal notranslate"><span class="pre">AvgPool1D.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.convolution.AvgPool1D.update_parameters"><code class="docutils literal notranslate"><span class="pre">AvgPool1D.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.convolution.AvgPool1D.zero_grad"><code class="docutils literal notranslate"><span class="pre">AvgPool1D.zero_grad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.convolution.Conv1D"><code class="docutils literal notranslate"><span class="pre">Conv1D</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.convolution.Conv1D.backward_delta"><code class="docutils literal notranslate"><span class="pre">Conv1D.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.convolution.Conv1D.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">Conv1D.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.convolution.Conv1D.forward"><code class="docutils literal notranslate"><span class="pre">Conv1D.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.convolution.Conv1D.update_parameters"><code class="docutils literal notranslate"><span class="pre">Conv1D.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.convolution.Conv1D.zero_grad"><code class="docutils literal notranslate"><span class="pre">Conv1D.zero_grad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.convolution.Flatten"><code class="docutils literal notranslate"><span class="pre">Flatten</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.convolution.Flatten.backward_delta"><code class="docutils literal notranslate"><span class="pre">Flatten.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.convolution.Flatten.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">Flatten.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.convolution.Flatten.forward"><code class="docutils literal notranslate"><span class="pre">Flatten.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.convolution.Flatten.update_parameters"><code class="docutils literal notranslate"><span class="pre">Flatten.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.convolution.Flatten.zero_grad"><code class="docutils literal notranslate"><span class="pre">Flatten.zero_grad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.convolution.MaxPool1D"><code class="docutils literal notranslate"><span class="pre">MaxPool1D</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.convolution.MaxPool1D.backward_delta"><code class="docutils literal notranslate"><span class="pre">MaxPool1D.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.convolution.MaxPool1D.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">MaxPool1D.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.convolution.MaxPool1D.forward"><code class="docutils literal notranslate"><span class="pre">MaxPool1D.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.convolution.MaxPool1D.update_parameters"><code class="docutils literal notranslate"><span class="pre">MaxPool1D.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.convolution.MaxPool1D.zero_grad"><code class="docutils literal notranslate"><span class="pre">MaxPool1D.zero_grad()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#module-src.encapsulation">src.encapsulation module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.encapsulation.Optim"><code class="docutils literal notranslate"><span class="pre">Optim</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.encapsulation.Optim.SGD"><code class="docutils literal notranslate"><span class="pre">Optim.SGD()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.encapsulation.Optim.SGD_eval"><code class="docutils literal notranslate"><span class="pre">Optim.SGD_eval()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.encapsulation.Optim.score"><code class="docutils literal notranslate"><span class="pre">Optim.score()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.encapsulation.Optim.step"><code class="docutils literal notranslate"><span class="pre">Optim.step()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.encapsulation.Sequential"><code class="docutils literal notranslate"><span class="pre">Sequential</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.encapsulation.Sequential.add"><code class="docutils literal notranslate"><span class="pre">Sequential.add()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.encapsulation.Sequential.backward"><code class="docutils literal notranslate"><span class="pre">Sequential.backward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.encapsulation.Sequential.forward"><code class="docutils literal notranslate"><span class="pre">Sequential.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.encapsulation.Sequential.insert"><code class="docutils literal notranslate"><span class="pre">Sequential.insert()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.encapsulation.Sequential.reset"><code class="docutils literal notranslate"><span class="pre">Sequential.reset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.encapsulation.Sequential.update_parameters"><code class="docutils literal notranslate"><span class="pre">Sequential.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.encapsulation.Sequential.zero_grad"><code class="docutils literal notranslate"><span class="pre">Sequential.zero_grad()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#module-src.linear">src.linear module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.linear.Linear"><code class="docutils literal notranslate"><span class="pre">Linear</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.linear.Linear.backward_delta"><code class="docutils literal notranslate"><span class="pre">Linear.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.linear.Linear.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">Linear.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.linear.Linear.forward"><code class="docutils literal notranslate"><span class="pre">Linear.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.linear.Linear.update_parameters"><code class="docutils literal notranslate"><span class="pre">Linear.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.linear.Linear.zero_grad"><code class="docutils literal notranslate"><span class="pre">Linear.zero_grad()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#module-src.loss">src.loss module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.loss.BCELoss"><code class="docutils literal notranslate"><span class="pre">BCELoss</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.loss.BCELoss.backward"><code class="docutils literal notranslate"><span class="pre">BCELoss.backward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.loss.BCELoss.forward"><code class="docutils literal notranslate"><span class="pre">BCELoss.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.loss.CELogSoftmax"><code class="docutils literal notranslate"><span class="pre">CELogSoftmax</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.loss.CELogSoftmax.backward"><code class="docutils literal notranslate"><span class="pre">CELogSoftmax.backward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.loss.CELogSoftmax.forward"><code class="docutils literal notranslate"><span class="pre">CELogSoftmax.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.loss.CrossEntropyLoss"><code class="docutils literal notranslate"><span class="pre">CrossEntropyLoss</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.loss.CrossEntropyLoss.backward"><code class="docutils literal notranslate"><span class="pre">CrossEntropyLoss.backward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.loss.CrossEntropyLoss.forward"><code class="docutils literal notranslate"><span class="pre">CrossEntropyLoss.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.loss.MSELoss"><code class="docutils literal notranslate"><span class="pre">MSELoss</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.loss.MSELoss.backward"><code class="docutils literal notranslate"><span class="pre">MSELoss.backward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.loss.MSELoss.forward"><code class="docutils literal notranslate"><span class="pre">MSELoss.forward()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#module-src.module">src.module module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.module.Loss"><code class="docutils literal notranslate"><span class="pre">Loss</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.module.Loss.backward"><code class="docutils literal notranslate"><span class="pre">Loss.backward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.module.Loss.forward"><code class="docutils literal notranslate"><span class="pre">Loss.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.module.Module"><code class="docutils literal notranslate"><span class="pre">Module</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.module.Module.backward_delta"><code class="docutils literal notranslate"><span class="pre">Module.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.module.Module.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">Module.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.module.Module.calculate_gain"><code class="docutils literal notranslate"><span class="pre">Module.calculate_gain()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.module.Module.forward"><code class="docutils literal notranslate"><span class="pre">Module.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.module.Module.update_parameters"><code class="docutils literal notranslate"><span class="pre">Module.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.module.Module.zero_grad"><code class="docutils literal notranslate"><span class="pre">Module.zero_grad()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#module-src">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.AvgPool1D"><code class="docutils literal notranslate"><span class="pre">AvgPool1D</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.AvgPool1D.backward_delta"><code class="docutils literal notranslate"><span class="pre">AvgPool1D.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.AvgPool1D.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">AvgPool1D.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.AvgPool1D.forward"><code class="docutils literal notranslate"><span class="pre">AvgPool1D.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.AvgPool1D.update_parameters"><code class="docutils literal notranslate"><span class="pre">AvgPool1D.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.AvgPool1D.zero_grad"><code class="docutils literal notranslate"><span class="pre">AvgPool1D.zero_grad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.BCELoss"><code class="docutils literal notranslate"><span class="pre">BCELoss</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.BCELoss.backward"><code class="docutils literal notranslate"><span class="pre">BCELoss.backward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.BCELoss.forward"><code class="docutils literal notranslate"><span class="pre">BCELoss.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.CELogSoftmax"><code class="docutils literal notranslate"><span class="pre">CELogSoftmax</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.CELogSoftmax.backward"><code class="docutils literal notranslate"><span class="pre">CELogSoftmax.backward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.CELogSoftmax.forward"><code class="docutils literal notranslate"><span class="pre">CELogSoftmax.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.Conv1D"><code class="docutils literal notranslate"><span class="pre">Conv1D</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Conv1D.backward_delta"><code class="docutils literal notranslate"><span class="pre">Conv1D.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Conv1D.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">Conv1D.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Conv1D.forward"><code class="docutils literal notranslate"><span class="pre">Conv1D.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Conv1D.update_parameters"><code class="docutils literal notranslate"><span class="pre">Conv1D.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Conv1D.zero_grad"><code class="docutils literal notranslate"><span class="pre">Conv1D.zero_grad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.CrossEntropyLoss"><code class="docutils literal notranslate"><span class="pre">CrossEntropyLoss</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.CrossEntropyLoss.backward"><code class="docutils literal notranslate"><span class="pre">CrossEntropyLoss.backward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.CrossEntropyLoss.forward"><code class="docutils literal notranslate"><span class="pre">CrossEntropyLoss.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.Flatten"><code class="docutils literal notranslate"><span class="pre">Flatten</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Flatten.backward_delta"><code class="docutils literal notranslate"><span class="pre">Flatten.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Flatten.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">Flatten.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Flatten.forward"><code class="docutils literal notranslate"><span class="pre">Flatten.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Flatten.update_parameters"><code class="docutils literal notranslate"><span class="pre">Flatten.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Flatten.zero_grad"><code class="docutils literal notranslate"><span class="pre">Flatten.zero_grad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.Linear"><code class="docutils literal notranslate"><span class="pre">Linear</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Linear.backward_delta"><code class="docutils literal notranslate"><span class="pre">Linear.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Linear.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">Linear.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Linear.forward"><code class="docutils literal notranslate"><span class="pre">Linear.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Linear.update_parameters"><code class="docutils literal notranslate"><span class="pre">Linear.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Linear.zero_grad"><code class="docutils literal notranslate"><span class="pre">Linear.zero_grad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.LogSoftmax"><code class="docutils literal notranslate"><span class="pre">LogSoftmax</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.LogSoftmax.backward_delta"><code class="docutils literal notranslate"><span class="pre">LogSoftmax.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.LogSoftmax.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">LogSoftmax.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.LogSoftmax.forward"><code class="docutils literal notranslate"><span class="pre">LogSoftmax.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.LogSoftmax.update_parameters"><code class="docutils literal notranslate"><span class="pre">LogSoftmax.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.LogSoftmax.zero_grad"><code class="docutils literal notranslate"><span class="pre">LogSoftmax.zero_grad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.Loss"><code class="docutils literal notranslate"><span class="pre">Loss</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Loss.backward"><code class="docutils literal notranslate"><span class="pre">Loss.backward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Loss.forward"><code class="docutils literal notranslate"><span class="pre">Loss.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.MSELoss"><code class="docutils literal notranslate"><span class="pre">MSELoss</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.MSELoss.backward"><code class="docutils literal notranslate"><span class="pre">MSELoss.backward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.MSELoss.forward"><code class="docutils literal notranslate"><span class="pre">MSELoss.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.MaxPool1D"><code class="docutils literal notranslate"><span class="pre">MaxPool1D</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.MaxPool1D.backward_delta"><code class="docutils literal notranslate"><span class="pre">MaxPool1D.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.MaxPool1D.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">MaxPool1D.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.MaxPool1D.forward"><code class="docutils literal notranslate"><span class="pre">MaxPool1D.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.MaxPool1D.update_parameters"><code class="docutils literal notranslate"><span class="pre">MaxPool1D.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.MaxPool1D.zero_grad"><code class="docutils literal notranslate"><span class="pre">MaxPool1D.zero_grad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.Module"><code class="docutils literal notranslate"><span class="pre">Module</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Module.backward_delta"><code class="docutils literal notranslate"><span class="pre">Module.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Module.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">Module.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Module.calculate_gain"><code class="docutils literal notranslate"><span class="pre">Module.calculate_gain()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Module.forward"><code class="docutils literal notranslate"><span class="pre">Module.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Module.update_parameters"><code class="docutils literal notranslate"><span class="pre">Module.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Module.zero_grad"><code class="docutils literal notranslate"><span class="pre">Module.zero_grad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.Optim"><code class="docutils literal notranslate"><span class="pre">Optim</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Optim.SGD"><code class="docutils literal notranslate"><span class="pre">Optim.SGD()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Optim.SGD_eval"><code class="docutils literal notranslate"><span class="pre">Optim.SGD_eval()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Optim.score"><code class="docutils literal notranslate"><span class="pre">Optim.score()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Optim.step"><code class="docutils literal notranslate"><span class="pre">Optim.step()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.ReLU"><code class="docutils literal notranslate"><span class="pre">ReLU</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.ReLU.backward_delta"><code class="docutils literal notranslate"><span class="pre">ReLU.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.ReLU.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">ReLU.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.ReLU.forward"><code class="docutils literal notranslate"><span class="pre">ReLU.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.ReLU.update_parameters"><code class="docutils literal notranslate"><span class="pre">ReLU.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.ReLU.zero_grad"><code class="docutils literal notranslate"><span class="pre">ReLU.zero_grad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.Sequential"><code class="docutils literal notranslate"><span class="pre">Sequential</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Sequential.add"><code class="docutils literal notranslate"><span class="pre">Sequential.add()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Sequential.backward"><code class="docutils literal notranslate"><span class="pre">Sequential.backward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Sequential.forward"><code class="docutils literal notranslate"><span class="pre">Sequential.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Sequential.insert"><code class="docutils literal notranslate"><span class="pre">Sequential.insert()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Sequential.reset"><code class="docutils literal notranslate"><span class="pre">Sequential.reset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Sequential.update_parameters"><code class="docutils literal notranslate"><span class="pre">Sequential.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Sequential.zero_grad"><code class="docutils literal notranslate"><span class="pre">Sequential.zero_grad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.Sigmoid"><code class="docutils literal notranslate"><span class="pre">Sigmoid</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Sigmoid.backward_delta"><code class="docutils literal notranslate"><span class="pre">Sigmoid.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Sigmoid.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">Sigmoid.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Sigmoid.forward"><code class="docutils literal notranslate"><span class="pre">Sigmoid.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Sigmoid.update_parameters"><code class="docutils literal notranslate"><span class="pre">Sigmoid.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Sigmoid.zero_grad"><code class="docutils literal notranslate"><span class="pre">Sigmoid.zero_grad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.Softmax"><code class="docutils literal notranslate"><span class="pre">Softmax</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Softmax.backward_delta"><code class="docutils literal notranslate"><span class="pre">Softmax.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Softmax.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">Softmax.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Softmax.forward"><code class="docutils literal notranslate"><span class="pre">Softmax.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Softmax.update_parameters"><code class="docutils literal notranslate"><span class="pre">Softmax.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Softmax.zero_grad"><code class="docutils literal notranslate"><span class="pre">Softmax.zero_grad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.Softplus"><code class="docutils literal notranslate"><span class="pre">Softplus</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Softplus.backward_delta"><code class="docutils literal notranslate"><span class="pre">Softplus.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Softplus.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">Softplus.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Softplus.forward"><code class="docutils literal notranslate"><span class="pre">Softplus.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Softplus.update_parameters"><code class="docutils literal notranslate"><span class="pre">Softplus.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.Softplus.zero_grad"><code class="docutils literal notranslate"><span class="pre">Softplus.zero_grad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#src.TanH"><code class="docutils literal notranslate"><span class="pre">TanH</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.TanH.backward_delta"><code class="docutils literal notranslate"><span class="pre">TanH.backward_delta()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.TanH.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">TanH.backward_update_gradient()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.TanH.forward"><code class="docutils literal notranslate"><span class="pre">TanH.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.TanH.update_parameters"><code class="docutils literal notranslate"><span class="pre">TanH.update_parameters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.html#src.TanH.zero_grad"><code class="docutils literal notranslate"><span class="pre">TanH.zero_grad()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Charles Vin &amp; Aymeric Delefosse.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

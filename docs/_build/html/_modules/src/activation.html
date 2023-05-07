@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>src.activation &mdash; Documentation Neural Networks DIY </title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/translations.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Neural Networks DIY
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Neural Networks DIY</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Code du module</a></li>
+      <li class="breadcrumb-item active">src.activation</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Code source de src.activation</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.module</span> <span class="kn">import</span> <span class="n">Module</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;TanH&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Sigmoid&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;StableSigmoid&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Softmax&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LogSoftmax&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ReLU&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LeakyReLU&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Softplus&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="TanH"><a class="viewcode-back" href="../../src.html#src.activation.TanH">[docs]</a><span class="k">class</span> <span class="nc">TanH</span><span class="p">(</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Hyperbolic Tangent activation function.</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \text{TanH}(x) = \tanh(x) = \frac{\exp(x) - \exp(-x)} {\exp(x) + \exp(-x)}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="TanH.forward"><a class="viewcode-back" href="../../src.html#src.activation.TanH.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TanH.zero_grad"><a class="viewcode-back" href="../../src.html#src.activation.TanH.zero_grad">[docs]</a>    <span class="k">def</span> <span class="nf">zero_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="TanH.backward_update_gradient"><a class="viewcode-back" href="../../src.html#src.activation.TanH.backward_update_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">backward_update_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
+        <span class="k">pass</span>  <span class="c1"># No gradient to update in TanH</span></div>
+
+<div class="viewcode-block" id="TanH.backward_delta"><a class="viewcode-back" href="../../src.html#src.activation.TanH.backward_delta">[docs]</a>    <span class="k">def</span> <span class="nf">backward_delta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">delta</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TanH.update_parameters"><a class="viewcode-back" href="../../src.html#src.activation.TanH.update_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">):</span>
+        <span class="k">pass</span>  <span class="c1"># No parameters to update in TanH</span></div></div>
+
+
+<div class="viewcode-block" id="Sigmoid"><a class="viewcode-back" href="../../src.html#src.activation.Sigmoid">[docs]</a><span class="k">class</span> <span class="nc">Sigmoid</span><span class="p">(</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Sigmoid activation function.</span>
+
+<span class="sd">    .. math:: \text{Sigmoid}(x) = \sigma(x) = \frac{1}{1 + \exp(-x)}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Sigmoid.zero_grad"><a class="viewcode-back" href="../../src.html#src.activation.Sigmoid.zero_grad">[docs]</a>    <span class="k">def</span> <span class="nf">zero_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Sigmoid.forward"><a class="viewcode-back" href="../../src.html#src.activation.Sigmoid.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="c1"># X a grande valeurs vas donner +inf, nécéssité de normaliser ?</span>
+        <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">X</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Sigmoid.backward_update_gradient"><a class="viewcode-back" href="../../src.html#src.activation.Sigmoid.backward_update_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">backward_update_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
+        <span class="k">pass</span>  <span class="c1"># No gradient to update in Sigmoid</span></div>
+
+<div class="viewcode-block" id="Sigmoid.backward_delta"><a class="viewcode-back" href="../../src.html#src.activation.Sigmoid.backward_delta">[docs]</a>    <span class="k">def</span> <span class="nf">backward_delta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
+        <span class="n">sig_X</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">delta</span> <span class="o">*</span> <span class="n">sig_X</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">sig_X</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Sigmoid.update_parameters"><a class="viewcode-back" href="../../src.html#src.activation.Sigmoid.update_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">):</span>
+        <span class="k">pass</span>  <span class="c1"># No parameters to update in Sigmoid</span></div></div>
+
+
+<div class="viewcode-block" id="StableSigmoid"><a class="viewcode-back" href="../../src.html#src.activation.StableSigmoid">[docs]</a><span class="k">class</span> <span class="nc">StableSigmoid</span><span class="p">(</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Numerically stable Sigmoid activation function.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="StableSigmoid.zero_grad"><a class="viewcode-back" href="../../src.html#src.activation.StableSigmoid.zero_grad">[docs]</a>    <span class="k">def</span> <span class="nf">zero_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="StableSigmoid.forward"><a class="viewcode-back" href="../../src.html#src.activation.StableSigmoid.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">X</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">X</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">X</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="StableSigmoid.backward_update_gradient"><a class="viewcode-back" href="../../src.html#src.activation.StableSigmoid.backward_update_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">backward_update_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
+        <span class="k">pass</span>  <span class="c1"># No gradient to update in Sigmoid</span></div>
+
+<div class="viewcode-block" id="StableSigmoid.backward_delta"><a class="viewcode-back" href="../../src.html#src.activation.StableSigmoid.backward_delta">[docs]</a>    <span class="k">def</span> <span class="nf">backward_delta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
+        <span class="n">sig_X</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">delta</span> <span class="o">*</span> <span class="n">sig_X</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">sig_X</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="StableSigmoid.update_parameters"><a class="viewcode-back" href="../../src.html#src.activation.StableSigmoid.update_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">):</span>
+        <span class="k">pass</span>  <span class="c1"># No parameters to update in Sigmoid</span></div></div>
+
+
+<div class="viewcode-block" id="Softmax"><a class="viewcode-back" href="../../src.html#src.activation.Softmax">[docs]</a><span class="k">class</span> <span class="nc">Softmax</span><span class="p">(</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Softmax activation function.</span>
+
+<span class="sd">    .. math:: \text{Softmax}(x_{i}) = \frac{\exp(x_i)}{\sum_j \exp(x_j)}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Softmax.zero_grad"><a class="viewcode-back" href="../../src.html#src.activation.Softmax.zero_grad">[docs]</a>    <span class="k">def</span> <span class="nf">zero_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Softmax.forward"><a class="viewcode-back" href="../../src.html#src.activation.Softmax.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="c1"># log-sum-exp trick</span>
+        <span class="n">exp_X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">exp_X</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">exp_X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Softmax.backward_update_gradient"><a class="viewcode-back" href="../../src.html#src.activation.Softmax.backward_update_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">backward_update_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
+        <span class="k">pass</span>  <span class="c1"># No gradient to update in Softmax</span></div>
+
+<div class="viewcode-block" id="Softmax.backward_delta"><a class="viewcode-back" href="../../src.html#src.activation.Softmax.backward_delta">[docs]</a>    <span class="k">def</span> <span class="nf">backward_delta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
+        <span class="n">softmax</span> <span class="o">=</span> <span class="bp">self</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">delta</span> <span class="o">*</span> <span class="p">(</span><span class="n">softmax</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">softmax</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Softmax.update_parameters"><a class="viewcode-back" href="../../src.html#src.activation.Softmax.update_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">):</span>
+        <span class="k">pass</span>  <span class="c1"># No parameters to update in Softmax</span></div></div>
+
+
+<div class="viewcode-block" id="LogSoftmax"><a class="viewcode-back" href="../../src.html#src.activation.LogSoftmax">[docs]</a><span class="k">class</span> <span class="nc">LogSoftmax</span><span class="p">(</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;LogSoftmax activation function.</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">            \text{LogSoftmax}(x_{i}) =</span>
+<span class="sd">            \log \left( \frac{\exp(x_i)}{\sum_j \exp(x_j)} \right)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="LogSoftmax.forward"><a class="viewcode-back" href="../../src.html#src.activation.LogSoftmax.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="n">X_shifted</span> <span class="o">=</span> <span class="n">X</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">X_shifted</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">X_shifted</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="LogSoftmax.zero_grad"><a class="viewcode-back" href="../../src.html#src.activation.LogSoftmax.zero_grad">[docs]</a>    <span class="k">def</span> <span class="nf">zero_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="LogSoftmax.backward_update_gradient"><a class="viewcode-back" href="../../src.html#src.activation.LogSoftmax.backward_update_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">backward_update_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
+        <span class="k">pass</span>  <span class="c1"># No gradient to update in LogSoftmax</span></div>
+
+<div class="viewcode-block" id="LogSoftmax.backward_delta"><a class="viewcode-back" href="../../src.html#src.activation.LogSoftmax.backward_delta">[docs]</a>    <span class="k">def</span> <span class="nf">backward_delta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
+        <span class="n">softmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="nb">input</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">delta</span> <span class="o">-</span> <span class="n">softmax</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="LogSoftmax.update_parameters"><a class="viewcode-back" href="../../src.html#src.activation.LogSoftmax.update_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">):</span>
+        <span class="k">pass</span>  <span class="c1"># No parameters to update in LogSoftmax</span></div></div>
+
+
+<div class="viewcode-block" id="ReLU"><a class="viewcode-back" href="../../src.html#src.activation.ReLU">[docs]</a><span class="k">class</span> <span class="nc">ReLU</span><span class="p">(</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;ReLU (rectified linear unit) activation function.</span>
+
+<span class="sd">    .. math:: \text{ReLU}(x) = x^+ = \max(0, x)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="ReLU.zero_grad"><a class="viewcode-back" href="../../src.html#src.activation.ReLU.zero_grad">[docs]</a>    <span class="k">def</span> <span class="nf">zero_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ReLU.forward"><a class="viewcode-back" href="../../src.html#src.activation.ReLU.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ReLU.backward_update_gradient"><a class="viewcode-back" href="../../src.html#src.activation.ReLU.backward_update_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">backward_update_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
+        <span class="k">pass</span>  <span class="c1"># No gradient to update in ReLU</span></div>
+
+<div class="viewcode-block" id="ReLU.backward_delta"><a class="viewcode-back" href="../../src.html#src.activation.ReLU.backward_delta">[docs]</a>    <span class="k">def</span> <span class="nf">backward_delta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;math:: f&#39;(x) = 1 \text{if} x &gt; 0 \text{else} 0.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">delta</span> <span class="o">*</span> <span class="p">(</span><span class="nb">input</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ReLU.update_parameters"><a class="viewcode-back" href="../../src.html#src.activation.ReLU.update_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">):</span>
+        <span class="k">pass</span>  <span class="c1"># No parameters to update in ReLU</span></div></div>
+
+
+<div class="viewcode-block" id="LeakyReLU"><a class="viewcode-back" href="../../src.html#src.activation.LeakyReLU">[docs]</a><span class="k">class</span> <span class="nc">LeakyReLU</span><span class="p">(</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Leaky ReLU activation function.</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \text{LeakyReLU}(x) = \max(\alpha x, x) =</span>
+<span class="sd">        \begin{cases}</span>
+<span class="sd">        x, &amp; \text{ if } x \geq 0 \\</span>
+<span class="sd">        \alpha \times x, &amp; \text{ otherwise }</span>
+<span class="sd">        \end{cases}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>
+
+<div class="viewcode-block" id="LeakyReLU.zero_grad"><a class="viewcode-back" href="../../src.html#src.activation.LeakyReLU.zero_grad">[docs]</a>    <span class="k">def</span> <span class="nf">zero_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="LeakyReLU.forward"><a class="viewcode-back" href="../../src.html#src.activation.LeakyReLU.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="LeakyReLU.backward_update_gradient"><a class="viewcode-back" href="../../src.html#src.activation.LeakyReLU.backward_update_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">backward_update_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
+        <span class="k">pass</span>  <span class="c1"># No gradient to update in Leaky ReLU</span></div>
+
+<div class="viewcode-block" id="LeakyReLU.backward_delta"><a class="viewcode-back" href="../../src.html#src.activation.LeakyReLU.backward_delta">[docs]</a>    <span class="k">def</span> <span class="nf">backward_delta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
+        <span class="n">dx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+        <span class="n">dx</span><span class="p">[</span><span class="nb">input</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span>
+        <span class="k">return</span> <span class="n">delta</span> <span class="o">*</span> <span class="n">dx</span></div>
+
+<div class="viewcode-block" id="LeakyReLU.update_parameters"><a class="viewcode-back" href="../../src.html#src.activation.LeakyReLU.update_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">):</span>
+        <span class="k">pass</span>  <span class="c1"># No parameters to update in Leaky ReLU</span></div></div>
+
+
+<div class="viewcode-block" id="Softplus"><a class="viewcode-back" href="../../src.html#src.activation.Softplus">[docs]</a><span class="k">class</span> <span class="nc">Softplus</span><span class="p">(</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Smooth approximation of the ReLU activation function.</span>
+
+<span class="sd">    .. math:: \text{Softplus}(x) = \ln(1+e^x)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Softplus.zero_grad"><a class="viewcode-back" href="../../src.html#src.activation.Softplus.zero_grad">[docs]</a>    <span class="k">def</span> <span class="nf">zero_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Softplus.forward"><a class="viewcode-back" href="../../src.html#src.activation.Softplus.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">X</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Softplus.backward_update_gradient"><a class="viewcode-back" href="../../src.html#src.activation.Softplus.backward_update_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">backward_update_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
+        <span class="k">pass</span>  <span class="c1"># No gradient to update in Softplus</span></div>
+
+<div class="viewcode-block" id="Softplus.backward_delta"><a class="viewcode-back" href="../../src.html#src.activation.Softplus.backward_delta">[docs]</a>    <span class="k">def</span> <span class="nf">backward_delta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">delta</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="nb">input</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Softplus.update_parameters"><a class="viewcode-back" href="../../src.html#src.activation.Softplus.update_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">):</span>
+        <span class="k">pass</span>  <span class="c1"># No parameters to update in Softplus</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Charles Vin &amp; Aymeric Delefosse.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
