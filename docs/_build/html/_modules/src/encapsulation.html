@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>src.encapsulation &mdash; Documentation Neural Networks DIY </title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/translations.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Neural Networks DIY
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Neural Networks DIY</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Code du module</a></li>
+      <li class="breadcrumb-item active">src.encapsulation</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Code source de src.encapsulation</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">tqdm.autonotebook</span> <span class="kn">import</span> <span class="n">tqdm</span><span class="p">,</span> <span class="n">trange</span>
+<span class="kn">from</span> <span class="nn">icecream</span> <span class="kn">import</span> <span class="n">ic</span>
+<span class="kn">from</span> <span class="nn">.module</span> <span class="kn">import</span> <span class="n">Module</span><span class="p">,</span> <span class="n">Loss</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">IPython</span> <span class="kn">import</span> <span class="n">display</span>
+
+
+<div class="viewcode-block" id="Sequential"><a class="viewcode-back" href="../../src.html#src.encapsulation.Sequential">[docs]</a><span class="k">class</span> <span class="nc">Sequential</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Module</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modules</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">args</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modules_copy</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">modules</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Sequential.add"><a class="viewcode-back" href="../../src.html#src.encapsulation.Sequential.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="n">Module</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a module to the network.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">module</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Sequential.insert"><a class="viewcode-back" href="../../src.html#src.encapsulation.Sequential.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">module</span><span class="p">:</span> <span class="n">Module</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Insert a module to the network at a specified indice.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Sequential.reset"><a class="viewcode-back" href="../../src.html#src.encapsulation.Sequential.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset network to initial parameters and modules.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modules</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">modules_copy</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Sequential.forward"><a class="viewcode-back" href="../../src.html#src.encapsulation.Sequential.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">input</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+            <span class="c1"># print(f&quot;[{module.__class__.__name__}] ➡️ Forward...&quot;)</span>
+            <span class="c1"># print(f&quot;\tInput&#39;s shape : {input.shape}&quot;)</span>
+
+            <span class="nb">input</span> <span class="o">=</span> <span class="n">module</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+
+        <span class="c1"># print(f&quot;\tOutput&#39;s shape : {input.shape}&quot;)</span>
+        <span class="c1"># print(f&quot;[{module.__class__.__name__}] ✅ Forward done!&quot;)</span>
+
+        <span class="k">return</span> <span class="nb">input</span></div>
+
+<div class="viewcode-block" id="Sequential.backward"><a class="viewcode-back" href="../../src.html#src.encapsulation.Sequential.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
+        <span class="c1"># Pas sur des indices des listes !</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+
+        <span class="c1"># print(f&quot;\tDelta&#39;s (loss) shape : {delta.shape}&quot;)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">module</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">modules</span><span class="p">)):</span>
+            <span class="c1"># print(f&quot;[{module.__class__.__name__}] ➡️ Backward...&quot;)</span>
+            <span class="c1"># print(f&quot;\tDelta&#39;s shape : {delta.shape}&quot;)</span>
+            <span class="c1"># print(f&quot;\tInput&#39;s shape : {self.inputs[i+1].shape}&quot;)</span>
+
+            <span class="n">module</span><span class="o">.</span><span class="n">backward_update_gradient</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">delta</span><span class="p">)</span>
+
+            <span class="c1"># if hasattr(module, &quot;_parameters&quot;) and &quot;weight&quot; in module._parameters:</span>
+            <span class="c1"># print(f&quot;\tParamètres {module._parameters[&#39;weight&#39;]}&quot;)</span>
+            <span class="c1"># if hasattr(module, &quot;_gradient&quot;) and &quot;weight&quot; in module._gradient:</span>
+            <span class="c1"># print(f&quot;\tGradient {module._gradient[&#39;weight&#39;]}&quot;)</span>
+
+            <span class="n">delta</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">backward_delta</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">delta</span><span class="p">)</span>
+
+            <span class="c1"># print(f&quot;[{module.__class__.__name__}] ✅ Backward done!&quot;)</span>
+
+        <span class="k">return</span> <span class="n">delta</span></div>
+
+<div class="viewcode-block" id="Sequential.update_parameters"><a class="viewcode-back" href="../../src.html#src.encapsulation.Sequential.update_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+            <span class="c1"># print(f&quot;[{module.__class__.__name__}] ➡️ Updating parameters...&quot;)</span>
+
+            <span class="c1"># if hasattr(module, &quot;_parameters&quot;) and &quot;weight&quot; in module._parameters:</span>
+            <span class="c1"># print(f&quot;\tParamètres {module._parameters[&#39;weight&#39;]}&quot;)</span>
+            <span class="c1"># if hasattr(module, &quot;_gradient&quot;) and &quot;weight&quot; in module._gradient:</span>
+            <span class="c1"># print(f&quot;\tGradient {module._gradient[&#39;weight&#39;]}&quot;)</span>
+
+            <span class="n">module</span><span class="o">.</span><span class="n">update_parameters</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="n">eps</span><span class="p">)</span></div>
+
+            <span class="c1"># print(f&quot;[{module.__class__.__name__}] Parameters updated! ✅&quot;)</span>
+
+            <span class="c1"># if hasattr(module, &quot;_parameters&quot;) and &quot;weight&quot; in module._parameters:</span>
+            <span class="c1"># print(f&quot;\tParamètres {module._parameters[&#39;weight&#39;]}&quot;)</span>
+            <span class="c1"># if hasattr(module, &quot;_gradient&quot;) and &quot;weight&quot; in module._gradient:</span>
+            <span class="c1"># print(f&quot;\tGradient {module._gradient[&#39;weight&#39;]}&quot;)</span>
+
+<div class="viewcode-block" id="Sequential.zero_grad"><a class="viewcode-back" href="../../src.html#src.encapsulation.Sequential.zero_grad">[docs]</a>    <span class="k">def</span> <span class="nf">zero_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+            <span class="n">module</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span></div></div>
+
+            <span class="c1"># print(f&quot;[{module.__class__.__name__}] Gradient reinitialized ✅&quot;)</span>
+
+
+<div class="viewcode-block" id="Optim"><a class="viewcode-back" href="../../src.html#src.encapsulation.Optim">[docs]</a><span class="k">class</span> <span class="nc">Optim</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">:</span> <span class="n">Sequential</span><span class="p">,</span> <span class="n">loss</span><span class="p">:</span> <span class="n">Loss</span><span class="p">,</span> <span class="n">eps</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network</span> <span class="o">=</span> <span class="n">network</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">=</span> <span class="n">loss</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eps</span> <span class="o">=</span> <span class="n">eps</span>
+
+    <span class="k">def</span> <span class="nf">_create_batches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">n_samples</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">shuffle</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">seed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
+            <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y_batch</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">n_samples</span> <span class="o">//</span> <span class="n">batch_size</span><span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array_split</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">n_samples</span> <span class="o">//</span> <span class="n">batch_size</span><span class="p">),</span>
+        <span class="p">):</span>
+            <span class="k">yield</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y_batch</span>
+
+<div class="viewcode-block" id="Optim.step"><a class="viewcode-back" href="../../src.html#src.encapsulation.Optim.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_x</span><span class="p">,</span> <span class="n">batch_y</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;TODO</span>
+<span class="sd">        y_hat = self.network.forward(batch_x).reshape(-1, 1)  # (batchsize, 1)</span>
+<span class="sd">        Il faut fix ce reshape, il broke en multiclass en reshapant de (batchsize=8, 2 class) =&gt; (16, 1)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Forward pass</span>
+        <span class="n">y_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">batch_x</span><span class="p">)</span>
+        <span class="n">loss_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">batch_y</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">)</span>
+
+        <span class="c1"># Backward pass</span>
+        <span class="n">loss_delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">batch_y</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">batch_x</span><span class="p">,</span> <span class="n">loss_delta</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eps</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">loss_value</span></div>
+
+<div class="viewcode-block" id="Optim.SGD"><a class="viewcode-back" href="../../src.html#src.encapsulation.Optim.SGD">[docs]</a>    <span class="k">def</span> <span class="nf">SGD</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">X</span><span class="p">,</span>
+        <span class="n">y</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">network</span><span class="p">:</span> <span class="n">Sequential</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">shuffle</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">network</span><span class="p">:</span>
+            <span class="n">network</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span>
+
+        <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="n">trange</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+            <span class="n">loss_sum</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="k">for</span> <span class="n">X_i</span><span class="p">,</span> <span class="n">y_i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_batches</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="p">,</span> <span class="n">seed</span><span class="p">):</span>
+                <span class="n">loss_sum</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">X_i</span><span class="p">,</span> <span class="n">y_i</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+            <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss_sum</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+
+            <span class="c1"># print(f&quot;Epoch [{epoch+1}], Loss = {losses[-1]:.4f}&quot;)</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Optim.SGD_eval"><a class="viewcode-back" href="../../src.html#src.encapsulation.Optim.SGD_eval">[docs]</a>    <span class="k">def</span> <span class="nf">SGD_eval</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">X</span><span class="p">,</span>
+        <span class="n">y</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">test_size</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">network</span><span class="p">:</span> <span class="n">Sequential</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">shuffle_train</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">shuffle_test</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">return_dataframe</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">fig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">network</span><span class="p">:</span>
+            <span class="n">network</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span>
+        <span class="k">if</span> <span class="n">fig</span> <span class="ow">and</span> <span class="n">ax</span><span class="p">:</span>
+            <span class="n">dh</span> <span class="o">=</span> <span class="n">display</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">display_id</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Train test split</span>
+        <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+            <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">test_size</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Sauvegarde pour éventuelle utilisation en dehors de la fonction</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_test</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_train</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_test</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">X_train</span><span class="p">,</span>
+            <span class="n">X_test</span><span class="p">,</span>
+            <span class="n">y_train</span><span class="p">,</span>
+            <span class="n">y_test</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Training</span>
+        <span class="n">losses_train</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">losses_test</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">scores_train</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">scores_test</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">epoch_progress</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Epoch&quot;</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">batch_progress</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span>
+            <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Batch&quot;</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">),</span> <span class="n">mininterval</span><span class="o">=</span><span class="mf">0.3</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="n">epoch_progress</span><span class="p">:</span>
+            <span class="n">loss_sum</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">batch_iter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_batches</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">shuffle_train</span><span class="p">,</span> <span class="n">seed</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">X_i</span><span class="p">,</span> <span class="n">y_i</span> <span class="ow">in</span> <span class="n">batch_iter</span><span class="p">:</span>
+                <span class="n">loss_batch_vect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">X_i</span><span class="p">,</span> <span class="n">y_i</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+                <span class="n">loss_sum</span> <span class="o">+=</span> <span class="n">loss_batch_vect</span>
+                <span class="n">batch_progress</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+            <span class="n">batch_progress</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>  <span class="c1"># Reset batch bar</span>
+
+            <span class="n">epoch_train_loss</span> <span class="o">=</span> <span class="n">loss_sum</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span>
+            <span class="n">losses_train</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epoch_train_loss</span><span class="p">)</span>
+            <span class="n">epoch_train_score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+            <span class="n">scores_train</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epoch_train_score</span><span class="p">)</span>
+
+            <span class="c1"># Epoch evaluation</span>
+            <span class="n">y_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+            <span class="n">epoch_test_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+            <span class="n">epoch_test_score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+            <span class="n">losses_test</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epoch_test_loss</span><span class="p">)</span>
+            <span class="n">scores_test</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epoch_test_score</span><span class="p">)</span>
+
+            <span class="c1"># Update the epoch progress bar with the latest epoch loss value</span>
+            <span class="n">epoch_progress</span><span class="o">.</span><span class="n">set_postfix</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;train_loss&quot;</span><span class="p">:</span> <span class="n">epoch_train_loss</span><span class="p">,</span>
+                    <span class="s2">&quot;train_score&quot;</span><span class="p">:</span> <span class="n">epoch_train_score</span><span class="p">,</span>
+                    <span class="s2">&quot;test_loss&quot;</span><span class="p">:</span> <span class="n">epoch_test_loss</span><span class="p">,</span>
+                    <span class="s2">&quot;test_score&quot;</span><span class="p">:</span> <span class="n">epoch_test_score</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">fig</span> <span class="ow">and</span> <span class="n">ax</span><span class="p">:</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">losses_train</span><span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">losses_test</span><span class="p">)</span>
+                <span class="n">dh</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">batch_progress</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">return_dataframe</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">DataFrame</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;epoch&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">)],</span>
+                    <span class="s2">&quot;loss_train&quot;</span><span class="p">:</span> <span class="n">losses_train</span><span class="p">,</span>
+                    <span class="s2">&quot;loss_test&quot;</span><span class="p">:</span> <span class="n">losses_test</span><span class="p">,</span>
+                    <span class="s2">&quot;score_train&quot;</span><span class="p">:</span> <span class="n">scores_train</span><span class="p">,</span>
+                    <span class="s2">&quot;score_test&quot;</span><span class="p">:</span> <span class="n">scores_test</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">losses_train</span><span class="p">),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">scores_train</span><span class="p">),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">losses_test</span><span class="p">),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">scores_test</span><span class="p">),</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Optim.score"><a class="viewcode-back" href="../../src.html#src.encapsulation.Optim.score">[docs]</a>    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="ne">ValueError</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># eventual y with OneHot encoding</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">y_hat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="n">y_hat</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Charles Vin &amp; Aymeric Delefosse.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
