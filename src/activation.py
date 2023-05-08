@@ -165,7 +165,7 @@ class ReLU(Module):
         pass  # No gradient to update in ReLU
 
     def backward_delta(self, input, delta):
-        """math:: f'(x) = 1 \text{if} x > 0 \text{else} 0."""
+        """.. math:: \frac{\partial M}{\partial z^h} = 1 \text{ if } x > 0 \text{ else } 0."""
         return delta * (input > 0)
 
     def update_parameters(self, learning_rate):
