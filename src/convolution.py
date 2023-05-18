@@ -236,10 +236,10 @@ class Conv1D(Module):
         ]
         X_view = X_view.reshape(batch_size, out_length, self.chan_in, self.k_size)
 
-        self._gradient["weight"] += np.einsum("bock, bod -> kcd", X_view, delta)
+        self._gradient["weight"] += np.einsum("bock, bod -> kcd", X_view, delta) / batch_size
 
         if self.include_bias:
-            self._gradient["bias"] += np.sum(delta, axis=(0, 1))
+            self._gradient["bias"] += np.sum(delta, axis=(0, 1)) / batch_size
 
     def backward_delta(self, input, delta):
         _, length, chan_in = input.shape
