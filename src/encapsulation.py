@@ -257,7 +257,7 @@ class Optim:
 
         batch_progress.close()
         if return_dataframe:
-            return DataFrame(
+            self.train_df = DataFrame(
                 {
                     "epoch": np.arange(len(losses_train)),
                     "loss_train": losses_train,
@@ -267,12 +267,13 @@ class Optim:
                 }
             )
         else:
-            return (
+            self.train_df = (
                 np.array(losses_train),
                 np.array(scores_train),
                 np.array(losses_test),
                 np.array(scores_test),
             )
+        return self.train_df
 
     def score(self, X, y):
         assert X.shape[0] == y.shape[0], ValueError()
