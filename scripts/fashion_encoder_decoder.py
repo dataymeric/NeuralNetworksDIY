@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 from src.linear import Linear
 from src.loss import *
-from src.activation import TanH, Sigmoid, TanH
+from src.activation import TanH, Sigmoid, StableSigmoid, Softmax, LogSoftmax, ReLU, TanH, Softplus
 from src.encapsulation import Sequential, Optim
 
 np.random.seed(42)
@@ -161,7 +161,43 @@ def train_big_net():
     with open("../models/fashion-mnist_30_epoch_big_net.pkl", "wb") as f:
         pickle.dump(optimizer, f)
 
+""" 
+    ┌────────────────────────────────────────────────────────────────────────┐
+    │ Small network with different activation function                       │
+    └────────────────────────────────────────────────────────────────────────┘
+ """
+
+def per_acc_fct():
+    d = {}
+    for act_fct in [TanH, Sigmoid, StableSigmoid, Softmax, LogSoftmax, ReLU, TanH, Softplus]:
+        try:
+            encoder = [
+                Linear(784, 64),
+                act_fct(),
+            ]
+            decoder = [
+                Linear(64, 784),
+                Sigmoid()
+            ]
+            net = Sequential(*(encoder + decoder))
+            optimizer = Optim(net.reset(), MSELoss(), eps=1e-3)
+            optimizer.SGD_eval(
+                X_train,
+                X_train,
+                batch_size,
+                30,
+                test_size=0.33,
+                return_dataframe=True,
+                patience=None,
+            )
+            d[act_fct.__name__] = optimizer
+        except KeyError:
+            continue
+    with open("../models/fashion-mnist_dict_of_optimizer_acc_fct.pkl", "wb") as f:
+        pickle.dump(d, f)
+
 if __name__ == '__main__':
-    train_small_net()
-    train_medium_net()
-    train_big_net()
+    # train_small_net()
+    # train_medium_net()
+    # train_big_net()
+    per_acc_fct()
