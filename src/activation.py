@@ -17,7 +17,12 @@ class TanH(Module):
     r"""Hyperbolic Tangent activation function.
 
     .. math::
-        \text{TanH}(x) = \tanh(x) = \frac{\exp(x) - \exp(-x)} {\exp(x) + \exp(-x)}
+        \begin{align*}
+            \text{TanH}(x) &= \tanh(x)  \\
+                &= \frac{\sinh x}{\cosh x} \\
+                &= \frac{\exp(x) - \exp(-x)} {\exp(x) + \exp(-x)} \\
+                &= \frac{e^{2x} - 1 }{e^{2x} + 1}
+            \end{align*}
     """
 
     def __init__(self) -> None:
@@ -33,6 +38,9 @@ class TanH(Module):
         pass  # No gradient to update in TanH
 
     def backward_delta(self, input, delta):
+        r"""
+        .. math:: \frac{\partial M}{\partial z^h} = 1 - \tanh (z^h)^2
+        """
         return delta * (1 - self(input) ** 2)
 
     def update_parameters(self, learning_rate):
@@ -59,6 +67,9 @@ class Sigmoid(Module):
         pass  # No gradient to update in Sigmoid
 
     def backward_delta(self, input, delta):
+        r"""
+        .. math :: \frac{\partial M}{\partial z^h} = \sigma(z^h) * (1 - \sigma(z^h))
+        """
         sig_X = self(input)
         return delta * sig_X * (1 - sig_X)
 
@@ -90,7 +101,8 @@ class StableSigmoid(Module):
 
 
 class Softmax(Module):
-    r"""Softmax activation function.
+    r"""Softmax activation function. 
+    Commonly used along with a cross entropy loss. See [Softmax and cross-entropy loss](https://eli.thegreenplace.net/2016/the-softmax-function-and-its-derivative/) and [Derivative of Cross Entropy Loss with Softmax](https://www.parasdahal.com/softmax-crossentropy)
 
     .. math:: \text{Softmax}(x_{i}) = \frac{\exp(x_i)}{\sum_j \exp(x_j)}
     """
@@ -102,7 +114,9 @@ class Softmax(Module):
         pass
 
     def forward(self, X):
-        # log-sum-exp trick
+        """
+        Implemented using a log sum exp trick to avoid NaN. See [Computing softmax and numerical stability](https://eli.thegreenplace.net/2016/the-softmax-function-and-its-derivative/).
+        """
         exp_X = np.exp(X - np.max(X, axis=-1, keepdims=True))
         return exp_X / np.sum(exp_X, axis=-1, keepdims=True)
 
@@ -110,6 +124,17 @@ class Softmax(Module):
         pass  # No gradient to update in Softmax
 
     def backward_delta(self, input, delta):
+        r"""
+        math::
+            \frac{\partial M(x_i)}{\partial x_i} = M^h(x_i) * (1 - M^h(x_i))
+
+        Plus précisement 
+        math:: 
+            \frac{\partial M^h(x_i)}{x_j} = \begin{cases}
+                M^h(x_i) * ( 1 - M^h(x_j) ) &\text{si } i = j \\
+                - M^h(x_j) M^h(x_i) &\text{ si } i \neq j \\
+            \end{cases}
+        """
         softmax = self(input)
         return delta * (softmax * (1 - softmax))
 
@@ -165,7 +190,7 @@ class ReLU(Module):
         pass  # No gradient to update in ReLU
 
     def backward_delta(self, input, delta):
-        """math:: f'(x) = 1 \text{if} x > 0 \text{else} 0."""
+        r""".. math:: \frac{\partial M}{\partial z^h} = 1 \text{ if } x > 0 \text{ else } 0."""
         return delta * (input > 0)
 
     def update_parameters(self, learning_rate):
@@ -197,6 +222,13 @@ class LeakyReLU(Module):
         pass  # No gradient to update in Leaky ReLU
 
     def backward_delta(self, input, delta):
+        r"""
+        math::
+            \frac{\partial M}{\partial z^h} = \begin{cases} 
+                1 & \text{if } x>0, \\
+                \alpha & \text{otherwise}.
+            \end{cases}
+        """
         dx = np.ones_like(input)
         dx[input <= 0] = self.alpha
         return delta * dx
@@ -208,7 +240,7 @@ class LeakyReLU(Module):
 class Softplus(Module):
     r"""Smooth approximation of the ReLU activation function.
 
-    .. math:: \text{Softplus}(x) = \ln(1+e^x)
+    .. math:: \text{Softplus}(x) = \ln(1 + e^x)
     """
 
     def __init__(self) -> None:
@@ -224,6 +256,7 @@ class Softplus(Module):
         pass  # No gradient to update in Softplus
 
     def backward_delta(self, input, delta):
+        r""".. math:: \frac{\partial M}{\partial z^h} = \sigma (x) = \frac{1}{1 + e^{-x}}"""
         return delta / (1 + np.exp(-input))
 
     def update_parameters(self, learning_rate):
