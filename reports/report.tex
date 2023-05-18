@@ -238,7 +238,7 @@ Diverses architectures ont également été testées, pour voir la robustesse (o
 \texttt{Flatten()} $\rightarrow$
 \texttt{Linear(1984, 10)}
 
-Les résultats sont sur la figure \ref*{fig:conv2layers} : les résultats ne sont pas catastrophiques, le réseau commence à apprendre, avant de subitement désapprendre.mais beaucoup moins bien que le réseau précédent, de 
+Les résultats sont sur la figure \ref*{fig:conv2layers} : les résultats ne sont pas catastrophiques, le réseau commence à apprendre, avant de subitement désapprendre. Les performances sont bien en-deça de celui du réseau précédent, avoir une couche linéaire n'est sûrement pas suffisante pour correctement classifier nos données.
 
 \begin{figure}[htbp]
     \centering
@@ -256,7 +256,7 @@ Les résultats sont sur la figure \ref*{fig:conv2layers} : les résultats ne son
 \texttt{Flatten()} $\rightarrow$
 \texttt{Linear(512, 10)}
 
-Les résultats sont sur la figure \ref*{fig:conv4layers}
+Les résultats sont sur la figure \ref*{fig:conv4layers} : ici, il parvient mieux à apprendre que le réseau précédent, mais peine à obtenir des performances correctes. On voit par ailleurs que la classe 2 est celle qui est la moins bien classée et est la cause de ce manque de performance : la taille du kernel dans le max pooling est surement trop élevé pour garder un nombre de features significatifs et donc identifier correctement cette classe.
 
 \begin{figure}[htbp]
     \centering
@@ -300,7 +300,7 @@ Ces trois architectures, plus ou moins complexes, ont toutes mené rapidement à
     \label{fig:reconstruction}
 \end{figure}
 
-Pour le réseau n°1, une étude de l'influence de la fonction d'activation placé avant l'espace lattent a été réalisé. Le réseau a donc la forme suivante : \texttt{Linear(784, 64) $\rightarrow$ acc\_fct() $\rightarrow$ décodeur}. Les résultats sont présenté dans la figure \ref*{fig:accfct}. 
+Pour le réseau n°1, une étude de l'influence de la fonction d'activation placé avant l'espace latent a été réalisé. Le réseau a donc la forme suivante : \texttt{Linear(784, 64) $\rightarrow$ acc\_fct() $\rightarrow$ décodeur}. Les résultats sont présenté dans la figure \ref*{fig:accfct}. 
 
 \begin{figure}[htbp]
     \centering
@@ -311,35 +311,119 @@ Pour le réseau n°1, une étude de l'influence de la fonction d'activation plac
 
 On peut voir que le \texttt{Softmax()} et le \texttt{LogSoftmax()} ont des grosses difficultées d'apprentissage. On remarque également que la \texttt{ReLU} apprends beaucoup moins vite que les autres fonction d'activation. 
 
-On s'est aussi amuser à visualiser la reconstruction de l'image au fur et à mesure des époques d'apprentissage dans les figures \ref*{fig:perepochsimple} et \ref*{fig:perepochbig}.
+On s'est aussi amuser à visualiser la reconstruction de l'image au fur et à mesure des époques d'apprentissage dans les figures \ref*{fig:perEpochSimple} et \ref*{fig:perEpochBig}.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics*[width=\textwidth]{reconstruction_per_epoch_simple_model.pdf}
     \caption{Reconstruction par epoch pour le model n°1}
-    \label{fig:perepochsimple}
+    \label{fig:perEpochSimple}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
     \includegraphics*[width=\textwidth]{reconstruction_per_epoch_big_model.pdf}
     \caption{Reconstruction par epoch pour le model n°3}
-    \label{fig:perepochbig}
+    \label{fig:perEpochBig}
 \end{figure}
 
-\subsubsection{Organisation de l'espace lattent}
+\subsubsection{Organisation de l'espace latent}
+Afin de visualiser l'espace latent de 64 dimension, nous avons utiliser la t-SNE afin de le réduire à deux dimensions visualisables. Ce travail a été fait sur les deux jeu de données et sur chacune des séparations entrainement et de test, en utilisant l'auto-encoder le riche en paramètre. Les t-SNE sur le jeu de test sont assez similaire à celle pour le train, nous ne montrerons ici que celle des données d'entrainement. Ces visualisations sont dans les figures \ref*{fig:tsneMnist} et \ref*{fig:tsneUsps}. 
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics*[width=.75\textwidth]{tsne_mnist_train_big.pdf}
+    \caption{t-SNE sur l'espace latent du modèle n°3 pour \textit{fashion-mnist} en utilisant les données d'entrainement}
+    \label{fig:tsneMnist}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics*[width=.75\textwidth]{tsne_usps_train_big.pdf}
+    \caption{t-SNE sur l'espace latent d'un plus gros modèle pour \textit{usps} en utilisant les données d'entrainement}
+    \label{fig:tsneUsps}
+\end{figure}
+
+Les résultats sont assez intéréssant. En effet on peut voir que les classes zéro, deux, quatre et six n'ont pas de vraiment de cluster, représentant respectivement les T-shirt/top, les Pullover, les mateaux et les chemises. Ces classe étant plus dicifile à distinguer entre elle qu'un pantalon (classe une) ou d'une chaussure (classe 5), elle sont mixé dans l'espace latent.
+
 
 
 \subsubsection{Débruitage}
 
-Ici, l'objectif est de reconstruire des images d'origine à partir de versions bruitées, qui est similaire à un travail de reconstruction. Elle montre comment le modèle est capable de supprimer le bruit et de récupérer les informations essentielles des images d'origine.
+Ici, l'objectif est de reconstruire des images d'origine à partir de versions bruitées, qui est similaire à un travail de reconstruction. Elle montre comment le modèle est capable de supprimer le bruit et de récupérer les informations essentielles des images d'origine. Les trois modèles appris précédemment ont servi à cette tâche.
 
+Avec un bruit gaussien de 20 \%, sur une image de chaque classe. 
+
+Le réseau le plus simple, sur la figure \ref*{fig:reconstruct_noisy_all_small} s'en sort plutôt bien. Bien que l'on perd tout de même en information, notamment au niveau des contours, on parvient à retrouver la forme générale de chaque classe tout en restant fidèle au niveau de gris.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics*[width=\textwidth]{reconstruct_noisy_all_small.pdf}
+    \caption{Reconstruction d'une image bruitée de chaque classe pour le réseau n° 1}
+    \label{fig:reconstruct_noisy_all_small}
+\end{figure}
+
+Le réseau légérement plus complexe, sur la figure \ref*{fig:reconstruct_noisy_all_medium} s'en sort bien également. Il arrive mieux à identifier les contours et les couleurs, pas pour toutes, notamment pour la chaussure de tennis (classe 7), qu'il confond avec des talons. 
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics*[width=\textwidth]{reconstruct_noisy_all_medium.pdf}
+    \caption{Reconstruction d'une image bruitée de chaque classe pour le réseau n° 2}
+    \label{fig:reconstruct_noisy_all_medium}
+\end{figure}
+
+Le réseau plus complexe, sur la figure \ref*{fig:reconstruct_noisy_all_big} s'en sort le mieux.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics*[width=\textwidth]{reconstruct_noisy_all_big.pdf}
+    \caption{Reconstruction d'une image bruitée de chaque classe pour le réseau n° 3}
+    \label{fig:reconstruct_noisy_all_big}
+\end{figure}
+
+Sur les figures \ref*{reconstructnoisychaussure}, \ref*{reconstructnoisybag}, \ref*{reconstructnoisypantalon}, \ref*{reconstructnoisycoat}, on fait varier le pourcentage de bruit gaussien ajouté aux données pour comparer la robustesse des modèles. Ainsi, les images débruitées se transforment en tout sauf quelque chose d'original : on reconnait bien souvent une image issue de la classe des vestes ou des t-shirts.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics*[width=\textwidth]{reconstruct_noisy_chaussure.pdf}
+    \caption{Reconstruction d'une image bruitée de chaussure}
+    \label{fig:reconstructnoisychaussure}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics*[width=\textwidth]{reconstruct_noisy_sac.pdf}
+    \caption{Reconstruction d'une image bruitée de sac}
+    \label{fig:reconstructnoisybag}
+\end{figure}
+
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics*[width=\textwidth]{reconstruct_noisy_pantalon.pdf}
+    \caption{Reconstruction d'une image bruitée de pantalon}
+    \label{fig:reconstructnoisypantalon}
+\end{figure}
+
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics*[width=\textwidth]{reconstruct_noisy_coat.pdf}
+    \caption{Reconstruction d'une image bruitée de manteau}
+    \label{fig:reconstructnoisycoat}
+\end{figure}
 
 
 Une grosse amélioration de l'auto-encodeur peut se faire avec des réseaux de neurones convolutionnels mais requièrent des couches de convolutions transposées, qui "déconvolutionnent" des données, ou encore des fonctions d'upsampling. Cela serait également beaucoup plus simple avec une convolution en 2D. Nous avons tenté, en vain, d'utiliser un auto-encodeur avec une architecture ressemblant à : \texttt{Conv1D(3, 1, 32)} $\rightarrow$ {ReLU()} $\rightarrow$ \texttt{MaxPool1D(2, 1)} $\rightarrow$ \texttt{Conv1D(3, 32, 16)} $\rightarrow$ \texttt{ReLU()} $\rightarrow$ \texttt{MaxPool1D(2, 1)} $\rightarrow$ \texttt{Conv1D(3, 16, 16)} $\rightarrow$ \texttt{ReLU()} $\rightarrow$ \texttt{Conv1D(2, 16, 32)} $\rightarrow$ \texttt{ReLU()} $\rightarrow$ \texttt{Conv1D(2, stride=2)} $\rightarrow$ \texttt{Sigmoid()}. Le \textit{padding} serait également nécessaire pour garder la taille d'origine des données.
 
 
-\subsection{Transfert de style}
+\section{Conclusion}
+
+Transfert de style aurait été cool mais besoin de conv2d et on avait pas le temps mashallah
+
+traduction 
+
+opti gpu et compilation 
 
 
 

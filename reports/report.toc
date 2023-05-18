@@ -13,6 +13,6 @@
 \contentsline {subsubsection}{\numberline {3.2.4}Diverses architectures}{7}{subsubsection.3.2.4}%
 \contentsline {subsection}{\numberline {3.3}Auto-encodeur}{9}{subsection.3.3}%
 \contentsline {subsubsection}{\numberline {3.3.1}Reconstruction}{9}{subsubsection.3.3.1}%
-\contentsline {subsubsection}{\numberline {3.3.2}Organisation de l'espace lattent}{11}{subsubsection.3.3.2}%
-\contentsline {subsubsection}{\numberline {3.3.3}Débruitage}{11}{subsubsection.3.3.3}%
-\contentsline {subsection}{\numberline {3.4}Transfert de style}{11}{subsection.3.4}%
+\contentsline {subsubsection}{\numberline {3.3.2}Organisation de l'espace latent}{11}{subsubsection.3.3.2}%
+\contentsline {subsubsection}{\numberline {3.3.3}Débruitage}{12}{subsubsection.3.3.3}%
+\contentsline {section}{\numberline {4}Conclusion}{12}{section.4}%
