@@ -166,6 +166,7 @@ class Optim:
         batch_size: int,
         epochs: int,
         test_size: float,
+        patience: int = 5,
         network: Sequential = None,
         shuffle_train: bool = True,
         shuffle_test: bool = False,
@@ -198,6 +199,10 @@ class Optim:
         losses_test = []
         scores_train = []
         scores_test = []
+
+        # Early stopping
+        best_score = 0.0
+        counter = 0
 
         epoch_progress = tqdm(range(epochs), desc="Epoch", position=0)
         batch_progress = tqdm(
@@ -240,11 +245,21 @@ class Optim:
                 ax.plot(losses_test)
                 dh.update(fig, clear=True)
 
+            # Early stopping
+            if epoch_test_score > best_score:
+                best_score = epoch_test_score
+                counter = 0
+            else:
+                counter += 1
+                if patience and counter >= patience:
+                    # print(f"Early stopping after {patience} epochs without improvement.")
+                    break
+
         batch_progress.close()
         if return_dataframe:
             return DataFrame(
                 {
-                    "epoch": [i for i in range(epochs)],
+                    "epoch": np.arange(len(losses_train)),
                     "loss_train": losses_train,
                     "loss_test": losses_test,
                     "score_train": scores_train,
