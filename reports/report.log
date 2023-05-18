@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2022.10.2)  18 MAY 2023 13:19
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2022.10.2)  18 MAY 2023 22:34
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -645,12 +645,12 @@ LaTeX Info: Redefining \nameref on input line 43.
 \@outlinefile=\write5
 \openout5 = `report.out'.
 
-<./src/neural-network.png, id=60, 385.44pt x 385.44pt>
+<./src/neural-network.png, id=72, 385.44pt x 385.44pt>
 File: ./src/neural-network.png Graphic file (type png)
 <use ./src/neural-network.png>
 Package pdftex.def Info: ./src/neural-network.png  used on input line 61.
 (pdftex.def)             Requested size: 227.62206pt x 227.61935pt.
-<./src/logo.png, id=62, 390.45876pt x 157.58875pt>
+<./src/logo.png, id=74, 390.45876pt x 157.58875pt>
 File: ./src/logo.png Graphic file (type png)
 <use ./src/logo.png>
 Package pdftex.def Info: ./src/logo.png  used on input line 66.
@@ -673,63 +673,129 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has b
 <to be read again> 
                    \relax 
 l.74 \newpage
-              [1] [2]
-<./src/init_type.pdf, id=109, 2882.76804pt x 1280.72815pt>
-File: ./src/init_type.pdf Graphic file (type pdf)
-<use ./src/init_type.pdf>
-Package pdftex.def Info: ./src/init_type.pdf  used on input line 120.
-(pdftex.def)             Requested size: 455.24411pt x 202.2434pt.
-LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 125.
+              [1]
+LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 83.
  (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
-) [3 <./src/init_type.pdf>]
-<./src/lr_effet.pdf, id=212, 2890.8pt x 1445.4pt>
+) [2]
+<./src/init_type.pdf, id=125, 2865.93538pt x 1267.15952pt>
+File: ./src/init_type.pdf Graphic file (type pdf)
+<use ./src/init_type.pdf>
+Package pdftex.def Info: ./src/init_type.pdf  used on input line 128.
+(pdftex.def)             Requested size: 455.24411pt x 201.28018pt.
+ [3 <./src/init_type.pdf>]
+<./src/lr_effet.pdf, id=228, 3083.03822pt x 1361.21132pt>
 File: ./src/lr_effet.pdf Graphic file (type pdf)
 <use ./src/lr_effet.pdf>
-Package pdftex.def Info: ./src/lr_effet.pdf  used on input line 137.
-(pdftex.def)             Requested size: 455.24411pt x 227.60759pt.
+Package pdftex.def Info: ./src/lr_effet.pdf  used on input line 143.
+(pdftex.def)             Requested size: 455.24411pt x 200.99501pt.
  [4 <./src/lr_effet.pdf>]
+<./src/activation_func.pdf, id=294, 3084.62422pt x 1748.95926pt>
+File: ./src/activation_func.pdf Graphic file (type pdf)
+<use ./src/activation_func.pdf>
+Package pdftex.def Info: ./src/activation_func.pdf  used on input line 179.
+(pdftex.def)             Requested size: 455.24411pt x 258.11603pt.
+ [5 <./src/activation_func.pdf>]
+Overfull \hbox (6.90286pt too wide) in paragraph at lines 190--191
+\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 Flatten() $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 Linear(4064,100) $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 ReLU() $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 Linear(100,10) \T1/cmr/m/n/10 fonc-tionne ex-trê-me-ment bien dans
+ []
 
-LaTeX Warning: File `activation_func.pdf' not found on input line 173.
+<./src/conv/conv_32batch_zeros.pdf, id=395, 1405.2358pt x 337.38295pt>
+File: ./src/conv/conv_32batch_zeros.pdf Graphic file (type pdf)
+<use ./src/conv/conv_32batch_zeros.pdf>
+Package pdftex.def Info: ./src/conv/conv_32batch_zeros.pdf  used on input line 198.
+(pdftex.def)             Requested size: 455.24411pt x 109.29808pt.
+[6 <./src/conv/conv_32batch_zeros.pdf>]
+<./src/conv/conv_ksize.pdf, id=442, 2865.09851pt x 1276.28822pt>
+File: ./src/conv/conv_ksize.pdf Graphic file (type pdf)
+<use ./src/conv/conv_ksize.pdf>
+Package pdftex.def Info: ./src/conv/conv_ksize.pdf  used on input line 214.
+(pdftex.def)             Requested size: 455.24411pt x 202.78865pt.
+<./src/conv/conv_feature_maps.pdf, id=443, 2865.72145pt x 1273.36801pt>
+File: ./src/conv/conv_feature_maps.pdf Graphic file (type pdf)
+<use ./src/conv/conv_feature_maps.pdf>
+Package pdftex.def Info: ./src/conv/conv_feature_maps.pdf  used on input line 225.
+(pdftex.def)             Requested size: 455.24411pt x 202.2858pt.
+
+Overfull \hbox (10.80501pt too wide) in paragraph at lines 236--240
+ []\T1/cmr/bx/n/10 Deux couches convo-lu-tion-nelles \T1/cmtt/m/n/10 Conv1D(3, 1, 32, 1) $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 ReLU() $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 MaxPool1D(2, 2) $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 Conv1D(3,
+ []
+
+<./src/conv/conv_2layers.pdf, id=444, 1403.86176pt x 337.38295pt>
+File: ./src/conv/conv_2layers.pdf Graphic file (type pdf)
+<use ./src/conv/conv_2layers.pdf>
+Package pdftex.def Info: ./src/conv/conv_2layers.pdf  used on input line 245.
+(pdftex.def)             Requested size: 455.24411pt x 109.40619pt.
+
+Overfull \hbox (19.35153pt too wide) in paragraph at lines 252--258
+ []\T1/cmr/bx/n/10 Quatre couches convo-lu-tion-nelles \T1/cmtt/m/n/10 Conv1D(3, 1, 64, 1) $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 ReLU() $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 MaxPool1D(8, 2) $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 Conv1D(3,
+ []
+
+[7 <./src/conv/conv_ksize.pdf>] [8 <./src/conv/conv_feature_maps.pdf> <./src/conv/conv_2layers.pdf>]
+<./src/conv/conv_4layers.pdf, id=613, 1402.73964pt x 337.5778pt>
+File: ./src/conv/conv_4layers.pdf Graphic file (type pdf)
+<use ./src/conv/conv_4layers.pdf>
+Package pdftex.def Info: ./src/conv/conv_4layers.pdf  used on input line 263.
+(pdftex.def)             Requested size: 455.24411pt x 109.55695pt.
+
+Overfull \hbox (12.6753pt too wide) in paragraph at lines 278--279
+[]\T1/cmr/m/n/10 Nous avons en-trainé un auto-encodeur sur les deux jeux de don-nées pré-cé-dents : (\T1/cmtt/m/n/10 USPS \T1/cmr/m/n/10 et \T1/cmtt/m/n/10 fashion-mnist\T1/cmr/m/n/10 ). 
+ []
 
 
-/home/charles/NeuralNetworksDIY/reports/report.tex:173: Package pdftex.def Error: File `activation_func.pdf' not found: using draft setting.
+Overfull \hbox (23.65611pt too wide) in paragraph at lines 283--284
+[]\T1/cmtt/m/n/10 Linear(784, 512) $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 TanH() $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 Linear(512, 256) $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 TanH() $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 Linear(256, 128) $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 TanH()
+ []
 
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.173 ...cs[width=\textwidth]{activation_func.pdf}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 189.
-[5] [6]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 189.
+[9 <./src/conv/conv_4layers.pdf>]
+<./src/loss_encoder_fashion_3_networks.pdf, id=664, 1362.40266pt x 437.9562pt>
+File: ./src/loss_encoder_fashion_3_networks.pdf Graphic file (type pdf)
+<use ./src/loss_encoder_fashion_3_networks.pdf>
+Package pdftex.def Info: ./src/loss_encoder_fashion_3_networks.pdf  used on input line 291.
+(pdftex.def)             Requested size: 341.43307pt x 109.75607pt.
+<./src/reconstruction_per_network_cplxity.pdf, id=666, 1810.90553pt x 458.4233pt>
+File: ./src/reconstruction_per_network_cplxity.pdf Graphic file (type pdf)
+<use ./src/reconstruction_per_network_cplxity.pdf>
+Package pdftex.def Info: ./src/reconstruction_per_network_cplxity.pdf  used on input line 298.
+(pdftex.def)             Requested size: 341.43307pt x 86.42981pt.
+<./src/encoder_decoder_middle_func_simple_net.pdf, id=668, 3082.69612pt x 1251.46367pt>
+File: ./src/encoder_decoder_middle_func_simple_net.pdf Graphic file (type pdf)
+<use ./src/encoder_decoder_middle_func_simple_net.pdf>
+Package pdftex.def Info: ./src/encoder_decoder_middle_func_simple_net.pdf  used on input line 307.
+(pdftex.def)             Requested size: 455.24411pt x 184.80888pt.
+<./src/reconstruction_per_epoch_simple_model.pdf, id=670, 1391.4531pt x 264.5082pt>
+File: ./src/reconstruction_per_epoch_simple_model.pdf Graphic file (type pdf)
+<use ./src/reconstruction_per_epoch_simple_model.pdf>
+Package pdftex.def Info: ./src/reconstruction_per_epoch_simple_model.pdf  used on input line 318.
+(pdftex.def)             Requested size: 455.24411pt x 86.53726pt.
+<./src/reconstruction_per_epoch_big_model.pdf, id=672, 1391.4531pt x 264.5082pt>
+File: ./src/reconstruction_per_epoch_big_model.pdf Graphic file (type pdf)
+<use ./src/reconstruction_per_epoch_big_model.pdf>
+Package pdftex.def Info: ./src/reconstruction_per_epoch_big_model.pdf  used on input line 325.
+(pdftex.def)             Requested size: 455.24411pt x 86.53726pt.
+ [10 <./src/loss_encoder_fashion_3_networks.pdf> <./src/reconstruction_per_network_cplxity.pdf> <./src/encoder_decoder_middle_func_simple_net.pdf>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 346.
+ [11 <./src/reconstruction_per_epoch_simple_model.pdf> <./src/reconstruction_per_epoch_big_model.pdf>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 346.
  (/home/charles/NeuralNetworksDIY/reports/report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 189.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 189.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 346.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 346.
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: 916DC7E2A643392DEEA24DBC9A7CEA7F;1040.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
+(rerunfilecheck)             Checksum: CFCDA2EC634DA0DD42B13408485666B1;1310.
  ) 
 Here is how much of TeX's memory you used:
- 15674 strings out of 483154
- 265111 string characters out of 5965023
- 612319 words of memory out of 5000000
- 30364 multiletter control sequences out of 15000+600000
- 545556 words of font info for 48 fonts, out of 8000000 for 9000
+ 15755 strings out of 483154
+ 267967 string characters out of 5965023
+ 613319 words of memory out of 5000000
+ 30420 multiletter control sequences out of 15000+600000
+ 545891 words of font info for 49 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 48i,10n,46p,880b,603s stack positions out of 5000i,500n,10000p,200000b,80000s
- </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbi1000.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1000.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/eccc1000.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm0700.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1000.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1000.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1000.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/eccc1440.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1440.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1728.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx2488.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on /home/charles/NeuralNetworksDIY/reports/report.pdf (7 pages, 482352 bytes).
+ 48i,10n,46p,989b,581s stack positions out of 5000i,500n,10000p,200000b,80000s
+ </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbi1000.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/eccc1000.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm0700.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1000.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1000.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1000.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1000.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/eccc1440.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1440.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1728.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx2488.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on /home/charles/NeuralNetworksDIY/reports/report.pdf (12 pages, 809480 bytes).
 PDF statistics:
- 634 PDF objects out of 1000 (max. 8388607)
- 233 compressed objects within 3 object streams
- 25 named destinations out of 1000 (max. 500000)
- 133 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1359 PDF objects out of 1440 (max. 8388607)
+ 469 compressed objects within 5 object streams
+ 49 named destinations out of 1000 (max. 500000)
+ 242 words of extra memory for PDF output out of 10000 (max. 10000000)
 
