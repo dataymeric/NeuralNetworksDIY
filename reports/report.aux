@@ -34,7 +34,7 @@
 \@writefile{toc}{\contentsline {section}{\numberline {2}Implémentation}{2}{section.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {3}Expérimentation}{2}{section.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Classification}{2}{subsection.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.1}Impact de l'initialisation des paramètres}{2}{subsubsection.3.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.1}Effet de l'initialisation des paramètres}{2}{subsubsection.3.1.1}\protected@file@percent }
 \pbs@newkey{pbs@last@page}{4}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Représentation des paramètres, d'une matrice de confusion, de l'évolution du coût et du score par époque en fonction de l'initialisation des paramètres\relax }}{3}{figure.caption.2}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
@@ -45,13 +45,65 @@
 \newlabel{fig:effetlearningrate}{{2}{4}{Représentation des paramètres, de l'évolution du coût et du score par époque en fonction du taux d'apprentissage $ \epsilon $ \relax }{figure.caption.3}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.3}Effet des fonctions d'activation}{4}{subsubsection.3.1.3}\protected@file@percent }
 \pbs@newkey{pbs@last@page}{6}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Encoder-Decoder sans convolutions}{5}{subsection.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.1}Reconstruction}{5}{subsubsection.3.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.2}Débruitage}{5}{subsubsection.3.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Encoder-Decoder avec convolution}{5}{subsection.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1}Reconstruction}{5}{subsubsection.3.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2}Débruitage}{5}{subsubsection.3.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Transfert de style}{5}{subsection.3.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Représentation des paramètres, de l'évolution du coût et du score par époque en fonction du taux d'apprentissage $ \epsilon $ \relax }}{5}{figure.caption.4}\protected@file@percent }
+\newlabel{fig:activationfunc}{{3}{5}{Représentation des paramètres, de l'évolution du coût et du score par époque en fonction du taux d'apprentissage $ \epsilon $ \relax }{figure.caption.4}{}}
 \pbs@newkey{pbs@last@page}{7}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Représentation des paramètres, de l'évolution du coût et du score par époque en fonction du taux d'apprentissage $ \epsilon $ \relax }}{6}{figure.caption.4}\protected@file@percent }
-\newlabel{fig:activationfunc}{{3}{6}{Représentation des paramètres, de l'évolution du coût et du score par époque en fonction du taux d'apprentissage $ \epsilon $ \relax }{figure.caption.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Classification et convolution}{6}{subsection.3.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Impact de l'initialisation sur un réseau de neurones convolutionnel\relax }}{6}{figure.caption.5}\protected@file@percent }
+\newlabel{fig:convinit}{{4}{6}{Impact de l'initialisation sur un réseau de neurones convolutionnel\relax }{figure.caption.5}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.1}Effet de la taille des \textit  {batch}}{6}{subsubsection.3.2.1}\protected@file@percent }
+\pbs@newkey{pbs@last@page}{8}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.2}Effet de la taille du kernel}{7}{subsubsection.3.2.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Impact de la taille du kernel pour un réseau de neurones convolutionnel\relax }}{7}{figure.caption.6}\protected@file@percent }
+\newlabel{fig:convksize}{{5}{7}{Impact de la taille du kernel pour un réseau de neurones convolutionnel\relax }{figure.caption.6}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.3}Effet du nombre de \textit  {feature maps}}{7}{subsubsection.3.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.4}Diverses architectures}{7}{subsubsection.3.2.4}\protected@file@percent }
+\pbs@newkey{pbs@last@page}{9}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Impact du nombre de \textit  {feature maps} pour un réseau de neurones convolutionnel\relax }}{8}{figure.caption.7}\protected@file@percent }
+\newlabel{fig:convchanout}{{6}{8}{Impact du nombre de \textit {feature maps} pour un réseau de neurones convolutionnel\relax }{figure.caption.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Réseau de neurones convolutionnel à 2 couches\relax }}{8}{figure.caption.9}\protected@file@percent }
+\newlabel{fig:conv2layers}{{7}{8}{Réseau de neurones convolutionnel à 2 couches\relax }{figure.caption.9}{}}
+\pbs@newkey{pbs@last@page}{10}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Réseau de neurones convolutionnel à 4 couches\relax }}{9}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:conv4layers}{{8}{9}{Réseau de neurones convolutionnel à 4 couches\relax }{figure.caption.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Auto-encodeur}{9}{subsection.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1}Reconstruction}{9}{subsubsection.3.3.1}\protected@file@percent }
+\pbs@newkey{pbs@last@page}{11}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Valeur de la \texttt  {BCELoss()} pour chaque réseau sur 30 epoch\relax }}{10}{figure.caption.13}\protected@file@percent }
+\newlabel{fig:lossencoder}{{9}{10}{Valeur de la \texttt {BCELoss()} pour chaque réseau sur 30 epoch\relax }{figure.caption.13}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Exemple de reconstruction en fonction de la complexité du réseau\relax }}{10}{figure.caption.14}\protected@file@percent }
+\newlabel{fig:reconstruction}{{10}{10}{Exemple de reconstruction en fonction de la complexité du réseau\relax }{figure.caption.14}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Fonction de cout et reconstruction pour une architecture type réseau n°1\relax }}{10}{figure.caption.15}\protected@file@percent }
+\newlabel{fig:accfct}{{11}{10}{Fonction de cout et reconstruction pour une architecture type réseau n°1\relax }{figure.caption.15}{}}
+\pbs@newkey{pbs@last@page}{12}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Reconstruction par epoch pour le model n°1\relax }}{11}{figure.caption.16}\protected@file@percent }
+\newlabel{fig:perEpochSimple}{{12}{11}{Reconstruction par epoch pour le model n°1\relax }{figure.caption.16}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Reconstruction par epoch pour le model n°3\relax }}{11}{figure.caption.17}\protected@file@percent }
+\newlabel{fig:perEpochBig}{{13}{11}{Reconstruction par epoch pour le model n°3\relax }{figure.caption.17}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2}Organisation de l'espace latent}{11}{subsubsection.3.3.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces t-SNE sur l'espace latent du modèle n°3 pour \textit  {fashion-mnist} en utilisant les données d'entrainement\relax }}{11}{figure.caption.18}\protected@file@percent }
+\newlabel{fig:tsneMnist}{{14}{11}{t-SNE sur l'espace latent du modèle n°3 pour \textit {fashion-mnist} en utilisant les données d'entrainement\relax }{figure.caption.18}{}}
+\pbs@newkey{pbs@last@page}{13}
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces t-SNE sur l'espace latent d'un plus gros modèle pour \textit  {usps} en utilisant les données d'entrainement\relax }}{12}{figure.caption.19}\protected@file@percent }
+\newlabel{fig:tsneUsps}{{15}{12}{t-SNE sur l'espace latent d'un plus gros modèle pour \textit {usps} en utilisant les données d'entrainement\relax }{figure.caption.19}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.3}Débruitage}{12}{subsubsection.3.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Conclusion}{12}{section.4}\protected@file@percent }
+\pbs@newkey{pbs@last@page}{14}
+\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces Reconstruction d'une image bruitée de chaque classe pour le réseau n° 1\relax }}{13}{figure.caption.20}\protected@file@percent }
+\newlabel{fig:reconstruct_noisy_all_small}{{16}{13}{Reconstruction d'une image bruitée de chaque classe pour le réseau n° 1\relax }{figure.caption.20}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces Reconstruction d'une image bruitée de chaque classe pour le réseau n° 2\relax }}{13}{figure.caption.21}\protected@file@percent }
+\newlabel{fig:reconstruct_noisy_all_medium}{{17}{13}{Reconstruction d'une image bruitée de chaque classe pour le réseau n° 2\relax }{figure.caption.21}{}}
+\pbs@newkey{pbs@last@page}{15}
+\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces Reconstruction d'une image bruitée de chaque classe pour le réseau n° 3\relax }}{14}{figure.caption.22}\protected@file@percent }
+\newlabel{fig:reconstruct_noisy_all_big}{{18}{14}{Reconstruction d'une image bruitée de chaque classe pour le réseau n° 3\relax }{figure.caption.22}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces Reconstruction d'une image bruitée de chaussure\relax }}{14}{figure.caption.23}\protected@file@percent }
+\newlabel{fig:reconstructnoisychaussure}{{19}{14}{Reconstruction d'une image bruitée de chaussure\relax }{figure.caption.23}{}}
+\pbs@newkey{pbs@last@page}{16}
+\@writefile{lof}{\contentsline {figure}{\numberline {20}{\ignorespaces Reconstruction d'une image bruitée de sac\relax }}{15}{figure.caption.24}\protected@file@percent }
+\newlabel{fig:reconstructnoisybag}{{20}{15}{Reconstruction d'une image bruitée de sac\relax }{figure.caption.24}{}}
+\pbs@newkey{pbs@last@page}{17}
+\@writefile{lof}{\contentsline {figure}{\numberline {21}{\ignorespaces Reconstruction d'une image bruitée de pantalon\relax }}{16}{figure.caption.25}\protected@file@percent }
+\newlabel{fig:reconstructnoisypantalon}{{21}{16}{Reconstruction d'une image bruitée de pantalon\relax }{figure.caption.25}{}}
+\pbs@newkey{pbs@last@page}{18}
+\@writefile{lof}{\contentsline {figure}{\numberline {22}{\ignorespaces Reconstruction d'une image bruitée de manteau\relax }}{17}{figure.caption.26}\protected@file@percent }
+\newlabel{fig:reconstructnoisycoat}{{22}{17}{Reconstruction d'une image bruitée de manteau\relax }{figure.caption.26}{}}
