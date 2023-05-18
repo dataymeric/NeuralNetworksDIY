@@ -51,7 +51,7 @@
 
         %\vspace{0.5cm}
         \LARGE
-        Réseau de neurones from scratch
+        Réseau de neurones : DIY
 
         %\vspace{1.5cm}
         \Large
@@ -75,6 +75,10 @@
 
 \section{Introduction}
 
+Ce projet, réalisé entièrement en Python et aux concepts algébriques, avait pour objectif de développer une bibliothèque de \textit{deep learning}. À travers des expérimentations significatives, nous avons exploré diverses tâches telles que la reconstruction d'images, la génération de données et l'entraînement de réseaux convolutionnels. Ces expérimentations nous ont permis d'analyser l'impact des choix architecturaux, des techniques d'optimisation et des contraintes matérielles sur les performances des modèles. Ce projet a ainsi contribué à approfondir notre compréhension du \textit{machine learning}.
+
+\textbf{Note} : n'hésitez pas à zoomer sur les figures !
+
 \section{Implémentation}
 
 Le code est disponible sur \href{https://github.com/dataymeric/NeuralNetworksDIY}{ce dépôt GitHub}.
@@ -90,7 +94,7 @@ La bibliothèque est organisée de manière analogue aux bibliothèques de \text
 
 \section{Expérimentation}
 
-Dans le but de mettre notre bibliothèque à l'épreuve, nous avons entrepris une série d'expérimentations en utilisant diverses architectures sur deux types de données distincts. Le premier ensemble de données était constitué de jeux aléatoires de données gaussiennes, présentant des caractéristiques linéairement séparables ou non, tels que le XOR ou le jeu d'échecs. Le second ensemble de données concernait la classification d'images sur deux jeux de données : un pour la reconnaissance de chiffres (le plus populaire : \texttt{MNIST}) et le deuxième, plus complexe, pour la reconnaissance de vêtements (\texttt{Fashion MNIST}).
+Dans le but de mettre notre bibliothèque à l'épreuve, nous avons entrepris une série d'expérimentations en utilisant diverses architectures sur deux types de données distincts. Le premier ensemble de données était constitué de jeux aléatoires de données gaussiennes, présentant des caractéristiques linéairement séparables ou non, tels que le XOR ou le jeu d'échecs. Le second ensemble de données concernait la classification d'images sur deux jeux de données : un pour la reconnaissance de chiffres (le plus populaire : \texttt{USPS}) et le deuxième, plus complexe, pour la reconnaissance de vêtements (\texttt{Fashion MNIST}).
 
 \subsection{Classification}
 
@@ -121,7 +125,7 @@ Ainsi, pour les modules utilisant des paramètres (linéaire et convolution), il
 
 \textbf{Note} : pour le module linéaire, les biais sont initialisés par défaut tandis que pour la convolution, les biais sont désactivés par défaut (sauf indication contraire).
 
-Pour déterminer en pratique l'effet de l'initialisation des paramètres, nous avons mis en place un réseau très simple qui classifie le jeu de données \textit{fashion-mnist}. Celui-ci est composé d'une couche linéaire prenant en entrée l'image entière et classifiant sur dix neurones en sortie. On représentera par la suite les réseaux sous la forme suivante \texttt{Linear(784, 10) $ \rightarrow $ Sigmoid()}.
+Pour évaluer l'effet de l'initialisation des paramètres, nous avons mis en place un réseau simple pour classer le jeu de données \texttt{fashion-mnist}. Ce réseau se compose d'une couche linéaire qui prend en entrée l'image complète et effectue la classification avec dix neurones en sortie. Nous représentons ce réseau sous la forme suivante : \texttt{Linear(784, 10) $ \rightarrow $ Sigmoid()}.
 
 \begin{figure}[htbp]
     \centering
@@ -130,9 +134,9 @@ Pour déterminer en pratique l'effet de l'initialisation des paramètres, nous a
     \label{fig:initparam}
 \end{figure}
 
-La figure \ref{fig:initparam} représente les résultats de cette expérimentation. On constate des difficultés d'apprentissage sur certaines initialisations. L'initialisation normale tombe dans un minimum local (200 époques). Les initialisations uniforme et à 1 font exploser le gradient, empêchant tout apprentissage. 
+La figure \ref{fig:initparam} présente les résultats de cette expérimentation. Nous observons des difficultés d'apprentissage avec certaines initialisations. L'initialisation normale conduit à un minimum local (après 200 époques). Les initialisations uniforme et à 1 provoquent une explosion du gradient, empêchant tout apprentissage.
 
-Cette expérience a montrer l'impact important que peut avoir l'initialisation des paramètres. L'initialisation normale pourrait certainement être fixée en utilisant un autre algorithme d'optimisation, tel qu'Adam.
+Cette expérience met en évidence l'importance de l'initialisation des paramètres. Il serait peut-être possible de résoudre les problèmes liés à l'initialisation normale en utilisant un autre algorithme d'optimisation, tel qu'Adam.
 
 \subsubsection{Effet du taux d'apprentissage (\textit{learning rate})}
 
@@ -141,15 +145,11 @@ Le \textit{learning rate} est un hyperparamètre crucial dans l'entraînement de
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{lr_effet.pdf}
-    \caption{Représentation des paramètres, de l'évolution du coût et du score par époque en fonction du taux d'apprentissage $ \epsilon $ }
+    \caption{Représentation des paramètres, de l'évolution du coût et du score par époque en fonction du taux d'apprentissage $ \epsilon $}
     \label{fig:effetlearningrate}
 \end{figure}
 
-Toujours avec le même réseau très simple, nous obtenons les résultats dans la figure \ref{fig:effetlearningrate}. 
-
-Un \textit{learning rate} trop faible ralentit donc la convergence, et un nombre élevé d'itérations sera nécessaire pour atteindre une performance obtenue avec un taux d'apprentissage plus élevé. Les ajustements apportés aux poids sont également plus lents et progressifs, au risque de rester coincer dans des minima locaux peu optimaux.
-
-Un \textit{learning rate} trop élevé entraîne une divergence dans notre cas, les poids se mettent à jour trop brutalement entraînant une convergence vers un modèle très rapidement sous-optimal.
+Toujours avec le même réseau très simple, nous obtenons les résultats dans la figure \ref{fig:effetlearningrate}. Un \textit{learning rate} trop faible ralentit donc la convergence, et un nombre élevé d'itérations sera nécessaire pour atteindre une performance obtenue avec un taux d'apprentissage plus élevé. Les ajustements apportés aux poids sont également plus lents et progressifs, au risque de rester coincer dans des minima locaux peu optimaux. Un \textit{learning rate} trop élevé entraîne une divergence dans notre cas, les poids se mettent à jour trop brutalement entraînant une convergence vers un modèle très rapidement sous-optimal.
 
 \subsubsection{Effet des fonctions d'activation}
 
@@ -172,26 +172,26 @@ Différentes fonctions d'activation peuvent être utilisées en fonction du prob
 
 On pourrait, rajouter encore d'autres fonctions d'activation, telles que la fonction identité, une identité courbée, une sinusoïde, un sinus cardinal, une fonction gaussienne...
 
-Le choix de la fonction d'activation dépend du problème à résoudre, des caractéristiques des données et de l'architecture du réseau. Chaque fonction d'activation a des propriétés différentes et peut être plus adaptée à certains types de problèmes ou à certaines architectures.
+Le choix de la fonction d'activation dépend du problème à résoudre, des caractéristiques des données et de l'architecture du réseau. Chaque fonction d'activation a des propriétés différentes et peut être plus adaptée à certains types de problèmes ou à certaines architectures. Les résultats sont visibles sur la figure \ref{fig:activationfunc}. Certains résultats nous étonnent, notamment pour la tangente hyperbolique. 
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{activation_func.pdf}
-    \caption{Représentation des paramètres, de l'évolution du coût et du score par époque en fonction du taux d'apprentissage $ \epsilon $ }
+    \caption{Représentation des paramètres, de l'évolution du coût et du score par époque en fonction de la fonction d'activation}
     \label{fig:activationfunc}
 \end{figure}
 
 \subsection{Classification et convolution}
 
-Même avec un multi-layer perceptron, on parvient à obtenir des performances correctes sur des images. Et si on utilisait des réseaux de neurones convolutifs ? L'intérêt de la convolution étant de capturer les motifs locaux, de réduire le nombre de paramètres à apprendre, d'obtenir une certaine invariance aux translations et de réduire la dimensionnalité des données, c'est un module particulièrement adapté aux images, aux séquences temporelles ou signaux.
+L'utilisation de réseaux de neurones convolutifs offre de nombreux avantages pour le traitement des images. La convolution permet de capturer des motifs locaux, de réduire le nombre de paramètres à apprendre, d'obtenir une certaine invariance aux translations et de réduire la dimensionnalité des données. Cela en fait un module particulièrement adapté aux images, aux séquences temporelles ou aux signaux.
 
-La convolution en une dimension est implémentée et fonctionnelle, ainsi que les deux couches de pooling (Max et Average). Elles ont toutes été implémentées en utilisant le moins de boucles possibles afin d'avoir une implémentation la plus performante possible (seulement une boucle présente dans la convolution, sur la taille du kernel) grâce aux fonctions avancées de \texttt{numpy}. Le raisonnement a été détaillé au sein du code.
+Nous avons implémenté avec succès la convolution en une dimension, ainsi que les couches de pooling (Max et Average). L'implémentation a été optimisée en utilisant le moins de boucles possible, en se basant sur les fonctionnalités avancées de la bibliothèque \texttt{numpy} (seulement une boucle présente dans la convolution, sur la taille du kernel). Notre raisonnement est détaillé au sein du code.
 
 Un réseau utilisant une seule couche convolutionnelle de ce type \texttt{Conv1D(3,1,32) $\rightarrow$ MaxPool1D(2,2) $\rightarrow$ Flatten() $\rightarrow$ Linear(4064,100) $\rightarrow$ ReLU() $\rightarrow$ Linear(100,10)} fonctionne extrêmement bien dans le cadre de la reconnaissance de chiffres.
 
-Sur une taille de batch fixée à 32, un nombre d'époques à 50 et un early-stopping à 5, répété 10 fois, on obtient un score en apprentissage de $ 99.36 \pm 0.0017\% $ et un score en évaluation de $ 97.08 \pm 0.0016 \% $, en $ 31 \pm 6 $ époques. 
+En utilisant un batch de taille fixe de 32, 50 époques et un early-stopping à 5, répétées 10 fois, nous obtenons un score d'apprentissage de $99.36 \pm 0.0017~\%$ et un score d'évaluation de $97.08 \pm 0.0016~\%$, en seulement $31 \pm 6$ époques.
 
-Par ailleurs, l'initialisation est très importante dans les couches convolutionnelles, par exemple une initialisation des poids à zéros ne marche pas (figure \ref{fig:convinit}). Ici, les convolutions sont initialisées grâce à une initialisation de Xavier selon une loi normale et les modules linéaires grâce à une itialisation de He normale.
+Par ailleurs, l'initialisation des poids est d'une grande importance dans les couches convolutionnelles. Par exemple, une initialisation à zéro ne fonctionne pas (voir figure \ref{fig:convinit}). Dans notre cas, nous avons utilisé une initialisation de Xavier avec une loi normale pour les convolutions, et une initialisation de He normale pour les modules linéaires.
 
 \begin{figure}[htbp]
     \centering
@@ -203,11 +203,19 @@ Par ailleurs, l'initialisation est très importante dans les couches convolution
 
 \subsubsection{Effet de la taille des \textit{batch}}
 
-Le nombre de batchs est un hyper-paramètre assez important de notre modèle. Ainsi, on obtient des meilleurs performances en apprenant sur des batchs plus petit, ce qui est courant et connu en \textit{deep learning}, mais s'apparente actuellement à du sur-apprentissage, même si l'on obtient des bons résultats en évaluation. De plus, plus la taille du batch sera petite, plus long sera l'apprentissage. Avec des batchs plus grand, le temps d'apprentissage sera très réduit mais les performances également ; sans compter que cela affecte également les instabilités numériques (explosion du gradient).
+Le nombre de batchs est un hyperparamètre crucial de notre modèle. Nous observons que de meilleures performances sont obtenues en effectuant l'apprentissage sur des batchs plus petits, ce qui est une pratique courante et bien connue en apprentissage profond. Cependant, cela peut actuellement entraîner un surapprentissage, même si les résultats en évaluation sont bons. De plus, plus la taille du batch est réduite, plus l'apprentissage prendra du temps. Avec des batchs plus grands, le temps d'apprentissage sera considérablement réduit, mais cela peut également avoir un impact sur les instabilités numériques, comme l'explosion du gradient. Ces résultats sont illustrés dans la figure \ref{fig:conv_batch}. Il est important de trouver un équilibre entre la taille du batch, les performances du modèle, la durée de l'apprentissage et les problèmes d'instabilité numérique. Nous utiliserons une taille de batch fixe de 32 pour la suite.
+
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{conv/conv_batch.pdf}
+    \caption{Impact de la taille du kernel pour un réseau de neurones convolutionnel}
+    \label{fig:conv_batch}
+\end{figure}
 
 \subsubsection{Effet de la taille du kernel}
 
-En faisant varier la taille du kernel, on se permet de capturer des motifs ou des informations de différentes échelles spatiales dans les données (ou non). Par exemple, des kernels de petite taille peuvent être efficaces pour détecter des détails fins, tandis que des kernels de plus grande taille peuvent être plus adaptés pour détecter des caractéristiques plus globales. Sur les données des chiffres manuscrits, les chiffres font partie intégrante de l'image, mais l'image est petite.
+En ajustant la taille du kernel, nous avons la possibilité de capturer des motifs ou des informations à différentes échelles spatiales dans les données. Par exemple, les kernels de petite taille peuvent être efficaces pour détecter des détails fins, tandis que les kernels de plus grande taille sont plus adaptés pour détecter des caractéristiques plus globales. Lors de l'analyse des chiffres manuscrits, ces chiffres sont des éléments cruciaux de l'image, bien que l'image elle-même soit de petite taille. Même en utilisant un kernel de taille 10, qui commence à être relativement grand, les performances restent similaires à celles obtenues avec un kernel de taille 3. Cependant, des problèmes surviennent lorsque nous utilisons un kernel de taille 15 ou plus, ce qui affecte les performances du modèle.
 
 \begin{figure}[htbp]
     \centering
@@ -218,7 +226,7 @@ En faisant varier la taille du kernel, on se permet de capturer des motifs ou de
 
 \subsubsection{Effet du nombre de \textit{feature maps}}
 
-Le nombre de feature maps dans une couche de convolution influence la capacité du modèle à capturer des caractéristiques et des motifs complexes, améliorant ainsi la représentation des données et la capacité de généralisation. Cependant, il faut trouver un équilibre en tenant compte des contraintes de ressources et des exigences spécifiques du problème. 
+Le nombre de \textit{feature maps} dans une couche de convolution joue un rôle crucial dans la capacité du modèle à capturer des caractéristiques et des motifs complexes, ce qui améliore la représentation des données et la capacité de généralisation. Cependant, il est important de trouver un équilibre en tenant compte des contraintes de ressources et des exigences spécifiques du problème. Dans notre cas, nous avons constaté qu'une seule \textit{feature map} était étonnamment suffisante, tandis que 128 \textit{feature maps} fonctionnaient également bien. L'utilisation d'une seule feature map peut être attribuée à la simplicité du problème de reconnaissance de chiffres manuscrits, où les caractéristiques discriminantes peuvent être relativement simples et bien représentées par une seule feature map. En revanche, l'ajout de 128 \textit{feature maps} peut permettre une représentation plus riche et plus complexe des données, ce qui peut être bénéfique pour capturer des détails plus fins ou des motifs plus variés présents dans les images.
 
 \begin{figure}[htbp]
     \centering
@@ -229,16 +237,9 @@ Le nombre de feature maps dans une couche de convolution influence la capacité 
 
 \subsubsection{Diverses architectures}
 
-Diverses architectures ont également été testées, pour voir la robustesse (ou non) de la convolution et sa capacité à surapprendre ou non, en particulier en agrandissant la profondeur des réseaux. Quelques variantes ont été utilisées en appliquant une fonction d'activation directement sur la convolution, ce qui est courant de faire, sans grand résultats. Finalement, un plus gros réseau convonlutionnel n'est pas synonyme de meilleure classification.
+Nous avons également exploré différentes architectures pour évaluer la robustesse de la convolution, en particulier en augmentant la profondeur des réseaux et en appliquant des fonctions d'activation directement sur les convolutions, comme c'est couramment fait. Cependant, ces variations n'ont pas donné de résultats significativement meilleurs. En fait, nous avons constaté que l'augmentation de la taille du réseau de neurones convolutifs ne se traduit pas nécessairement par une meilleure classification.
 
-\paragraph*{Deux couches convolutionnelles} 
-
-\texttt{Conv1D(3, 1, 32, 1)} $\rightarrow$ \texttt{ReLU()} $\rightarrow$ \texttt{MaxPool1D(2, 2)} $\rightarrow$
-\texttt{Conv1D(3, 32, 32)} $\rightarrow$ \texttt{ReLU()} $\rightarrow$ \texttt{MaxPool1D(2, 2)} $\rightarrow$
-\texttt{Flatten()} $\rightarrow$
-\texttt{Linear(1984, 10)}
-
-Les résultats sont sur la figure \ref*{fig:conv2layers} : les résultats ne sont pas catastrophiques, le réseau commence à apprendre, avant de subitement désapprendre. Les performances sont bien en-deça de celui du réseau précédent, avoir une couche linéaire n'est sûrement pas suffisante pour correctement classifier nos données.
+L'architecture à deux couches convolutionnelles, représentée par \texttt{Conv1D(3, 1, 32, 1) $\rightarrow$ ReLU() $\rightarrow$ MaxPool1D(2, 2) $\rightarrow$ Conv1D(3, 32, 32) $\rightarrow$ ReLU() $\rightarrow$ MaxPool1D(2, 2) $\rightarrow$ Flatten() $\rightarrow$ Linear(1984, 10)}, a montré des résultats mitigés (figure \ref{fig:conv2layers}), où le réseau commence à apprendre avant de régresser soudainement. Les performances obtenues sont nettement inférieures à celles du réseau précédent, indiquant que l'utilisation d'une seule couche linéaire n'est probablement pas suffisante pour classifier correctement nos données.
 
 \begin{figure}[htbp]
     \centering
@@ -247,16 +248,7 @@ Les résultats sont sur la figure \ref*{fig:conv2layers} : les résultats ne son
     \label{fig:conv2layers}
 \end{figure}
 
-\paragraph*{Quatre couches convolutionnelles}
-
-\texttt{Conv1D(3, 1, 64, 1)} $\rightarrow$ \texttt{ReLU()} $\rightarrow$ \texttt{MaxPool1D(8, 2)} $\rightarrow$
-\texttt{Conv1D(3, 64, 64)} $\rightarrow$ \texttt{ReLU()} $\rightarrow$ \texttt{MaxPool1D(8, 2)} $\rightarrow$
-\texttt{Conv1D(3, 64, 64)} $\rightarrow$ \texttt{ReLU()} $\rightarrow$ \texttt{MaxPool1D(8, 2)} $\rightarrow$
-\texttt{Conv1D(3, 64, 64)} $\rightarrow$ \texttt{ReLU()} $\rightarrow$ \texttt{MaxPool1D(8, 2)} $\rightarrow$
-\texttt{Flatten()} $\rightarrow$
-\texttt{Linear(512, 10)}
-
-Les résultats sont sur la figure \ref*{fig:conv4layers} : ici, il parvient mieux à apprendre que le réseau précédent, mais peine à obtenir des performances correctes. On voit par ailleurs que la classe 2 est celle qui est la moins bien classée et est la cause de ce manque de performance : la taille du kernel dans le max pooling est surement trop élevé pour garder un nombre de features significatifs et donc identifier correctement cette classe.
+En ce qui concerne l'architecture à quatre couches convolutionnelles, représentée par \texttt{Conv1D(3, 1, 64, 1) $\rightarrow$ ReLU() $\rightarrow$ MaxPool1D(8, 2) $\rightarrow$ Conv1D(3, 64, 64) $\rightarrow$ ReLU() $\rightarrow$ MaxPool1D(8, 2) $\rightarrow$ Conv1D(3, 64, 64) $\rightarrow$ ReLU() $\rightarrow$ MaxPool1D(8, 2) $\rightarrow$ Conv1D(3, 64, 64) $\rightarrow$ ReLU() $\rightarrow$ MaxPool1D(8, 2) $\rightarrow$ Flatten() $\rightarrow$ Linear(512, 10)}, les résultats (figure \ref{fig:conv4layers}) montrent une meilleure capacité d'apprentissage par rapport au réseau précédent, mais les performances ne sont toujours pas satisfaisantes. Nous avons également observé que la classe 2 est celle qui est la moins bien classée, ce qui contribue à ces performances insuffisantes. Il est possible que la taille du kernel dans la couche de Max Pooling soit trop élevée pour conserver un nombre significatif de features, ce qui empêche une identification précise de cette classe.
 
 \begin{figure}[htbp]
     \centering
@@ -265,31 +257,39 @@ Les résultats sont sur la figure \ref*{fig:conv4layers} : ici, il parvient mieu
     \label{fig:conv4layers}
 \end{figure}
 
+Un modèle trop complexe n'est donc pas synonyme de bonne performance.
+
 \subsection{Auto-encodeur}
 
-Nous nous sommes également attelés à des tâches de reconstruction ou de génération de données à l'aide d'architecture encodeur-décodeur (ou auto-encodeur). 
+
+Nous avons également exploré l'utilisation d'architectures encodeur-décodeur (ou auto-encodeurs), pour des tâches de reconstruction ou de génération de données.
 
 \subsubsection{Reconstruction}
 
-Dans notre cas, on entraîne le modèle à reconstruire les images d'origine à partir de la représentation latente. Pour cela, l'encodeur prend les images d'entrée et les transforme en une représentation latente de dimension réduite. Ensuite, le décodeur prend cette représentation latente et essaie de générer des images qui sont similaires aux images d'origine. L'objectif de cette expérience est de voir comment le modèle est capable de capturer les caractéristiques distinctives des images et de reconstruire des images de qualité. On peut évaluer la performance du modèle en mesurant la différence entre les images reconstruites et les images d'origine.
+Dans notre cas, nous avons entraîné un modèle pour reconstruire les images d'origine à partir de leur représentation latente. L'encodeur prend les images en entrée et les transforme en une représentation latente de dimension réduite. Ensuite, le décodeur prend cette représentation latente et tente de générer des images similaires aux images d'origine. L'objectif de cette expérience était d'évaluer la capacité du modèle à capturer les caractéristiques distinctives des images et à reconstruire des images de qualité. La performance du modèle peut être évaluée en mesurant la différence entre les images reconstruites et les images d'origine.
 
 De plus, l'architecture de l'encodeur-décodeur peut également être utilisée pour générer de nouvelles images similaires à celles du jeu de données MNIST : en fournissant une représentation latente aléatoire au décodeur, il est possible de générer de nouvelles images qui ressemblent aux images du jeu de données.
 
-Nous avons entrainé un auto-encodeur sur les deux jeux de données précédents : (\texttt{USPS} et \texttt{fashion-mnist}). 
-\paragraph*{fashion-mnist} 
-Ici, trois architecture ont été testé : \begin{enumerate}
-    \item \texttt{Linear(784, 64) $\rightarrow$ TanH() $\rightarrow$ décodeur}
-    \item \texttt{Linear(784, 256) $\rightarrow$ TanH() $\rightarrow$ Linear(256, 64) $\rightarrow$ TanH() $\rightarrow$ décodeur}
-    \item \texttt{Linear(784, 512) $\rightarrow$ TanH() $\rightarrow$ Linear(512, 256) $\rightarrow$ TanH() $\rightarrow$ Linear(256, 128) $\rightarrow$ TanH() $\rightarrow$ Linear(128, 64) $\rightarrow$ TanH() $\rightarrow$ décodeur}
-\end{enumerate}
-Avec \texttt{décodeur} représentant l'architecture transposé du réseau mais avec une \texttt{Sigmoid()} en sortie. 
+Nous avons entrainé un auto-encodeur sur les deux jeux de données précédents (\texttt{USPS} et \texttt{fashion-mnist}). 
 
-Ces trois architectures, plus ou moins complexes, ont toutes mené rapidement à une stagnation du coût d'évalutation durant l'entrainement (voir figure \ref*{fig:lossencoder}). Cette valeur de stagnation varie légérement en fonction de la complexité du réseau. Dans la figure \ref*{fig:reconstruction}, on remarque effectivement que la reconstruction est plus précise en fonction de la complexité du réseau. 
+\paragraph*{\texttt{fashion-mnist}}
+
+Dans le cas du jeu de données \texttt{fashion-mnist}, nous avons testé trois architectures pour l'auto-encodeur :
+
+\begin{enumerate}
+    \item \texttt{Linear(784, 64) $\rightarrow$ TanH() $\rightarrow$ Decoder}
+    \item \texttt{Linear(784, 256) $\rightarrow$ TanH() $\rightarrow$ Linear(256, 64) $\rightarrow$ TanH() $\rightarrow$ Decoder}
+    \item \texttt{Linear(784, 512) $\rightarrow$ TanH() $\rightarrow$ Linear(512, 256) $\rightarrow$ TanH() $\rightarrow$ Linear(256, 128) $\rightarrow$ TanH() $\rightarrow$ Linear(128, 64) $\rightarrow$ TanH() $\rightarrow$ Decoder}
+\end{enumerate}
+
+\texttt{Decoder} représente l'architecture transposée du réseau avec une \texttt{Sigmoid()} en sortie. 
+
+Ces trois architectures, de complexité croissante, ont toutes conduit à une stagnation rapide du coût d'évaluation pendant l'entraînement (figure \ref{fig:lossencoder}). Cette valeur varie légèrement en fonction de la complexité du réseau. Dans la figure \ref{fig:reconstruction}, nous pouvons effectivement constater que la précision de la reconstruction des images s'est améliorée à mesure que la complexité du réseau augmentait, ce qui suggère que des architectures plus complexes sont capables de capturer et de reconstruire les caractéristiques distinctives des images avec une meilleure fidélité.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics*[width=.75\textwidth]{loss_encoder_fashion_3_networks.pdf}
-    \caption{Valeur de la \texttt{BCELoss()} pour chaque réseau sur 30 epoch}
+    \caption{Coût cross-entropique binaire, pour chaque modèle, sur 30 époques}
     \label{fig:lossencoder}
 \end{figure}
 
@@ -300,70 +300,70 @@ Ces trois architectures, plus ou moins complexes, ont toutes mené rapidement à
     \label{fig:reconstruction}
 \end{figure}
 
-Pour le réseau n°1, une étude de l'influence de la fonction d'activation placé avant l'espace latent a été réalisé. Le réseau a donc la forme suivante : \texttt{Linear(784, 64) $\rightarrow$ acc\_fct() $\rightarrow$ décodeur}. Les résultats sont présenté dans la figure \ref*{fig:accfct}. 
+Pour le réseau n°~1, une étude de l'influence de la fonction d'activation placée avant l'espace latent a été réalisée. Le réseau a donc la forme suivante : \texttt{Linear(784, 64) $\rightarrow$ Activation() $\rightarrow$ Decoder}. Les résultats sont présentés dans la figure \ref{fig:accfct}. 
 
 \begin{figure}[htbp]
     \centering
     \includegraphics*[width=\textwidth]{encoder_decoder_middle_func_simple_net.pdf}
-    \caption{Fonction de cout et reconstruction pour une architecture type réseau n°1}
+    \caption{Fonction de coût et reconstruction pour une architecture de type réseau n°~1}
     \label{fig:accfct}
 \end{figure}
 
-On peut voir que le \texttt{Softmax()} et le \texttt{LogSoftmax()} ont des grosses difficultées d'apprentissage. On remarque également que la \texttt{ReLU} apprends beaucoup moins vite que les autres fonction d'activation. 
+Il est observé que les fonctions d'activation \texttt{Softmax()} et \texttt{LogSoftmax()} rencontrent des difficultés d'apprentissage importantes. De plus, la fonction d'activation \texttt{ReLU} apprend moins rapidement que les autres fonctions d'activation.
 
-On s'est aussi amuser à visualiser la reconstruction de l'image au fur et à mesure des époques d'apprentissage dans les figures \ref*{fig:perEpochSimple} et \ref*{fig:perEpochBig}.
+Sur les figures \ref{fig:perEpochSimple} et \ref{fig:perEpochBig}, nous nous sommes également amusés à visualiser la reconstruction de l'image au fil des époques d'apprentissage, afin d'observer l'évolution de la qualité de la reconstruction à mesure que le modèle apprend.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics*[width=\textwidth]{reconstruction_per_epoch_simple_model.pdf}
-    \caption{Reconstruction par epoch pour le model n°1}
+    \caption{Reconstruction par époque pour le modèle n°~1}
     \label{fig:perEpochSimple}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
     \includegraphics*[width=\textwidth]{reconstruction_per_epoch_big_model.pdf}
-    \caption{Reconstruction par epoch pour le model n°3}
+    \caption{Reconstruction par époque pour le modèle n°~3}
     \label{fig:perEpochBig}
 \end{figure}
 
 \subsubsection{Organisation de l'espace latent}
-Afin de visualiser l'espace latent de 64 dimension, nous avons utiliser la t-SNE afin de le réduire à deux dimensions visualisables. Ce travail a été fait sur les deux jeu de données et sur chacune des séparations entrainement et de test, en utilisant l'auto-encoder le riche en paramètre. Les t-SNE sur le jeu de test sont assez similaire à celle pour le train, nous ne montrerons ici que celle des données d'entrainement. Ces visualisations sont dans les figures \ref*{fig:tsneMnist} et \ref*{fig:tsneUsps}. 
+
+Afin de visualiser l'espace latent de 64 dimensions, nous avons utilisé l'algorithme t-SNE pour le réduire à deux dimensions afin de le rendre visualisable. Cette procédure a été appliquée aux deux jeux de données et à chaque ensemble d'entraînement et de test, en utilisant l'auto-encodeur avec le plus de paramètres. Les t-SNE sur le jeu de test présentent des similarités avec ceux du jeu d'entraînement, et nous présenterons ici uniquement les visualisations des données d'entraînement, illustrées par les figures \ref{fig:tsneMnist} et \ref{fig:tsneUsps}.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics*[width=.75\textwidth]{tsne_mnist_train_big.pdf}
-    \caption{t-SNE sur l'espace latent du modèle n°3 pour \textit{fashion-mnist} en utilisant les données d'entrainement}
+    \caption{t-SNE sur l'espace latent du modèle n°~3 pour \texttt{fashion-mnist} en utilisant les données d'entrainement}
     \label{fig:tsneMnist}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
     \includegraphics*[width=.75\textwidth]{tsne_usps_train_big.pdf}
-    \caption{t-SNE sur l'espace latent d'un plus gros modèle pour \textit{usps} en utilisant les données d'entrainement}
+    \caption{t-SNE sur l'espace latent d'un plus gros modèle pour \texttt{USPS} en utilisant les données d'entrainement}
     \label{fig:tsneUsps}
 \end{figure}
 
-Les résultats sont assez intéréssant. En effet on peut voir que les classes zéro, deux, quatre et six n'ont pas de vraiment de cluster, représentant respectivement les T-shirt/top, les Pullover, les mateaux et les chemises. Ces classe étant plus dicifile à distinguer entre elle qu'un pantalon (classe une) ou d'une chaussure (classe 5), elle sont mixé dans l'espace latent.
+Les résultats sont plutôt intéressants. En effet, on observe que les classes 0, 2, 4 et 6 ne forment pas vraiment des groupes distincts. Ces classes correspondent respectivement aux T-shirts/hauts, aux pulls, aux manteaux et aux chemises. Étant donné que ces classes sont plus difficiles à distinguer les unes des autres que, par exemple, un pantalon (classe 1) ou une chaussure (classe 5), elles se mélangent dans l'espace latent. 
 
+Cela s'explique très simplement. Les classes des hauts étant visuellement similaires, ces classes se mélangent davantage lors de la réduction à deux dimensions. En revanche, des classes telles que les pantalons (classe 1) ou les chaussures (classe 5) ont des caractéristiques plus distinctes, ce qui les rend plus facilement discernables dans l'espace latent réduit.
 
 
 \subsubsection{Débruitage}
 
-Ici, l'objectif est de reconstruire des images d'origine à partir de versions bruitées, qui est similaire à un travail de reconstruction. Elle montre comment le modèle est capable de supprimer le bruit et de récupérer les informations essentielles des images d'origine. Les trois modèles appris précédemment ont servi à cette tâche.
+Notre objectif est de générer des versions débruitées des images d'origine, ce qui équivaut à un travail de restauration / reconstruction. Cela démontre la capacité du modèle à éliminer le bruit et à récupérer les informations essentielles des images initiales. Les trois modèles précédemment entraînés ont été utilisés pour cette tâche.
 
-Avec un bruit gaussien de 20 \%, sur une image de chaque classe. 
-
-Le réseau le plus simple, sur la figure \ref*{fig:reconstruct_noisy_all_small} s'en sort plutôt bien. Bien que l'on perd tout de même en information, notamment au niveau des contours, on parvient à retrouver la forme générale de chaque classe tout en restant fidèle au niveau de gris.
+En appliquant un bruit gaussien de 20 \% sur une image de chaque classe, le modèle le plus simple, présenté dans la figure \ref{fig:reconstruct_noisy_all_small}, s'en sort plutôt bien. Bien qu'il y ait une perte d'informations, notamment au niveau des contours, il parvient à retrouver la forme générale de chaque classe tout en préservant fidèlement les niveaux de gris. Il reste donc limité quant à la capture des détails fins des images.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics*[width=\textwidth]{reconstruct_noisy_all_small.pdf}
+    \includegraphics*[width=\textwidth]{reconstruct_noisy_all_simple.pdf}
     \caption{Reconstruction d'une image bruitée de chaque classe pour le réseau n° 1}
     \label{fig:reconstruct_noisy_all_small}
 \end{figure}
 
-Le réseau légérement plus complexe, sur la figure \ref*{fig:reconstruct_noisy_all_medium} s'en sort bien également. Il arrive mieux à identifier les contours et les couleurs, pas pour toutes, notamment pour la chaussure de tennis (classe 7), qu'il confond avec des talons. 
+Le deuxième modèle, illustré dans la figure \ref{fig:reconstruct_noisy_all_medium}, offre de meilleures performances en termes de reconstruction en parvenant à identifier plus précisément les contours et les couleurs des objets. Néanmoins, il présente quelques difficultés avec certaines classes, comme la confusion entre les chaussures de tennis (classe 7) et les talons, ce qui peut être attribué à une similarité visuelle entre ces deux catégories.
 
 \begin{figure}[htbp]
     \centering
@@ -372,7 +372,7 @@ Le réseau légérement plus complexe, sur la figure \ref*{fig:reconstruct_noisy
     \label{fig:reconstruct_noisy_all_medium}
 \end{figure}
 
-Le réseau plus complexe, sur la figure \ref*{fig:reconstruct_noisy_all_big} s'en sort le mieux.
+Le troisième modèle, représenté dans la figure \ref{fig:reconstruct_noisy_all_big}, obtient les meilleurs résultats de reconstruction. Ce modèle parvient à supprimer efficacement le bruit et à retrouver les informations essentielles des images d'origine, offrant ainsi une meilleure fidélité visuelle dans la reconstruction et démontrant sa capacité à apprendre des représentations plus riches et détaillées.
 
 \begin{figure}[htbp]
     \centering
@@ -381,7 +381,7 @@ Le réseau plus complexe, sur la figure \ref*{fig:reconstruct_noisy_all_big} s'e
     \label{fig:reconstruct_noisy_all_big}
 \end{figure}
 
-Sur les figures \ref*{reconstructnoisychaussure}, \ref*{reconstructnoisybag}, \ref*{reconstructnoisypantalon}, \ref*{reconstructnoisycoat}, on fait varier le pourcentage de bruit gaussien ajouté aux données pour comparer la robustesse des modèles. Ainsi, les images débruitées se transforment en tout sauf quelque chose d'original : on reconnait bien souvent une image issue de la classe des vestes ou des t-shirts.
+Les figures \ref{fig:reconstructnoisychaussure}, \ref{fig:reconstructnoisybag}, \ref{fig:reconstructnoisypantalon}, \ref{fig:reconstructnoisycoat} présentent les résultats d'une expérience où nous avons introduit différents niveaux de bruit gaussien pour évaluer la robustesse des modèles de reconstruction. Les images débruitées montrent souvent une perte de fidélité aux images originales, avec une tendance à reconnaître des traits caractéristiques des vestes ou des t-shirts plutôt que de préserver les détails spécifiques de chaque classe. Ces résultats soulignent les limites des modèles lorsqu'ils sont confrontés à des niveaux de bruit élevés et mettent en évidence la difficulté de supprimer efficacement le bruit tout en conservant les caractéristiques distinctives des images d'origine.
 
 \begin{figure}[htbp]
     \centering
@@ -413,18 +413,17 @@ Sur les figures \ref*{reconstructnoisychaussure}, \ref*{reconstructnoisybag}, \r
     \label{fig:reconstructnoisycoat}
 \end{figure}
 
+Une amélioration significative de l'auto-encodeur peut être obtenue en utilisant des réseaux de neurones convolutionnels qui nécessitent des couches de convolutions transposées pour "déconvolutionner" les données ou des fonctions d'upsampling. 
+Une approche plus simple serait d'utiliser une convolution en 2D. Le \textit{padding} serait également nécessaire pour garder la taille d'origine des données.
 
-Une grosse amélioration de l'auto-encodeur peut se faire avec des réseaux de neurones convolutionnels mais requièrent des couches de convolutions transposées, qui "déconvolutionnent" des données, ou encore des fonctions d'upsampling. Cela serait également beaucoup plus simple avec une convolution en 2D. Nous avons tenté, en vain, d'utiliser un auto-encodeur avec une architecture ressemblant à : \texttt{Conv1D(3, 1, 32)} $\rightarrow$ {ReLU()} $\rightarrow$ \texttt{MaxPool1D(2, 1)} $\rightarrow$ \texttt{Conv1D(3, 32, 16)} $\rightarrow$ \texttt{ReLU()} $\rightarrow$ \texttt{MaxPool1D(2, 1)} $\rightarrow$ \texttt{Conv1D(3, 16, 16)} $\rightarrow$ \texttt{ReLU()} $\rightarrow$ \texttt{Conv1D(2, 16, 32)} $\rightarrow$ \texttt{ReLU()} $\rightarrow$ \texttt{Conv1D(2, stride=2)} $\rightarrow$ \texttt{Sigmoid()}. Le \textit{padding} serait également nécessaire pour garder la taille d'origine des données.
-
+Nous avons tenté, sans succés, d'utiliser un auto-encodeur avec une architecture utilisant des convolutions 1D de la forme : \texttt{Conv1D(3, 1, 32) $\rightarrow$ ReLU() $\rightarrow$ MaxPool1D(2, 1) $\rightarrow$ Conv1D(3, 32, 16) $\rightarrow$ ReLU() $\rightarrow$ MaxPool1D(2, 1) $\rightarrow$ Conv1D(3, 16, 16) $\rightarrow$ ReLU() $\rightarrow$ Conv1D(2, 16, 32) $\rightarrow$ ReLU() $\rightarrow$ Conv1D(2, stride=2) $\rightarrow$ Sigmoid()}. 
 
 \section{Conclusion}
 
-Transfert de style aurait été cool mais besoin de conv2d et on avait pas le temps mashallah
+L'implémentation de cette bibliothèque de deep learning a été une expérience enrichissante, nous offrant une compréhension approfondie des concepts algébriques et de la beauté de la rétropropagation. Bien que nous ayons exploré différentes tâches telles que la reconstruction d'images et la génération de données, nous n'avons malheureusement pas eu le temps d'implémenter des fonctionnalités plus avancées telles que le transfert de style ou la traduction avec un auto-encodeur. 
 
-traduction 
+Cependant, nous reconnaissons l'importance de l'optimisation matérielle, telle que l'utilisation de GPU et la compilation pour améliorer les performances de nos modèles. Cela aurait pu accélérer les calculs et nous permettre d'explorer des architectures plus complexes et des ensembles de données plus volumineux. 
 
-opti gpu et compilation 
-
-
+En conclusion, bien que notre exploration ait été limitée par des contraintes de temps, cette expérience nous a permis de mieux comprendre les fondements du deep learning et de réaliser l'importance des choix d'architecture, d'optimisation matérielle et de l'implémentation de fonctionnalités avancées pour atteindre de meilleures performances et explorer des domaines plus vastes.
 
 \end{document}
