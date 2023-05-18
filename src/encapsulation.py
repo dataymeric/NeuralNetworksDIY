@@ -166,7 +166,7 @@ class Optim:
         batch_size: int,
         epochs: int,
         test_size: float,
-        patience: int = 5,
+        patience: int = 10,
         network: Sequential = None,
         shuffle_train: bool = True,
         shuffle_test: bool = False,
