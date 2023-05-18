@@ -73,9 +73,7 @@ class BCELoss(Loss):
 
 
 class CELogSoftmax(Loss):
-    r"""TO DO
-
-    .. math::
+    r""".. math::
         \text{CE}(y, \hat{y}) = - \log \frac {e^{\hat{y}_y}} {\sum_{i=1}^{K}
         e^{\hat{y}_i}} = -\hat{y}_y} + \log \sum_{i=1}^{K}e^{\hat{y}_i}}
     """

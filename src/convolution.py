@@ -78,8 +78,7 @@ Then it is just a matter of reshape, to drop unnecessaries dimensions, e.g. :
 array([[[[-0.41982262,  1.10111123, -0.41115195]],
         [[ 1.18733225, -1.93463567, -0.22472025]]]])
 
-And voilà! I will try dealing with padding in a future version, when this one is fully
-operational.
+And voilà!
 """
 
 
@@ -236,7 +235,9 @@ class Conv1D(Module):
         ]
         X_view = X_view.reshape(batch_size, out_length, self.chan_in, self.k_size)
 
-        self._gradient["weight"] += np.einsum("bock, bod -> kcd", X_view, delta) / batch_size
+        self._gradient["weight"] += (
+            np.einsum("bock, bod -> kcd", X_view, delta) / batch_size
+        )
 
         if self.include_bias:
             self._gradient["bias"] += np.sum(delta, axis=(0, 1)) / batch_size
