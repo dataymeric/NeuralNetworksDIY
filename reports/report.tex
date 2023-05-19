@@ -259,6 +259,26 @@ En ce qui concerne l'architecture à quatre couches convolutionnelles, représen
 
 Un modèle trop complexe n'est donc pas synonyme de bonne performance.
 
+\subsubsection{Et sur \texttt{fashion-mnist} ?}
+
+Atchitecture similaire à précédent :
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{conv/fashion_conv_1layer_2linear.pdf}
+    \caption{Réseau de neurones convolutionnel à 1 couche}
+    \label{fig:conv2layers_fashion}
+\end{figure}
+
+Avec 3 couches, dans l'optique d'avoir une sortie plus petite dans la première couche linéaire :
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{conv/fashion_conv_3layers_2linear.pdf}
+    \caption{Réseau de neurones convolutionnel à 3 couches}
+    \label{fig:conv3layers_fashion}
+\end{figure}
+
 \subsection{Auto-encodeur}
 
 
