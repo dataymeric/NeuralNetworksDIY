@@ -259,7 +259,7 @@ Un modèle trop complexe n'est donc pas synonyme de bonne performance.
 
 \subsubsection{Et sur \texttt{fashion-mnist} ?}
 
-Atchitecture similaire à précédent :
+Avec une architecture similaire à celle utilisée pour les chiffres, l'utilisation d'un réseau convolutionnel n'améliore pas de manière significative les scores de classification (passant de 84~\% à un peu plus de 85~\% de précision). En revanche, pour le jeu de données USPS, l'ajout d'une couche de convolution permet une nette amélioration des performances, passant de 85~\% à 97~\% de précision.
 
 \begin{figure}[htbp]
     \centering
@@ -268,7 +268,7 @@ Atchitecture similaire à précédent :
     \label{fig:conv2layers_fashion}
 \end{figure}
 
-Avec 3 couches, dans l'optique d'avoir une sortie plus petite dans la première couche linéaire :
+Avec un modèle à 3 couches, où l'objectif est d'avoir une sortie plus petite dans la première couche linéaire, l'apprentissage devient plus difficile, tout comme pour les chiffres. De plus, la classe 6 est mal classée et se confond avec les classes 0, 2 et 4 (qui correspondent toutes à des hauts). Par conséquent, l'application successive de trois convolutions sur les données entraîne une perte d'informations trop importante, en particulier dans une dimension, ce qui se traduit par des performances inférieures.
 
 \begin{figure}[htbp]
     \centering
@@ -277,7 +277,6 @@ Avec 3 couches, dans l'optique d'avoir une sortie plus petite dans la première 
     \label{fig:conv3layers_fashion}
 \end{figure}
 
-La convolution n'améliore pas beaucoup les scores de classification sur \texttt{fashion-mnist} (84~\% à un peu plus de 85~\%). Alors que sur \texttt{usps}, l'ajoue d'une couche de convolution permetait de passer de 85~\% à 97~\%.
 
 \subsection{Auto-encodeur}
 
