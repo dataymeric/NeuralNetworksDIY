@@ -1,8 +1,0 @@
-﻿.1 src/
-.2 __init__.py
-.2 activation.py
-.2 convolution.py
-.2 encapsulation.py
-.2 linear.py
-.2 loss.py
-.2 module.py
