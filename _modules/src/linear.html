@@ -196,21 +196,21 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    input_size : int</span>
-<span class="sd">        Size of input sample.</span>
-<span class="sd">    output_size : int</span>
-<span class="sd">        Size of output sample.</span>
-<span class="sd">    bias : bool, optional, default=False</span>
-<span class="sd">        If True, adds a learnable bias to the output.</span>
-<span class="sd">    init_type : str, optional, default=&quot;normal&quot;</span>
-<span class="sd">        Change the initialization of parameters.</span>
+<span class="sd">        input_size : int</span>
+<span class="sd">            Size of input sample.</span>
+<span class="sd">        output_size : int</span>
+<span class="sd">            Size of output sample.</span>
+<span class="sd">        bias : bool, optional, default=False</span>
+<span class="sd">            If True, adds a learnable bias to the output.</span>
+<span class="sd">        init_type : str, optional, default=&quot;normal&quot;</span>
+<span class="sd">            Change the initialization of parameters.</span>
 
 <span class="sd">    Shape</span>
 <span class="sd">    -----</span>
-<span class="sd">    Input : ndarray (batch, input_size)</span>
-<span class="sd">    Output : ndarray (batch, output_size)</span>
-<span class="sd">    Weight : ndarray (input_size, output_size)</span>
-<span class="sd">    Bias : ndarray (1, output_size)</span>
+<span class="sd">    - Input : ndarray (batch, input_size)</span>
+<span class="sd">    - Output : ndarray (batch, output_size)</span>
+<span class="sd">    - Weight : ndarray (input_size, output_size)</span>
+<span class="sd">    - Bias : ndarray (1, output_size)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
