@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2022.10.2)  20 MAY 2023 14:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2022.10.2)  20 MAY 2023 15:09
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -678,19 +678,19 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has b
                    \relax 
 l.74 \newpage
               [1] [2]
-<./src/init_type.pdf, id=127, 2865.93538pt x 1267.15952pt>
+<./src/init_type.pdf, id=128, 2865.93538pt x 1267.15952pt>
 File: ./src/init_type.pdf Graphic file (type pdf)
 <use ./src/init_type.pdf>
 Package pdftex.def Info: ./src/init_type.pdf  used on input line 132.
 (pdftex.def)             Requested size: 455.24411pt x 201.28018pt.
  [3]
-<./src/lr_effet.pdf, id=141, 3083.03822pt x 1361.21132pt>
+<./src/lr_effet.pdf, id=142, 3083.03822pt x 1361.21132pt>
 File: ./src/lr_effet.pdf Graphic file (type pdf)
 <use ./src/lr_effet.pdf>
 Package pdftex.def Info: ./src/lr_effet.pdf  used on input line 147.
 (pdftex.def)             Requested size: 455.24411pt x 200.99501pt.
  [4 <./src/init_type.pdf> <./src/lr_effet.pdf>]
-<./src/activation_func.pdf, id=300, 3084.62422pt x 1748.95926pt>
+<./src/activation_func.pdf, id=301, 3084.62422pt x 1748.95926pt>
 File: ./src/activation_func.pdf Graphic file (type pdf)
 <use ./src/activation_func.pdf>
 Package pdftex.def Info: ./src/activation_func.pdf  used on input line 177.
@@ -701,24 +701,24 @@ Overfull \hbox (6.90286pt too wide) in paragraph at lines 188--189
  []
 
 [5]
-<./src/conv/conv_32batch_zeros.pdf, id=308, 1405.2358pt x 337.38295pt>
+<./src/conv/conv_32batch_zeros.pdf, id=309, 1405.2358pt x 337.38295pt>
 File: ./src/conv/conv_32batch_zeros.pdf Graphic file (type pdf)
 <use ./src/conv/conv_32batch_zeros.pdf>
 Package pdftex.def Info: ./src/conv/conv_32batch_zeros.pdf  used on input line 196.
 (pdftex.def)             Requested size: 455.24411pt x 109.29808pt.
  [6 <./src/activation_func.pdf> <./src/conv/conv_32batch_zeros.pdf>]
-<./src/conv/conv_batch.pdf, id=450, 2865.72145pt x 1273.36801pt>
+<./src/conv/conv_batch.pdf, id=451, 2865.72145pt x 1273.36801pt>
 File: ./src/conv/conv_batch.pdf Graphic file (type pdf)
 <use ./src/conv/conv_batch.pdf>
 Package pdftex.def Info: ./src/conv/conv_batch.pdf  used on input line 209.
 (pdftex.def)             Requested size: 455.24411pt x 202.2858pt.
-<./src/conv/conv_ksize.pdf, id=451, 2865.09851pt x 1276.28822pt>
+<./src/conv/conv_ksize.pdf, id=452, 2865.09851pt x 1276.28822pt>
 File: ./src/conv/conv_ksize.pdf Graphic file (type pdf)
 <use ./src/conv/conv_ksize.pdf>
 Package pdftex.def Info: ./src/conv/conv_ksize.pdf  used on input line 220.
 (pdftex.def)             Requested size: 455.24411pt x 202.78865pt.
  [7 <./src/conv/conv_batch.pdf>]
-<./src/conv/conv_feature_maps.pdf, id=523, 2865.72145pt x 1273.36801pt>
+<./src/conv/conv_feature_maps.pdf, id=524, 2865.72145pt x 1273.36801pt>
 File: ./src/conv/conv_feature_maps.pdf Graphic file (type pdf)
 <use ./src/conv/conv_feature_maps.pdf>
 Package pdftex.def Info: ./src/conv/conv_feature_maps.pdf  used on input line 231.
@@ -729,7 +729,7 @@ Overfull \hbox (50.89703pt too wide) in paragraph at lines 240--241
  []
 
 [8 <./src/conv/conv_ksize.pdf> <./src/conv/conv_feature_maps.pdf>]
-<./src/conv/conv_2layers.pdf, id=646, 1403.86176pt x 337.38295pt>
+<./src/conv/conv_2layers.pdf, id=647, 1403.86176pt x 337.38295pt>
 File: ./src/conv/conv_2layers.pdf Graphic file (type pdf)
 <use ./src/conv/conv_2layers.pdf>
 Package pdftex.def Info: ./src/conv/conv_2layers.pdf  used on input line 244.
@@ -744,117 +744,119 @@ Overfull \hbox (30.39958pt too wide) in paragraph at lines 249--250
 \T1/cmtt/m/n/10 Conv1D(3, 64, 64) $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 ReLU() $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 MaxPool1D(8, 2) $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 Conv1D(3, 64, 64) $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 ReLU() $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 MaxPool1D(8,
  []
 
-<./src/conv/conv_4layers.pdf, id=648, 1402.73964pt x 337.5778pt>
+<./src/conv/conv_4layers.pdf, id=649, 1402.73964pt x 337.5778pt>
 File: ./src/conv/conv_4layers.pdf Graphic file (type pdf)
 <use ./src/conv/conv_4layers.pdf>
 Package pdftex.def Info: ./src/conv/conv_4layers.pdf  used on input line 253.
 (pdftex.def)             Requested size: 455.24411pt x 109.55695pt.
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <10> not available
 (Font)              Font shape `T1/cmtt/m/n' tried instead on input line 260.
-<./src/conv/fashion_conv_1layer_2linear.pdf, id=649, 1406.87852pt x 336.90663pt>
+<./src/conv/fashion_conv_1layer_2linear.pdf, id=650, 1406.87852pt x 336.90663pt>
 File: ./src/conv/fashion_conv_1layer_2linear.pdf Graphic file (type pdf)
 <use ./src/conv/fashion_conv_1layer_2linear.pdf>
 Package pdftex.def Info: ./src/conv/fashion_conv_1layer_2linear.pdf  used on input line 266.
 (pdftex.def)             Requested size: 455.24411pt x 109.01526pt.
-<./src/conv/fashion_conv_3layers_2linear.pdf, id=650, 1402.94035pt x 337.38295pt>
+[9 <./src/conv/conv_2layers.pdf> <./src/conv/conv_4layers.pdf>]
+<./src/conv/fashion_conv_3layers_2linear.pdf, id=736, 1402.94035pt x 337.38295pt>
 File: ./src/conv/fashion_conv_3layers_2linear.pdf Graphic file (type pdf)
 <use ./src/conv/fashion_conv_3layers_2linear.pdf>
 Package pdftex.def Info: ./src/conv/fashion_conv_3layers_2linear.pdf  used on input line 275.
 (pdftex.def)             Requested size: 455.24411pt x 109.47827pt.
-[9 <./src/conv/conv_2layers.pdf> <./src/conv/conv_4layers.pdf>]
-Overfull \hbox (7.67319pt too wide) in paragraph at lines 292--293
+ [10 <./src/conv/fashion_conv_1layer_2linear.pdf> <./src/conv/fashion_conv_3layers_2linear.pdf>]
+Overfull \hbox (7.67319pt too wide) in paragraph at lines 291--292
 []\T1/cmr/m/n/10 Nous avons en-trainé un auto-encodeur sur les deux jeux de don-nées pré-cé-dents (\T1/cmtt/m/n/10 USPS \T1/cmr/m/n/10 et \T1/cmtt/m/n/10 fashion-mnist\T1/cmr/m/n/10 ). 
  []
 
-[10 <./src/conv/fashion_conv_1layer_2linear.pdf> <./src/conv/fashion_conv_3layers_2linear.pdf>]
-Overfull \hbox (23.65611pt too wide) in paragraph at lines 301--302
+
+Overfull \hbox (23.65611pt too wide) in paragraph at lines 300--301
 []\T1/cmtt/m/n/10 Linear(784, 512) $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 TanH() $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 Linear(512, 256) $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 TanH() $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 Linear(256, 128) $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 TanH()
  []
 
 <./src/loss_encoder_fashion_3_networks.pdf, id=824, 1362.40266pt x 437.9562pt>
 File: ./src/loss_encoder_fashion_3_networks.pdf Graphic file (type pdf)
 <use ./src/loss_encoder_fashion_3_networks.pdf>
-Package pdftex.def Info: ./src/loss_encoder_fashion_3_networks.pdf  used on input line 310.
+Package pdftex.def Info: ./src/loss_encoder_fashion_3_networks.pdf  used on input line 309.
 (pdftex.def)             Requested size: 386.96027pt x 124.39111pt.
 <./src/reconstruction_per_network_cplxity.pdf, id=826, 1810.90553pt x 458.4233pt>
 File: ./src/reconstruction_per_network_cplxity.pdf Graphic file (type pdf)
 <use ./src/reconstruction_per_network_cplxity.pdf>
-Package pdftex.def Info: ./src/reconstruction_per_network_cplxity.pdf  used on input line 317.
+Package pdftex.def Info: ./src/reconstruction_per_network_cplxity.pdf  used on input line 316.
 (pdftex.def)             Requested size: 386.96027pt x 97.9575pt.
 <./src/encoder_decoder_middle_func_simple_net.pdf, id=829, 3082.69612pt x 1251.46367pt>
 File: ./src/encoder_decoder_middle_func_simple_net.pdf Graphic file (type pdf)
 <use ./src/encoder_decoder_middle_func_simple_net.pdf>
-Package pdftex.def Info: ./src/encoder_decoder_middle_func_simple_net.pdf  used on input line 326.
+Package pdftex.def Info: ./src/encoder_decoder_middle_func_simple_net.pdf  used on input line 325.
 (pdftex.def)             Requested size: 455.24411pt x 184.80888pt.
-<./src/reconstruction_per_epoch_simple_model.pdf, id=833, 1391.4531pt x 264.5082pt>
+[11 <./src/loss_encoder_fashion_3_networks.pdf> <./src/reconstruction_per_network_cplxity.pdf>]
+<./src/reconstruction_per_epoch_simple_model.pdf, id=916, 1391.4531pt x 264.5082pt>
 File: ./src/reconstruction_per_epoch_simple_model.pdf Graphic file (type pdf)
 <use ./src/reconstruction_per_epoch_simple_model.pdf>
-Package pdftex.def Info: ./src/reconstruction_per_epoch_simple_model.pdf  used on input line 337.
+Package pdftex.def Info: ./src/reconstruction_per_epoch_simple_model.pdf  used on input line 336.
 (pdftex.def)             Requested size: 455.24411pt x 86.53726pt.
-<./src/reconstruction_per_epoch_big_model.pdf, id=835, 1391.4531pt x 264.5082pt>
+<./src/reconstruction_per_epoch_big_model.pdf, id=918, 1391.4531pt x 264.5082pt>
 File: ./src/reconstruction_per_epoch_big_model.pdf Graphic file (type pdf)
 <use ./src/reconstruction_per_epoch_big_model.pdf>
-Package pdftex.def Info: ./src/reconstruction_per_epoch_big_model.pdf  used on input line 344.
+Package pdftex.def Info: ./src/reconstruction_per_epoch_big_model.pdf  used on input line 343.
 (pdftex.def)             Requested size: 455.24411pt x 86.53726pt.
-[11 <./src/loss_encoder_fashion_3_networks.pdf> <./src/reconstruction_per_network_cplxity.pdf>] [12 <./src/encoder_decoder_middle_func_simple_net.pdf> <./src/reconstruction_per_epoch_simple_model.pdf> <./src/reconstruction_per_epoch_big_model.pdf>]
-<./src/tsne_mnist_train_big.pdf, id=1123, 1871.79305pt x 462.52798pt>
+ [12 <./src/encoder_decoder_middle_func_simple_net.pdf> <./src/reconstruction_per_epoch_simple_model.pdf> <./src/reconstruction_per_epoch_big_model.pdf>]
+<./src/tsne_mnist_train_big.pdf, id=1124, 1871.79305pt x 462.52798pt>
 File: ./src/tsne_mnist_train_big.pdf Graphic file (type pdf)
 <use ./src/tsne_mnist_train_big.pdf>
-Package pdftex.def Info: ./src/tsne_mnist_train_big.pdf  used on input line 355.
+Package pdftex.def Info: ./src/tsne_mnist_train_big.pdf  used on input line 354.
 (pdftex.def)             Requested size: 341.43307pt x 84.36653pt.
-<./src/tsne_usps_train_big.pdf, id=1125, 1871.79305pt x 462.52798pt>
+<./src/tsne_usps_train_big.pdf, id=1126, 1871.79305pt x 462.52798pt>
 File: ./src/tsne_usps_train_big.pdf Graphic file (type pdf)
 <use ./src/tsne_usps_train_big.pdf>
-Package pdftex.def Info: ./src/tsne_usps_train_big.pdf  used on input line 362.
+Package pdftex.def Info: ./src/tsne_usps_train_big.pdf  used on input line 361.
 (pdftex.def)             Requested size: 341.43307pt x 84.36653pt.
- [13 <./src/tsne_mnist_train_big.pdf> <./src/tsne_usps_train_big.pdf>]
-<./src/reconstruct_noisy_all_simple.pdf, id=1203, 1438.17305pt x 501.2789pt>
+<./src/reconstruct_noisy_all_simple.pdf, id=1129, 1438.17305pt x 501.2789pt>
 File: ./src/reconstruct_noisy_all_simple.pdf Graphic file (type pdf)
 <use ./src/reconstruct_noisy_all_simple.pdf>
-Package pdftex.def Info: ./src/reconstruct_noisy_all_simple.pdf  used on input line 380.
+Package pdftex.def Info: ./src/reconstruct_noisy_all_simple.pdf  used on input line 377.
 (pdftex.def)             Requested size: 455.24411pt x 158.67622pt.
-<./src/reconstruct_noisy_all_medium.pdf, id=1206, 1438.17305pt x 501.2789pt>
+<./src/reconstruct_noisy_all_medium.pdf, id=1132, 1438.17305pt x 501.2789pt>
 File: ./src/reconstruct_noisy_all_medium.pdf Graphic file (type pdf)
 <use ./src/reconstruct_noisy_all_medium.pdf>
-Package pdftex.def Info: ./src/reconstruct_noisy_all_medium.pdf  used on input line 389.
+Package pdftex.def Info: ./src/reconstruct_noisy_all_medium.pdf  used on input line 386.
 (pdftex.def)             Requested size: 455.24411pt x 158.67622pt.
-<./src/reconstruct_noisy_all_big.pdf, id=1209, 1438.17305pt x 501.2789pt>
+ [13 <./src/tsne_mnist_train_big.pdf> <./src/tsne_usps_train_big.pdf>]
+<./src/reconstruct_noisy_all_big.pdf, id=1212, 1438.17305pt x 501.2789pt>
 File: ./src/reconstruct_noisy_all_big.pdf Graphic file (type pdf)
 <use ./src/reconstruct_noisy_all_big.pdf>
-Package pdftex.def Info: ./src/reconstruct_noisy_all_big.pdf  used on input line 398.
+Package pdftex.def Info: ./src/reconstruct_noisy_all_big.pdf  used on input line 395.
 (pdftex.def)             Requested size: 455.24411pt x 158.67622pt.
- [14 <./src/reconstruct_noisy_all_simple.pdf> <./src/reconstruct_noisy_all_medium.pdf>]
-<./src/reconstruct_noisy_chaussure.pdf, id=1352, 955.5355pt x 715.70763pt>
+<./src/reconstruct_noisy_chaussure.pdf, id=1218, 955.5355pt x 715.70763pt>
 File: ./src/reconstruct_noisy_chaussure.pdf Graphic file (type pdf)
 <use ./src/reconstruct_noisy_chaussure.pdf>
-Package pdftex.def Info: ./src/reconstruct_noisy_chaussure.pdf  used on input line 407.
+Package pdftex.def Info: ./src/reconstruct_noisy_chaussure.pdf  used on input line 404.
 (pdftex.def)             Requested size: 455.24411pt x 340.98029pt.
-<./src/reconstruct_noisy_sac.pdf, id=1354, 955.5355pt x 715.70763pt>
+<./src/reconstruct_noisy_sac.pdf, id=1220, 955.5355pt x 715.70763pt>
 File: ./src/reconstruct_noisy_sac.pdf Graphic file (type pdf)
 <use ./src/reconstruct_noisy_sac.pdf>
-Package pdftex.def Info: ./src/reconstruct_noisy_sac.pdf  used on input line 414.
+Package pdftex.def Info: ./src/reconstruct_noisy_sac.pdf  used on input line 411.
 (pdftex.def)             Requested size: 455.24411pt x 340.98029pt.
-<./src/reconstruct_noisy_pantalon.pdf, id=1356, 955.5355pt x 715.70763pt>
+<./src/reconstruct_noisy_pantalon.pdf, id=1222, 955.5355pt x 715.70763pt>
 File: ./src/reconstruct_noisy_pantalon.pdf Graphic file (type pdf)
 <use ./src/reconstruct_noisy_pantalon.pdf>
-Package pdftex.def Info: ./src/reconstruct_noisy_pantalon.pdf  used on input line 422.
+Package pdftex.def Info: ./src/reconstruct_noisy_pantalon.pdf  used on input line 419.
 (pdftex.def)             Requested size: 455.24411pt x 340.98029pt.
-<./src/reconstruct_noisy_coat.pdf, id=1358, 955.5355pt x 715.70763pt>
+<./src/reconstruct_noisy_coat.pdf, id=1224, 955.5355pt x 715.70763pt>
 File: ./src/reconstruct_noisy_coat.pdf Graphic file (type pdf)
 <use ./src/reconstruct_noisy_coat.pdf>
-Package pdftex.def Info: ./src/reconstruct_noisy_coat.pdf  used on input line 430.
+Package pdftex.def Info: ./src/reconstruct_noisy_coat.pdf  used on input line 427.
 (pdftex.def)             Requested size: 455.24411pt x 340.98029pt.
 
-Overfull \hbox (14.156pt too wide) in paragraph at lines 438--439
+Overfull \hbox (14.156pt too wide) in paragraph at lines 435--436
 \T1/cmtt/m/n/10 ReLU() $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 MaxPool1D(2, 1) $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 Conv1D(3, 16, 16) $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 ReLU() $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 Conv1D(2, 16, 32) $\OMS/cmsy/m/n/10 !$ \T1/cmtt/m/n/10 ReLU() $\OMS/cmsy/m/n/10 !$
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 448.
-[15 <./src/reconstruct_noisy_all_big.pdf>] [16 <./src/reconstruct_noisy_chaussure.pdf>] [17 <./src/reconstruct_noisy_sac.pdf>] [18 <./src/reconstruct_noisy_pantalon.pdf>] [19 <./src/reconstruct_noisy_coat.pdf>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 448.
+[14 <./src/reconstruct_noisy_all_simple.pdf> <./src/reconstruct_noisy_all_medium.pdf>] [15 <./src/reconstruct_noisy_all_big.pdf> <./src/reconstruct_noisy_chaussure.pdf>] [16 <./src/reconstruct_noisy_sac.pdf>] [17 <./src/reconstruct_noisy_pantalon.pdf>] [18 <./src/reconstruct_noisy_coat.pdf>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 445.
+ [19]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 445.
  (/home/charles/NeuralNetworksDIY/reports/report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 448.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 448.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 445.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 445.
 Package rerunfilecheck Info: File `report.out' has not changed.
 (rerunfilecheck)             Checksum: EE94F2A72B5DD31C642CADB72F9E63A6;1369.
  ) 
@@ -865,12 +867,12 @@ Here is how much of TeX's memory you used:
  30504 multiletter control sequences out of 15000+600000
  546818 words of font info for 52 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 48i,10n,46p,1152b,575s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 48i,10n,46p,1152b,485s stack positions out of 5000i,500n,10000p,200000b,80000s
  </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbi1000.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/eccc1000.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm0700.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1000.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1000.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1000.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1000.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/eccc1440.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1440.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1728.600pk> </home/charles/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx2488.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on /home/charles/NeuralNetworksDIY/reports/report.pdf (20 pages, 3781819 bytes).
+Output written on /home/charles/NeuralNetworksDIY/reports/report.pdf (20 pages, 3782504 bytes).
 PDF statistics:
- 2159 PDF objects out of 2487 (max. 8388607)
- 789 compressed objects within 8 object streams
+ 2161 PDF objects out of 2487 (max. 8388607)
+ 790 compressed objects within 8 object streams
  68 named destinations out of 1000 (max. 500000)
  364 words of extra memory for PDF output out of 10000 (max. 10000000)
 

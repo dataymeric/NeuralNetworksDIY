@@ -14,6 +14,6 @@
 \contentsline {subsubsection}{\numberline {3.2.5}Et sur \texttt {fashion-mnist} ?}{9}{subsubsection.3.2.5}%
 \contentsline {subsection}{\numberline {3.3}Auto-encodeur}{10}{subsection.3.3}%
 \contentsline {subsubsection}{\numberline {3.3.1}Reconstruction}{10}{subsubsection.3.3.1}%
-\contentsline {subsubsection}{\numberline {3.3.2}Organisation de l'espace latent}{13}{subsubsection.3.3.2}%
+\contentsline {subsubsection}{\numberline {3.3.2}Organisation de l'espace latent}{12}{subsubsection.3.3.2}%
 \contentsline {subsubsection}{\numberline {3.3.3}Débruitage}{13}{subsubsection.3.3.3}%
-\contentsline {section}{\numberline {4}Conclusion}{15}{section.4}%
+\contentsline {section}{\numberline {4}Conclusion}{19}{section.4}%
