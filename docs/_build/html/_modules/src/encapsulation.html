@@ -305,10 +305,6 @@
             <span class="k">yield</span> <span class="n">X_batch</span><span class="p">,</span> <span class="n">y_batch</span>
 
 <div class="viewcode-block" id="Optim.step"><a class="viewcode-back" href="../../src.html#src.encapsulation.Optim.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_x</span><span class="p">,</span> <span class="n">batch_y</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;TODO</span>
-<span class="sd">        y_hat = self.network.forward(batch_x).reshape(-1, 1)  # (batchsize, 1)</span>
-<span class="sd">        Il faut fix ce reshape, il broke en multiclass en reshapant de (batchsize=8, 2 class) =&gt; (16, 1)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Forward pass</span>
         <span class="n">y_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">batch_x</span><span class="p">)</span>
         <span class="n">loss_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">batch_y</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">)</span>

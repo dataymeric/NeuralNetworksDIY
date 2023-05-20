@@ -10,7 +10,7 @@ Welcome to Neural Networks DIY's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-:ref:`src`
+Tout est dans :ref:`modindex` 😉
 
 Indices and tables
 ==================

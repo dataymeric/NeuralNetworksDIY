@@ -8,21 +8,21 @@ class Linear(Module):
 
     Parameters
     ----------
-    input_size : int
-        Size of input sample.
-    output_size : int
-        Size of output sample.
-    bias : bool, optional, default=False
-        If True, adds a learnable bias to the output.
-    init_type : str, optional, default="normal"
-        Change the initialization of parameters.
+        input_size : int
+            Size of input sample.
+        output_size : int
+            Size of output sample.
+        bias : bool, optional, default=False
+            If True, adds a learnable bias to the output.
+        init_type : str, optional, default="normal"
+            Change the initialization of parameters.
 
     Shape
     -----
-    Input : ndarray (batch, input_size)
-    Output : ndarray (batch, output_size)
-    Weight : ndarray (input_size, output_size)
-    Bias : ndarray (1, output_size)
+    - Input : ndarray (batch, input_size)
+    - Output : ndarray (batch, output_size)
+    - Weight : ndarray (input_size, output_size)
+    - Bias : ndarray (1, output_size)
     """
 
     def __init__(

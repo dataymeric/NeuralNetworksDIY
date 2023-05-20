@@ -210,15 +210,13 @@ x, &amp; \text{ if } x \geq 0 \\
 <dl class="py method">
 <dt class="sig sig-object py" id="src.activation.LeakyReLU.backward_delta">
 <span class="sig-name descname"><span class="pre">backward_delta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/activation.html#LeakyReLU.backward_delta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.activation.LeakyReLU.backward_delta" title="Lien permanent vers cette définition">#</a></dt>
-<dd><dl>
-<dt>math::</dt><dd><dl class="simple">
-<dt>frac{partial M}{partial z^h} = begin{cases}</dt><dd><p>1 &amp; text{if } x&gt;0, \
-alpha &amp; text{otherwise}.</p>
-</dd>
-</dl>
-<p>end{cases}</p>
-</dd>
-</dl>
+<dd><div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{\partial M}{\partial z^h} = \begin{cases}
+    1 &amp; \text{if } x&gt;0, \\
+    \alpha &amp; \text{otherwise}.
+\end{cases}\end{split}\]</div>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -444,17 +442,17 @@ Commonly used along with a cross entropy loss. See [Softmax and cross-entropy lo
 <dl class="py method">
 <dt class="sig sig-object py" id="src.activation.Softmax.backward_delta">
 <span class="sig-name descname"><span class="pre">backward_delta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/activation.html#Softmax.backward_delta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.activation.Softmax.backward_delta" title="Lien permanent vers cette définition">#</a></dt>
-<dd><dl class="simple">
-<dt>math::</dt><dd><p>frac{partial M(x_i)}{partial x_i} = M^h(x_i) * (1 - M^h(x_i))</p>
-</dd>
-</dl>
-<p>Plus précisement
-math:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>\<span class="n">frac</span><span class="p">{</span>\<span class="n">partial</span> <span class="n">M</span><span class="o">^</span><span class="n">h</span><span class="p">(</span><span class="n">x_i</span><span class="p">)}{</span><span class="n">x_j</span><span class="p">}</span> <span class="o">=</span> \<span class="n">begin</span><span class="p">{</span><span class="n">cases</span><span class="p">}</span>
-    <span class="n">M</span><span class="o">^</span><span class="n">h</span><span class="p">(</span><span class="n">x_i</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">M</span><span class="o">^</span><span class="n">h</span><span class="p">(</span><span class="n">x_j</span><span class="p">)</span> <span class="p">)</span> <span class="o">&amp;</span>\<span class="n">text</span><span class="p">{</span><span class="n">si</span> <span class="p">}</span> <span class="n">i</span> <span class="o">=</span> <span class="n">j</span> \\
-    <span class="o">-</span> <span class="n">M</span><span class="o">^</span><span class="n">h</span><span class="p">(</span><span class="n">x_j</span><span class="p">)</span> <span class="n">M</span><span class="o">^</span><span class="n">h</span><span class="p">(</span><span class="n">x_i</span><span class="p">)</span> <span class="o">&amp;</span>\<span class="n">text</span><span class="p">{</span> <span class="n">si</span> <span class="p">}</span> <span class="n">i</span> \<span class="n">neq</span> <span class="n">j</span> \\
-\<span class="n">end</span><span class="p">{</span><span class="n">cases</span><span class="p">}</span>
-</pre></div>
+<dd><div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\frac{\partial M(x_i)}{\partial x_i} = M^h(x_i) * (1 - M^h(x_i))\]</div>
+</div>
+<p>Plus précisement</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{\partial M^h(x_i)}{x_j} = \begin{cases}
+    M^h(x_i) * ( 1 - M^h(x_j) ) &amp;\text{si } i = j \\
+    - M^h(x_j) M^h(x_i) &amp;\text{ si } i \neq j \\
+\end{cases}\end{split}\]</div>
 </div>
 </dd></dl>
 
@@ -669,9 +667,96 @@ rate.</p>
 </dd></dl>
 
 </section>
-<section id="module-src.convolution">
-<span id="src-convolution-module"></span><h2>src.convolution module<a class="headerlink" href="#module-src.convolution" title="Lien permanent vers cette rubrique">#</a></h2>
-<dl class="py class">
+<section id="src-convolution-module">
+<h2>src.convolution module<a class="headerlink" href="#src-convolution-module" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>We tried to vectorize our convolutions to the maximum, prioritizing the performance.</p>
+<p>It implies creating special views of our array, by using the <cite>numpy.lib.stride_tricks</cite>
+functions. <cite>sliding_window_view</cite> is the easiest to understand, while maybe not the
+fastest compared to <cite>as_strided</cite> (but maybe less risky too).</p>
+<p>The calculations are done using <cite>np.einsum</cite>, which is relatively easy to understand
+and use. The key relies in understanding the shapes of your inputs/outputs.</p>
+</section>
+<section id="shape">
+<h2>Shape<a class="headerlink" href="#shape" title="Lien permanent vers cette rubrique">#</a></h2>
+<dl class="simple">
+<dt>Reminder for 1D:</dt><dd><ul class="simple">
+<li><p>input : ndarray (batch, length, chan_in)</p></li>
+<li><p>d_out : ndarray (batch, length, chan_in) == input.shape</p></li>
+<li><p>X_view : ndarray (batch, out_length, chan_in, self.k_size)</p></li>
+<li><p>delta : ndarray (batch, out_length, chan_out)</p></li>
+<li><p>_gradient[« weight »] : ndarray (k_size, chan_in, chan_out)</p></li>
+<li><p>_parameters[« weight »] : ndarray (k_size, chan_in, chan_out)</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Lien permanent vers cette rubrique">#</a></h2>
+<dl class="simple">
+<dt>Notation used for <cite>np.einsum</cite>:</dt><dd><ul class="simple">
+<li><p>b : batch_size</p></li>
+<li><p>w : width (2D) / length (1D)</p></li>
+<li><p>h : height (2D)</p></li>
+<li><p>o : out_width (2D) / out_length (1D)</p></li>
+<li><p>p : out_height (2D)</p></li>
+<li><p>c : chan_in</p></li>
+<li><p>d : chan_out</p></li>
+<li><p>k : k_size (ij for 2D)</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Lien permanent vers cette rubrique">#</a></h2>
+<p>Quick demonstration of <cite>sliding_window_view</cite> in 1D:
+.. code-block:: python</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">batch</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">chan_in</span><span class="p">,</span> <span class="n">k_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">input</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">chan_in</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">input</span>
+<span class="go">array([[[-0.41982262],</span>
+<span class="go">      [ 1.10111123],</span>
+<span class="go">      [-0.41115195],</span>
+<span class="go">      [ 1.18733225],</span>
+<span class="go">      [-1.93463567],</span>
+<span class="go">      [-0.22472025],</span>
+<span class="go">      [-0.30581971],</span>
+<span class="go">      [ 0.40578667]]])</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">window</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">stride_tricks</span><span class="o">.</span><span class="n">sliding_window_view</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">k_size</span><span class="p">,</span> <span class="n">chan_in</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">window</span>
+<span class="go">array([[[[[[-0.41982262],</span>
+<span class="go">         [ 1.10111123],</span>
+<span class="go">         [-0.41115195]]]],</span>
+<span class="go">      [[[[ 1.10111123],</span>
+<span class="go">         [-0.41115195],</span>
+<span class="go">         [ 1.18733225]]]],</span>
+<span class="go">   ...</span>
+</pre></div>
+</div>
+<p>How to deal with stride != 1?
+.. code-block:: python</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stride</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">window</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">stride_tricks</span><span class="o">.</span><span class="n">sliding_window_view</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">k_size</span><span class="p">,</span> <span class="n">chan_in</span><span class="p">))[::</span><span class="mi">1</span><span class="p">,</span> <span class="p">::</span><span class="n">stride</span><span class="p">,</span> <span class="p">::</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">window</span>
+<span class="go">array([[[[[[-0.41982262],</span>
+<span class="go">         [ 1.10111123],</span>
+<span class="go">         [-0.41115195]]]],</span>
+<span class="go">      [[[[ 1.18733225],</span>
+<span class="go">         [-1.93463567],</span>
+<span class="go">         [-0.22472025]]]]]])</span>
+</pre></div>
+</div>
+<p>Then it is just a matter of reshape, to drop unnecessaries dimensions, e.g. :
+.. code-block:: python</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">window</span> <span class="o">=</span> <span class="n">window</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">out_length</span><span class="p">,</span> <span class="n">chan_in</span><span class="p">,</span> <span class="n">k_size</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">window</span>
+<span class="go">array([[[[-0.41982262,  1.10111123, -0.41115195]],</span>
+<span class="go">      [[ 1.18733225, -1.93463567, -0.22472025]]]])</span>
+</pre></div>
+</div>
+<p>And voilà!</p>
+<span class="target" id="module-src.convolution"></span><dl class="py class">
 <dt class="sig sig-object py" id="src.convolution.AvgPool1D">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.convolution.</span></span><span class="sig-name descname"><span class="pre">AvgPool1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/convolution.html#AvgPool1D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.convolution.AvgPool1D" title="Lien permanent vers cette définition">#</a></dt>
 <dd><p>Bases : <a class="reference internal" href="#src.module.Module" title="src.module.Module"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
@@ -681,13 +766,15 @@ rate.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>k_size</strong> (<em>int</em>) – Size of the convolving kernel.</p></li>
 <li><p><strong>stride</strong> (<em>int</em><em>, </em><em>optional</em><em>, </em><em>default=1</em>) – Stride of the convolution.</p></li>
-<li><p><strong>Shape</strong> – </p></li>
-<li><p><strong>-----</strong> – </p></li>
-<li><p><strong>Input</strong> (<em>ndarray</em><em> (</em><em>batch</em><em>, </em><em>length</em><em>, </em><em>chan_in</em><em>)</em>) – </p></li>
-<li><p><strong>Output</strong> (<em>ndarray</em><em> (</em><em>batch</em><em>, </em><em>(</em><em>length - k_size</em><em>) </em><em>// stride + 1</em><em>, </em><em>chan_out</em><em>)</em>) – </p></li>
 </ul>
 </dd>
 </dl>
+<section id="id1">
+<h3>Shape<a class="headerlink" href="#id1" title="Lien permanent vers cette rubrique">#</a></h3>
+<ul class="simple">
+<li><p>Input : ndarray (batch, length, chan_in)</p></li>
+<li><p>Output : ndarray (batch, (length - k_size) // stride + 1, chan_out)</p></li>
+</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.convolution.AvgPool1D.backward_delta">
 <span class="sig-name descname"><span class="pre">backward_delta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/convolution.html#AvgPool1D.backward_delta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.convolution.AvgPool1D.backward_delta" title="Lien permanent vers cette définition">#</a></dt>
@@ -739,6 +826,7 @@ rate.</p>
 <dd><p>Réinitialise le gradient.</p>
 </dd></dl>
 
+</section>
 </dd></dl>
 
 <dl class="py class">
@@ -755,15 +843,17 @@ rate.</p>
 <li><p><strong>stride</strong> (<em>int</em><em>, </em><em>optional</em><em>, </em><em>default=1</em>) – Stride of the convolution.</p></li>
 <li><p><strong>bias</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default=False</em>) – If True, adds a learnable bias to the output.</p></li>
 <li><p><strong>init_type</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default=&quot;xavier_normal&quot;</em>) – Change the initialization of parameters.</p></li>
-<li><p><strong>Shape</strong> – </p></li>
-<li><p><strong>-----</strong> – </p></li>
-<li><p><strong>Input</strong> (<em>ndarray</em><em> (</em><em>batch</em><em>, </em><em>length</em><em>, </em><em>chan_in</em><em>)</em>) – </p></li>
-<li><p><strong>Output</strong> (<em>ndarray</em><em> (</em><em>batch</em><em>, </em><em>(</em><em>length - k_size</em><em>) </em><em>// stride + 1</em><em>, </em><em>chan_out</em><em>)</em>) – </p></li>
-<li><p><strong>Weight</strong> (<em>ndarray</em><em> (</em><em>k_size</em><em>, </em><em>chan_in</em><em>, </em><em>chan_out</em><em>)</em>) – </p></li>
-<li><p><strong>Bias</strong> (<em>ndarray</em><em> (</em><em>chan_out</em><em>)</em>) – </p></li>
 </ul>
 </dd>
 </dl>
+<section id="id2">
+<h3>Shape<a class="headerlink" href="#id2" title="Lien permanent vers cette rubrique">#</a></h3>
+<ul class="simple">
+<li><p>Input : ndarray (batch, length, chan_in)</p></li>
+<li><p>Output : ndarray (batch, (length - k_size) // stride + 1, chan_out)</p></li>
+<li><p>Weight : ndarray (k_size, chan_in, chan_out)</p></li>
+<li><p>Bias : ndarray (chan_out)</p></li>
+</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.convolution.Conv1D.backward_delta">
 <span class="sig-name descname"><span class="pre">backward_delta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/convolution.html#Conv1D.backward_delta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.convolution.Conv1D.backward_delta" title="Lien permanent vers cette définition">#</a></dt>
@@ -815,6 +905,7 @@ rate.</p>
 <dd><p>Réinitialise le gradient.</p>
 </dd></dl>
 
+</section>
 </dd></dl>
 
 <dl class="py class">
@@ -822,10 +913,12 @@ rate.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.convolution.</span></span><span class="sig-name descname"><span class="pre">Flatten</span></span><a class="reference internal" href="_modules/src/convolution.html#Flatten"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.convolution.Flatten" title="Lien permanent vers cette définition">#</a></dt>
 <dd><p>Bases : <a class="reference internal" href="#src.module.Module" title="src.module.Module"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
 <p>Flatten an output.</p>
-<section id="shape">
-<h3>Shape<a class="headerlink" href="#shape" title="Lien permanent vers cette rubrique">#</a></h3>
-<p>Input : ndarray (batch, length, chan_in)
-Output : ndarray (batch, length * chan_in)</p>
+<section id="id3">
+<h3>Shape<a class="headerlink" href="#id3" title="Lien permanent vers cette rubrique">#</a></h3>
+<ul class="simple">
+<li><p>Input : ndarray (batch, length, chan_in)</p></li>
+<li><p>Output : ndarray (batch, length * chan_in)</p></li>
+</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.convolution.Flatten.backward_delta">
 <span class="sig-name descname"><span class="pre">backward_delta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/convolution.html#Flatten.backward_delta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.convolution.Flatten.backward_delta" title="Lien permanent vers cette définition">#</a></dt>
@@ -890,13 +983,15 @@ rate.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>k_size</strong> (<em>int</em>) – Size of the convolving kernel.</p></li>
 <li><p><strong>stride</strong> (<em>int</em><em>, </em><em>optional</em><em>, </em><em>default=1</em>) – Stride of the convolution.</p></li>
-<li><p><strong>Shape</strong> – </p></li>
-<li><p><strong>-----</strong> – </p></li>
-<li><p><strong>Input</strong> (<em>ndarray</em><em> (</em><em>batch</em><em>, </em><em>length</em><em>, </em><em>chan_in</em><em>)</em>) – </p></li>
-<li><p><strong>Output</strong> (<em>ndarray</em><em> (</em><em>batch</em><em>, </em><em>(</em><em>length - k_size</em><em>) </em><em>// stride + 1</em><em>, </em><em>chan_out</em><em>)</em>) – </p></li>
 </ul>
 </dd>
 </dl>
+<section id="id4">
+<h3>Shape<a class="headerlink" href="#id4" title="Lien permanent vers cette rubrique">#</a></h3>
+<ul class="simple">
+<li><p>Input : ndarray (batch, length, chan_in)</p></li>
+<li><p>Output : ndarray (batch, (length - k_size) // stride + 1, chan_out)</p></li>
+</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.convolution.MaxPool1D.backward_delta">
 <span class="sig-name descname"><span class="pre">backward_delta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/convolution.html#MaxPool1D.backward_delta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.convolution.MaxPool1D.backward_delta" title="Lien permanent vers cette définition">#</a></dt>
@@ -948,6 +1043,7 @@ rate.</p>
 <dd><p>Réinitialise le gradient.</p>
 </dd></dl>
 
+</section>
 </dd></dl>
 
 </section>
@@ -975,10 +1071,7 @@ rate.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.encapsulation.Optim.step">
 <span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/encapsulation.html#Optim.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.encapsulation.Optim.step" title="Lien permanent vers cette définition">#</a></dt>
-<dd><p>TODO
-y_hat = self.network.forward(batch_x).reshape(-1, 1)  # (batchsize, 1)
-Il faut fix ce reshape, il broke en multiclass en reshapant de (batchsize=8, 2 class) =&gt; (16, 1)</p>
-</dd></dl>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -1041,15 +1134,17 @@ Il faut fix ce reshape, il broke en multiclass en reshapant de (batchsize=8, 2 c
 <li><p><strong>output_size</strong> (<em>int</em>) – Size of output sample.</p></li>
 <li><p><strong>bias</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default=False</em>) – If True, adds a learnable bias to the output.</p></li>
 <li><p><strong>init_type</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default=&quot;normal&quot;</em>) – Change the initialization of parameters.</p></li>
-<li><p><strong>Shape</strong> – </p></li>
-<li><p><strong>-----</strong> – </p></li>
-<li><p><strong>Input</strong> (<em>ndarray</em><em> (</em><em>batch</em><em>, </em><em>input_size</em><em>)</em>) – </p></li>
-<li><p><strong>Output</strong> (<em>ndarray</em><em> (</em><em>batch</em><em>, </em><em>output_size</em><em>)</em>) – </p></li>
-<li><p><strong>Weight</strong> (<em>ndarray</em><em> (</em><em>input_size</em><em>, </em><em>output_size</em><em>)</em>) – </p></li>
-<li><p><strong>Bias</strong> (<em>ndarray</em><em> (</em><em>1</em><em>, </em><em>output_size</em><em>)</em>) – </p></li>
 </ul>
 </dd>
 </dl>
+<section id="id5">
+<h3>Shape<a class="headerlink" href="#id5" title="Lien permanent vers cette rubrique">#</a></h3>
+<ul class="simple">
+<li><p>Input : ndarray (batch, input_size)</p></li>
+<li><p>Output : ndarray (batch, output_size)</p></li>
+<li><p>Weight : ndarray (input_size, output_size)</p></li>
+<li><p>Bias : ndarray (1, output_size)</p></li>
+</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.linear.Linear.backward_delta">
 <span class="sig-name descname"><span class="pre">backward_delta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/linear.html#Linear.backward_delta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.linear.Linear.backward_delta" title="Lien permanent vers cette définition">#</a></dt>
@@ -1103,6 +1198,7 @@ rate.</p>
 <dd><p>Réinitialise le gradient.</p>
 </dd></dl>
 
+</section>
 </dd></dl>
 
 </section>
@@ -1129,7 +1225,6 @@ rate.</p>
 <dt class="sig sig-object py" id="src.loss.CELogSoftmax">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.loss.</span></span><span class="sig-name descname"><span class="pre">CELogSoftmax</span></span><a class="reference internal" href="_modules/src/loss.html#CELogSoftmax"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.loss.CELogSoftmax" title="Lien permanent vers cette définition">#</a></dt>
 <dd><p>Bases : <a class="reference internal" href="#src.module.Loss" title="src.module.Loss"><code class="xref py py-class docutils literal notranslate"><span class="pre">Loss</span></code></a></p>
-<p>TO DO</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
 \[\text{CE}(y, \hat{y}) = - \log \frac {e^{\hat{y}_y}} {\sum_{i=1}^{K}
@@ -1283,13 +1378,15 @@ rate.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>k_size</strong> (<em>int</em>) – Size of the convolving kernel.</p></li>
 <li><p><strong>stride</strong> (<em>int</em><em>, </em><em>optional</em><em>, </em><em>default=1</em>) – Stride of the convolution.</p></li>
-<li><p><strong>Shape</strong> – </p></li>
-<li><p><strong>-----</strong> – </p></li>
-<li><p><strong>Input</strong> (<em>ndarray</em><em> (</em><em>batch</em><em>, </em><em>length</em><em>, </em><em>chan_in</em><em>)</em>) – </p></li>
-<li><p><strong>Output</strong> (<em>ndarray</em><em> (</em><em>batch</em><em>, </em><em>(</em><em>length - k_size</em><em>) </em><em>// stride + 1</em><em>, </em><em>chan_out</em><em>)</em>) – </p></li>
 </ul>
 </dd>
 </dl>
+<section id="id6">
+<h3>Shape<a class="headerlink" href="#id6" title="Lien permanent vers cette rubrique">#</a></h3>
+<ul class="simple">
+<li><p>Input : ndarray (batch, length, chan_in)</p></li>
+<li><p>Output : ndarray (batch, (length - k_size) // stride + 1, chan_out)</p></li>
+</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.AvgPool1D.backward_delta">
 <span class="sig-name descname"><span class="pre">backward_delta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/convolution.html#AvgPool1D.backward_delta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.AvgPool1D.backward_delta" title="Lien permanent vers cette définition">#</a></dt>
@@ -1341,6 +1438,7 @@ rate.</p>
 <dd><p>Réinitialise le gradient.</p>
 </dd></dl>
 
+</section>
 </dd></dl>
 
 <dl class="py class">
@@ -1364,7 +1462,6 @@ rate.</p>
 <dt class="sig sig-object py" id="src.CELogSoftmax">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.</span></span><span class="sig-name descname"><span class="pre">CELogSoftmax</span></span><a class="reference internal" href="_modules/src/loss.html#CELogSoftmax"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.CELogSoftmax" title="Lien permanent vers cette définition">#</a></dt>
 <dd><p>Bases : <a class="reference internal" href="#src.module.Loss" title="src.module.Loss"><code class="xref py py-class docutils literal notranslate"><span class="pre">Loss</span></code></a></p>
-<p>TO DO</p>
 <div class="math-wrapper docutils container">
 <div class="math notranslate nohighlight">
 \[\text{CE}(y, \hat{y}) = - \log \frac {e^{\hat{y}_y}} {\sum_{i=1}^{K}
@@ -1396,15 +1493,17 @@ e^{\hat{y}_i}} = -\hat{y}_y} + \log \sum_{i=1}^{K}e^{\hat{y}_i}}\]</div>
 <li><p><strong>stride</strong> (<em>int</em><em>, </em><em>optional</em><em>, </em><em>default=1</em>) – Stride of the convolution.</p></li>
 <li><p><strong>bias</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default=False</em>) – If True, adds a learnable bias to the output.</p></li>
 <li><p><strong>init_type</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default=&quot;xavier_normal&quot;</em>) – Change the initialization of parameters.</p></li>
-<li><p><strong>Shape</strong> – </p></li>
-<li><p><strong>-----</strong> – </p></li>
-<li><p><strong>Input</strong> (<em>ndarray</em><em> (</em><em>batch</em><em>, </em><em>length</em><em>, </em><em>chan_in</em><em>)</em>) – </p></li>
-<li><p><strong>Output</strong> (<em>ndarray</em><em> (</em><em>batch</em><em>, </em><em>(</em><em>length - k_size</em><em>) </em><em>// stride + 1</em><em>, </em><em>chan_out</em><em>)</em>) – </p></li>
-<li><p><strong>Weight</strong> (<em>ndarray</em><em> (</em><em>k_size</em><em>, </em><em>chan_in</em><em>, </em><em>chan_out</em><em>)</em>) – </p></li>
-<li><p><strong>Bias</strong> (<em>ndarray</em><em> (</em><em>chan_out</em><em>)</em>) – </p></li>
 </ul>
 </dd>
 </dl>
+<section id="id7">
+<h3>Shape<a class="headerlink" href="#id7" title="Lien permanent vers cette rubrique">#</a></h3>
+<ul class="simple">
+<li><p>Input : ndarray (batch, length, chan_in)</p></li>
+<li><p>Output : ndarray (batch, (length - k_size) // stride + 1, chan_out)</p></li>
+<li><p>Weight : ndarray (k_size, chan_in, chan_out)</p></li>
+<li><p>Bias : ndarray (chan_out)</p></li>
+</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.Conv1D.backward_delta">
 <span class="sig-name descname"><span class="pre">backward_delta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/convolution.html#Conv1D.backward_delta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.Conv1D.backward_delta" title="Lien permanent vers cette définition">#</a></dt>
@@ -1456,6 +1555,7 @@ rate.</p>
 <dd><p>Réinitialise le gradient.</p>
 </dd></dl>
 
+</section>
 </dd></dl>
 
 <dl class="py class">
@@ -1480,10 +1580,12 @@ rate.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.</span></span><span class="sig-name descname"><span class="pre">Flatten</span></span><a class="reference internal" href="_modules/src/convolution.html#Flatten"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.Flatten" title="Lien permanent vers cette définition">#</a></dt>
 <dd><p>Bases : <a class="reference internal" href="#src.module.Module" title="src.module.Module"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></p>
 <p>Flatten an output.</p>
-<section id="id1">
-<h3>Shape<a class="headerlink" href="#id1" title="Lien permanent vers cette rubrique">#</a></h3>
-<p>Input : ndarray (batch, length, chan_in)
-Output : ndarray (batch, length * chan_in)</p>
+<section id="id8">
+<h3>Shape<a class="headerlink" href="#id8" title="Lien permanent vers cette rubrique">#</a></h3>
+<ul class="simple">
+<li><p>Input : ndarray (batch, length, chan_in)</p></li>
+<li><p>Output : ndarray (batch, length * chan_in)</p></li>
+</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.Flatten.backward_delta">
 <span class="sig-name descname"><span class="pre">backward_delta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/convolution.html#Flatten.backward_delta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.Flatten.backward_delta" title="Lien permanent vers cette définition">#</a></dt>
@@ -1550,15 +1652,17 @@ rate.</p>
 <li><p><strong>output_size</strong> (<em>int</em>) – Size of output sample.</p></li>
 <li><p><strong>bias</strong> (<em>bool</em><em>, </em><em>optional</em><em>, </em><em>default=False</em>) – If True, adds a learnable bias to the output.</p></li>
 <li><p><strong>init_type</strong> (<em>str</em><em>, </em><em>optional</em><em>, </em><em>default=&quot;normal&quot;</em>) – Change the initialization of parameters.</p></li>
-<li><p><strong>Shape</strong> – </p></li>
-<li><p><strong>-----</strong> – </p></li>
-<li><p><strong>Input</strong> (<em>ndarray</em><em> (</em><em>batch</em><em>, </em><em>input_size</em><em>)</em>) – </p></li>
-<li><p><strong>Output</strong> (<em>ndarray</em><em> (</em><em>batch</em><em>, </em><em>output_size</em><em>)</em>) – </p></li>
-<li><p><strong>Weight</strong> (<em>ndarray</em><em> (</em><em>input_size</em><em>, </em><em>output_size</em><em>)</em>) – </p></li>
-<li><p><strong>Bias</strong> (<em>ndarray</em><em> (</em><em>1</em><em>, </em><em>output_size</em><em>)</em>) – </p></li>
 </ul>
 </dd>
 </dl>
+<section id="id9">
+<h3>Shape<a class="headerlink" href="#id9" title="Lien permanent vers cette rubrique">#</a></h3>
+<ul class="simple">
+<li><p>Input : ndarray (batch, input_size)</p></li>
+<li><p>Output : ndarray (batch, output_size)</p></li>
+<li><p>Weight : ndarray (input_size, output_size)</p></li>
+<li><p>Bias : ndarray (1, output_size)</p></li>
+</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.Linear.backward_delta">
 <span class="sig-name descname"><span class="pre">backward_delta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/linear.html#Linear.backward_delta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.Linear.backward_delta" title="Lien permanent vers cette définition">#</a></dt>
@@ -1612,6 +1716,7 @@ rate.</p>
 <dd><p>Réinitialise le gradient.</p>
 </dd></dl>
 
+</section>
 </dd></dl>
 
 <dl class="py class">
@@ -1728,13 +1833,15 @@ rate.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>k_size</strong> (<em>int</em>) – Size of the convolving kernel.</p></li>
 <li><p><strong>stride</strong> (<em>int</em><em>, </em><em>optional</em><em>, </em><em>default=1</em>) – Stride of the convolution.</p></li>
-<li><p><strong>Shape</strong> – </p></li>
-<li><p><strong>-----</strong> – </p></li>
-<li><p><strong>Input</strong> (<em>ndarray</em><em> (</em><em>batch</em><em>, </em><em>length</em><em>, </em><em>chan_in</em><em>)</em>) – </p></li>
-<li><p><strong>Output</strong> (<em>ndarray</em><em> (</em><em>batch</em><em>, </em><em>(</em><em>length - k_size</em><em>) </em><em>// stride + 1</em><em>, </em><em>chan_out</em><em>)</em>) – </p></li>
 </ul>
 </dd>
 </dl>
+<section id="id10">
+<h3>Shape<a class="headerlink" href="#id10" title="Lien permanent vers cette rubrique">#</a></h3>
+<ul class="simple">
+<li><p>Input : ndarray (batch, length, chan_in)</p></li>
+<li><p>Output : ndarray (batch, (length - k_size) // stride + 1, chan_out)</p></li>
+</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.MaxPool1D.backward_delta">
 <span class="sig-name descname"><span class="pre">backward_delta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/convolution.html#MaxPool1D.backward_delta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.MaxPool1D.backward_delta" title="Lien permanent vers cette définition">#</a></dt>
@@ -1786,6 +1893,7 @@ rate.</p>
 <dd><p>Réinitialise le gradient.</p>
 </dd></dl>
 
+</section>
 </dd></dl>
 
 <dl class="py class">
@@ -1872,10 +1980,7 @@ rate.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.Optim.step">
 <span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/encapsulation.html#Optim.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.Optim.step" title="Lien permanent vers cette définition">#</a></dt>
-<dd><p>TODO
-y_hat = self.network.forward(batch_x).reshape(-1, 1)  # (batchsize, 1)
-Il faut fix ce reshape, il broke en multiclass en reshapant de (batchsize=8, 2 class) =&gt; (16, 1)</p>
-</dd></dl>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -2046,17 +2151,17 @@ Commonly used along with a cross entropy loss. See [Softmax and cross-entropy lo
 <dl class="py method">
 <dt class="sig sig-object py" id="src.Softmax.backward_delta">
 <span class="sig-name descname"><span class="pre">backward_delta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/activation.html#Softmax.backward_delta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.Softmax.backward_delta" title="Lien permanent vers cette définition">#</a></dt>
-<dd><dl class="simple">
-<dt>math::</dt><dd><p>frac{partial M(x_i)}{partial x_i} = M^h(x_i) * (1 - M^h(x_i))</p>
-</dd>
-</dl>
-<p>Plus précisement
-math:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>\<span class="n">frac</span><span class="p">{</span>\<span class="n">partial</span> <span class="n">M</span><span class="o">^</span><span class="n">h</span><span class="p">(</span><span class="n">x_i</span><span class="p">)}{</span><span class="n">x_j</span><span class="p">}</span> <span class="o">=</span> \<span class="n">begin</span><span class="p">{</span><span class="n">cases</span><span class="p">}</span>
-    <span class="n">M</span><span class="o">^</span><span class="n">h</span><span class="p">(</span><span class="n">x_i</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">M</span><span class="o">^</span><span class="n">h</span><span class="p">(</span><span class="n">x_j</span><span class="p">)</span> <span class="p">)</span> <span class="o">&amp;</span>\<span class="n">text</span><span class="p">{</span><span class="n">si</span> <span class="p">}</span> <span class="n">i</span> <span class="o">=</span> <span class="n">j</span> \\
-    <span class="o">-</span> <span class="n">M</span><span class="o">^</span><span class="n">h</span><span class="p">(</span><span class="n">x_j</span><span class="p">)</span> <span class="n">M</span><span class="o">^</span><span class="n">h</span><span class="p">(</span><span class="n">x_i</span><span class="p">)</span> <span class="o">&amp;</span>\<span class="n">text</span><span class="p">{</span> <span class="n">si</span> <span class="p">}</span> <span class="n">i</span> \<span class="n">neq</span> <span class="n">j</span> \\
-\<span class="n">end</span><span class="p">{</span><span class="n">cases</span><span class="p">}</span>
-</pre></div>
+<dd><div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\frac{\partial M(x_i)}{\partial x_i} = M^h(x_i) * (1 - M^h(x_i))\]</div>
+</div>
+<p>Plus précisement</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{\partial M^h(x_i)}{x_j} = \begin{cases}
+    M^h(x_i) * ( 1 - M^h(x_j) ) &amp;\text{si } i = j \\
+    - M^h(x_j) M^h(x_i) &amp;\text{ si } i \neq j \\
+\end{cases}\end{split}\]</div>
 </div>
 </dd></dl>
 
@@ -2321,7 +2426,10 @@ rate.</p>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-src.convolution">src.convolution module</a><ul>
+<li><a class="reference internal" href="#src-convolution-module">src.convolution module</a></li>
+<li><a class="reference internal" href="#shape">Shape</a></li>
+<li><a class="reference internal" href="#notes">Notes</a></li>
+<li><a class="reference internal" href="#examples">Examples</a><ul>
 <li><a class="reference internal" href="#src.convolution.AvgPool1D"><code class="docutils literal notranslate"><span class="pre">AvgPool1D</span></code></a><ul>
 <li><a class="reference internal" href="#src.convolution.AvgPool1D.backward_delta"><code class="docutils literal notranslate"><span class="pre">AvgPool1D.backward_delta()</span></code></a></li>
 <li><a class="reference internal" href="#src.convolution.AvgPool1D.backward_update_gradient"><code class="docutils literal notranslate"><span class="pre">AvgPool1D.backward_update_gradient()</span></code></a></li>

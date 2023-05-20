@@ -117,10 +117,6 @@ class Optim:
             yield X_batch, y_batch
 
     def step(self, batch_x, batch_y):
-        """TODO
-        y_hat = self.network.forward(batch_x).reshape(-1, 1)  # (batchsize, 1)
-        Il faut fix ce reshape, il broke en multiclass en reshapant de (batchsize=8, 2 class) => (16, 1)
-        """
         # Forward pass
         y_hat = self.network.forward(batch_x)
         loss_value = self.loss.forward(batch_y, y_hat)

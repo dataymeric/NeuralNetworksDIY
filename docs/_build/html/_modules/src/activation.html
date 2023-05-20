@@ -313,11 +313,12 @@
 
 <div class="viewcode-block" id="Softmax.backward_delta"><a class="viewcode-back" href="../../src.html#src.activation.Softmax.backward_delta">[docs]</a>    <span class="k">def</span> <span class="nf">backward_delta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        math::</span>
+<span class="sd">        .. math::</span>
 <span class="sd">            \frac{\partial M(x_i)}{\partial x_i} = M^h(x_i) * (1 - M^h(x_i))</span>
 
 <span class="sd">        Plus précisement </span>
-<span class="sd">        math:: </span>
+<span class="sd">        </span>
+<span class="sd">        .. math::</span>
 <span class="sd">            \frac{\partial M^h(x_i)}{x_j} = \begin{cases}</span>
 <span class="sd">                M^h(x_i) * ( 1 - M^h(x_j) ) &amp;\text{si } i = j \\</span>
 <span class="sd">                - M^h(x_j) M^h(x_i) &amp;\text{ si } i \neq j \\</span>
@@ -411,7 +412,7 @@
 
 <div class="viewcode-block" id="LeakyReLU.backward_delta"><a class="viewcode-back" href="../../src.html#src.activation.LeakyReLU.backward_delta">[docs]</a>    <span class="k">def</span> <span class="nf">backward_delta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        math::</span>
+<span class="sd">        .. math::</span>
 <span class="sd">            \frac{\partial M}{\partial z^h} = \begin{cases} </span>
 <span class="sd">                1 &amp; \text{if } x&gt;0, \\</span>
 <span class="sd">                \alpha &amp; \text{otherwise}.</span>

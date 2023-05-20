@@ -266,8 +266,7 @@
 <span class="sd">array([[[[-0.41982262,  1.10111123, -0.41115195]],</span>
 <span class="sd">        [[ 1.18733225, -1.93463567, -0.22472025]]]])</span>
 
-<span class="sd">And voilà! I will try dealing with padding in a future version, when this one is fully</span>
-<span class="sd">operational.</span>
+<span class="sd">And voilà!</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 
@@ -276,25 +275,25 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    k_size : int</span>
-<span class="sd">        Size of the convolving kernel.</span>
-<span class="sd">    chan_in : int</span>
-<span class="sd">        Number of channels in the input image.</span>
-<span class="sd">    chan_out : in</span>
-<span class="sd">        Number of channels produced by the convolution.</span>
-<span class="sd">    stride : int, optional, default=1</span>
-<span class="sd">        Stride of the convolution.</span>
-<span class="sd">    bias : bool, optional, default=False</span>
-<span class="sd">        If True, adds a learnable bias to the output.</span>
-<span class="sd">    init_type : str, optional, default=&quot;xavier_normal&quot;</span>
-<span class="sd">        Change the initialization of parameters.</span>
+<span class="sd">        k_size : int</span>
+<span class="sd">            Size of the convolving kernel.</span>
+<span class="sd">        chan_in : int</span>
+<span class="sd">            Number of channels in the input image.</span>
+<span class="sd">        chan_out : in</span>
+<span class="sd">            Number of channels produced by the convolution.</span>
+<span class="sd">        stride : int, optional, default=1</span>
+<span class="sd">            Stride of the convolution.</span>
+<span class="sd">        bias : bool, optional, default=False</span>
+<span class="sd">            If True, adds a learnable bias to the output.</span>
+<span class="sd">        init_type : str, optional, default=&quot;xavier_normal&quot;</span>
+<span class="sd">            Change the initialization of parameters.</span>
 
 <span class="sd">    Shape</span>
 <span class="sd">    -----</span>
-<span class="sd">    Input : ndarray (batch, length, chan_in)</span>
-<span class="sd">    Output : ndarray (batch, (length - k_size) // stride + 1, chan_out)</span>
-<span class="sd">    Weight : ndarray (k_size, chan_in, chan_out)</span>
-<span class="sd">    Bias : ndarray (chan_out)</span>
+<span class="sd">    - Input : ndarray (batch, length, chan_in)</span>
+<span class="sd">    - Output : ndarray (batch, (length - k_size) // stride + 1, chan_out)</span>
+<span class="sd">    - Weight : ndarray (k_size, chan_in, chan_out)</span>
+<span class="sd">    - Bias : ndarray (chan_out)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -424,7 +423,9 @@
         <span class="p">]</span>
         <span class="n">X_view</span> <span class="o">=</span> <span class="n">X_view</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">out_length</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chan_in</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_size</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_gradient</span><span class="p">[</span><span class="s2">&quot;weight&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;bock, bod -&gt; kcd&quot;</span><span class="p">,</span> <span class="n">X_view</span><span class="p">,</span> <span class="n">delta</span><span class="p">)</span> <span class="o">/</span> <span class="n">batch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gradient</span><span class="p">[</span><span class="s2">&quot;weight&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">&quot;bock, bod -&gt; kcd&quot;</span><span class="p">,</span> <span class="n">X_view</span><span class="p">,</span> <span class="n">delta</span><span class="p">)</span> <span class="o">/</span> <span class="n">batch_size</span>
+        <span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">include_bias</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_gradient</span><span class="p">[</span><span class="s2">&quot;bias&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="n">batch_size</span></div>
@@ -454,15 +455,15 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    k_size : int</span>
-<span class="sd">        Size of the convolving kernel.</span>
-<span class="sd">    stride : int, optional, default=1</span>
-<span class="sd">        Stride of the convolution.</span>
+<span class="sd">        k_size : int</span>
+<span class="sd">            Size of the convolving kernel.</span>
+<span class="sd">        stride : int, optional, default=1</span>
+<span class="sd">            Stride of the convolution.</span>
 
 <span class="sd">    Shape</span>
 <span class="sd">    -----</span>
-<span class="sd">    Input : ndarray (batch, length, chan_in)</span>
-<span class="sd">    Output : ndarray (batch, (length - k_size) // stride + 1, chan_out)</span>
+<span class="sd">    - Input : ndarray (batch, length, chan_in)</span>
+<span class="sd">    - Output : ndarray (batch, (length - k_size) // stride + 1, chan_out)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k_size</span><span class="p">,</span> <span class="n">stride</span><span class="p">):</span>
@@ -521,15 +522,15 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    k_size : int</span>
-<span class="sd">        Size of the convolving kernel.</span>
-<span class="sd">    stride : int, optional, default=1</span>
-<span class="sd">        Stride of the convolution.</span>
+<span class="sd">        k_size : int</span>
+<span class="sd">            Size of the convolving kernel.</span>
+<span class="sd">        stride : int, optional, default=1</span>
+<span class="sd">            Stride of the convolution.</span>
 
 <span class="sd">    Shape</span>
 <span class="sd">    -----</span>
-<span class="sd">    Input : ndarray (batch, length, chan_in)</span>
-<span class="sd">    Output : ndarray (batch, (length - k_size) // stride + 1, chan_out)</span>
+<span class="sd">    - Input : ndarray (batch, length, chan_in)</span>
+<span class="sd">    - Output : ndarray (batch, (length - k_size) // stride + 1, chan_out)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k_size</span><span class="p">,</span> <span class="n">stride</span><span class="p">):</span>
@@ -577,8 +578,8 @@
 
 <span class="sd">    Shape</span>
 <span class="sd">    -----</span>
-<span class="sd">    Input : ndarray (batch, length, chan_in)</span>
-<span class="sd">    Output : ndarray (batch, length * chan_in)</span>
+<span class="sd">    - Input : ndarray (batch, length, chan_in)</span>
+<span class="sd">    - Output : ndarray (batch, length * chan_in)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Flatten.forward"><a class="viewcode-back" href="../../src.html#src.convolution.Flatten.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>

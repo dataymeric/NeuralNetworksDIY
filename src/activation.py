@@ -125,11 +125,12 @@ class Softmax(Module):
 
     def backward_delta(self, input, delta):
         r"""
-        math::
+        .. math::
             \frac{\partial M(x_i)}{\partial x_i} = M^h(x_i) * (1 - M^h(x_i))
 
         Plus précisement 
-        math:: 
+        
+        .. math::
             \frac{\partial M^h(x_i)}{x_j} = \begin{cases}
                 M^h(x_i) * ( 1 - M^h(x_j) ) &\text{si } i = j \\
                 - M^h(x_j) M^h(x_i) &\text{ si } i \neq j \\
@@ -223,7 +224,7 @@ class LeakyReLU(Module):
 
     def backward_delta(self, input, delta):
         r"""
-        math::
+        .. math::
             \frac{\partial M}{\partial z^h} = \begin{cases} 
                 1 & \text{if } x>0, \\
                 \alpha & \text{otherwise}.
