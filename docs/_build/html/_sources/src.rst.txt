@@ -129,10 +129,3 @@ src.module module
    :undoc-members:
    :show-inheritance:
 
-Module contents
----------------
-
-.. automodule:: src
-   :members:
-   :undoc-members:
-   :show-inheritance:

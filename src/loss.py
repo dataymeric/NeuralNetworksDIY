@@ -62,7 +62,10 @@ class BCELoss(Loss):
             f"dimension mismatch, y and yhat must of same dimension. "
             f"Here it is {y.shape} and {yhat.shape}"
         )
-        return -np.mean(y * np.log(np.clip(yhat, 1e-10, 1)) + (1 - y) * np.log(np.clip(1 - yhat, 1e-10, 1)))
+        return -np.mean(
+            y * np.log(np.clip(yhat, 1e-10, 1))
+            + (1 - y) * np.log(np.clip(1 - yhat, 1e-10, 1))
+        )
 
     def backward(self, y, yhat):
         assert y.shape == yhat.shape, ValueError(
@@ -76,7 +79,7 @@ class CELogSoftmax(Loss):
     r"""
     .. math::
         \text{CE}(y, \hat{y}) = - \log \frac {e^{\hat{y}_y}} {\sum_{i=1}^{K}
-        e^{\hat{y}_i}} = -\hat{y}_y} + \log \sum_{i=1}^{K}e^{\hat{y}_i}}
+        e^{\hat{y}_i}} = -\hat{y}_y + \log \sum_{i=1}^{K}e^{\hat{y}_i}
     """
 
     def __init__(self) -> None:
