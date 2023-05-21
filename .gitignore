@@ -1,10 +1,25 @@
+# Python
 __pycache__
 .pytest_cache
 .ipynb_checkpoints
 .vscode
 .venv
 *.zip
+
+# Folders
 archive
 data/fashion-mnist
 data/dirty_documents
 models
+
+# TeX
+reports/_minted-report
+reports/report
+reports/reports
+*.aux
+*.fdb*
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
