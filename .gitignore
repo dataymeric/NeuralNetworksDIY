@@ -2,8 +2,9 @@ __pycache__
 .pytest_cache
 .ipynb_checkpoints
 .vscode
-data/fashion-mnist/fashion-mnist_train.csv
-data/fashion-mnist/fashion-mnist_test.csv
-archive
 .venv
+*.zip
+archive
+data/fashion-mnist
+data/dirty_documents
 models
