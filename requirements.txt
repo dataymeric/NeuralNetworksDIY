@@ -1,0 +1,8 @@
+tqdm
+icecream
+numpy
+pandas
+scikit-learn
+scikit-image
+matplotlib
+seaborn
