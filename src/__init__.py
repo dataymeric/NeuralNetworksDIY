@@ -1,5 +1,5 @@
 from .module import Module, Loss
-from .activation import TanH, Sigmoid, Softmax, LogSoftmax, ReLU, Softplus
+from .activation import TanH, Sigmoid, StableSigmoid, Softmax, LogSoftmax, ReLU, LeakyReLU, Softplus
 from .loss import MSELoss, CrossEntropyLoss, BCELoss, CELogSoftmax
 from .linear import Linear
 from .encapsulation import Sequential, Optim
@@ -10,9 +10,11 @@ __all__ = [
     "Loss",
     "TanH",
     "Sigmoid",
+    "StableSigmoid",
     "Softmax",
     "LogSoftmax",
     "ReLU",
+    "LeakyReLU",
     "Softplus",
     "MSELoss",
     "CrossEntropyLoss",
